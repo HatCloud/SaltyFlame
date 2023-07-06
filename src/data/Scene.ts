@@ -1,15 +1,20 @@
 export type SceneId = string
 
 export interface Scene {
-    id: SceneId
     story: string
     options: Option[]
-    isEnd: boolean
+    checkOption?: CheckOption
+    isEnd?: boolean
+}
+
+export interface Info {
+    title: string
+    content: string
 }
 
 export interface Option {
     goto: SceneId
-    text: string
+    text?: string
 }
 
 export interface CheckOption {
