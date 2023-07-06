@@ -8,5 +8,17 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "include": ["src", ".eslintrc.js"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "public",
+    "scripts",
+    "webpack",
+    "jest",
+    "tests",
+    "e2e",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }
