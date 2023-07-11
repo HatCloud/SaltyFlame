@@ -61,9 +61,9 @@ const StoryCard: React.FC = React.memo(() => {
           <Text style={styles.storyCardCheckOptionGoto}>{checkText}</Text>
         </>
       ) : null}
-      {currentScene?.options.map(option => (
+      {currentScene?.options.map((option, index) => (
         <Text
-          key={option.text}
+          key={index.toString()}
           onPress={() => {
             changeScene(option.goto)
           }}
