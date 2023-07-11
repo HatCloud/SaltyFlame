@@ -18,7 +18,7 @@ module.exports = {
             'error',
             {
                 semi: false,
-                tabWidth: 4,
+                tabWidth: 2,
             },
         ],
         '@typescript-eslint/explicit-function-return-type': 'off',
