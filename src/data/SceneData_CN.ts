@@ -1,10 +1,6 @@
-import {Scene} from '../../data/Scene'
-import {Character} from '../../data/Character'
-import generateCharacter from './FakerCharacter'
+import {Scene} from '../interface/Scene'
 
-export const characterData: Character = generateCharacter()
-
-export const sceneData_CN: {
+export const SceneData_CN: {
   [id: string]: Scene
 } = {
   '1': {

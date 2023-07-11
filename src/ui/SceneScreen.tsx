@@ -1,11 +1,10 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native'
 import React, {useCallback, useContext, useMemo, useReducer} from 'react'
-import {characterData} from './data'
-import palette from '../../theme/palette'
-import {padding} from './padding'
-import {typeface} from '../../theme/typeface'
-import {AppContext} from '../../../App'
-import {appReducer} from '../../reducer/AppReducer'
+import palette from '../theme/palette'
+import {padding} from '../theme/padding'
+import {typeface} from '../theme/typeface'
+import {AppContext} from '../../App'
+import {appReducer} from '../reducer'
 
 const SceneScreen: React.FC = React.memo(() => {
   const appState = useContext(AppContext)
@@ -90,10 +89,10 @@ const SceneScreen: React.FC = React.memo(() => {
       <View style={styles.characterCardContainer}>
         <View style={styles.characterCardColumn}>
           <Text style={styles.characterCardColumnTitle}>
-            {characterData.name}
+            {state.characterData.name}
           </Text>
           <Text style={styles.characterCardColumnDesc}>
-            {characterData.occupation}
+            {state.characterData.occupation}
           </Text>
         </View>
         <View style={styles.characterCardColumn}>
@@ -101,14 +100,14 @@ const SceneScreen: React.FC = React.memo(() => {
           <Text
             style={
               styles.characterCardColumnDesc
-            }>{`${characterData.hitPoints.current}/${characterData.hitPoints.max}`}</Text>
+            }>{`${state.characterData.hitPoints.current}/${state.characterData.hitPoints.max}`}</Text>
         </View>
         <View style={styles.characterCardColumn}>
           <Text style={styles.characterCardColumnTitle}>SAN</Text>
           <Text
             style={
               styles.characterCardColumnDesc
-            }>{`${characterData.sanity.current}/${characterData.sanity.max}`}</Text>
+            }>{`${state.characterData.sanity.current}/${state.characterData.sanity.max}`}</Text>
         </View>
       </View>
     </View>

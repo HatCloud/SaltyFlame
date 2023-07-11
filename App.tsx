@@ -6,10 +6,10 @@
  */
 
 import React from 'react'
-import {AppState, StatusBar, StyleSheet, View} from 'react-native'
-import SceneScreen from './src/ui/SceneScreen/index'
+import {StatusBar, StyleSheet, View} from 'react-native'
+import SceneScreen from './src/ui/SceneScreen'
 import palette from './src/theme/palette'
-import {initialState} from './src/reducer/interface'
+import {initialState} from './src/interface/MyAppState'
 
 export const AppContext = React.createContext(initialState)
 

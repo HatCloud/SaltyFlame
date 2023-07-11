@@ -1,6 +1,6 @@
-import {AppAction, AppState} from './interface'
+import {AppAction, MyAppState} from './interface/MyAppState'
 
-export const appReducer = (state: AppState, action: AppAction) => {
+export const appReducer = (state: MyAppState, action: AppAction) => {
   switch (action.type) {
     case 'CHANGE_SCENE':
       state.history.push(state.currentSceneKey)
