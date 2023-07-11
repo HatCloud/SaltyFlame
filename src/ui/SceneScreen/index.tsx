@@ -1,14 +1,16 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native'
-import React, {useMemo, useState} from 'react'
-import {characterData, sceneData} from './data'
+import React, {useCallback, useContext, useMemo, useReducer} from 'react'
+import {characterData} from './data'
 import palette from '../../theme/palette'
 import {padding} from './padding'
 import {typeface} from '../../theme/typeface'
+import {AppContext} from '../../../App'
+import {appReducer} from '../../reducer/AppReducer'
 
 const SceneScreen: React.FC = React.memo(() => {
-    const [currentSceneKey, setCurrentSceneKey] = useState('1')
-    const history: string[] = useMemo(() => [], [])
-    const currentScene = sceneData[currentSceneKey]
+    const appState = useContext(AppContext)
+    const [state, dispatch] = useReducer(appReducer, appState)
+    const currentScene = state.sceneData[state.currentSceneKey]
     const checkOption = currentScene?.checkOption
     const checkText = useMemo(() => {
         if (!checkOption) {
@@ -33,45 +35,34 @@ const SceneScreen: React.FC = React.memo(() => {
         return `${objectText} 检定 -->🎲`
     }, [checkOption])
 
+    const goBack = useCallback(() => {
+        dispatch({type: 'GO_BACK'})
+    }, [])
+    const changeScene = useCallback((goto: string) => {
+        dispatch({
+            type: 'CHANGE_SCENE',
+            payload: goto,
+        })
+    }, [])
+
     return (
         <View style={styles.container}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}>
                 <View style={styles.storyCardContainer}>
-                    <Text
-                        onPress={() => {
-                            if (history.length === 0) {
-                                return
-                            }
-                            const last = history.pop() as string
-                            setCurrentSceneKey(last)
-                        }}
-                        style={{
-                            fontSize: 36,
-                            color: typeface.Color.Content,
-                            fontWeight: typeface.Weight.Bold,
-                            marginBottom: padding.Small,
-                        }}>
-                        {currentSceneKey}
+                    <Text onPress={goBack} style={styles.takeText}>
+                        {state.currentSceneKey}
                     </Text>
                     <Text style={styles.storyCardContentText}>
                         {currentScene?.story}
                     </Text>
                     {checkText ? (
                         <>
-                            <Text
-                                style={[
-                                    styles.storyCardOptionText,
-                                    {marginBottom: 2},
-                                ]}>
+                            <Text style={styles.storyCardCheckOptionText}>
                                 {`检定成功，前往 ${checkOption?.success?.goto}`}
                             </Text>
-                            <Text
-                                style={[
-                                    styles.storyCardOptionText,
-                                    {marginBottom: 2},
-                                ]}>
+                            <Text style={styles.storyCardCheckOptionText}>
                                 {`检定失败，前往 ${checkOption?.failure?.goto}`}
                             </Text>
                             <Text
@@ -85,9 +76,9 @@ const SceneScreen: React.FC = React.memo(() => {
                     ) : null}
                     {currentScene?.options.map(option => (
                         <Text
+                            key={option.text}
                             onPress={() => {
-                                history.push(currentSceneKey)
-                                setCurrentSceneKey(option.goto)
+                                changeScene(option.goto)
                             }}
                             style={styles.storyCardOptionText}>
                             {option.text ? `${option.text}，前往` : '前往'}
@@ -98,7 +89,7 @@ const SceneScreen: React.FC = React.memo(() => {
                     ))}
                 </View>
             </ScrollView>
-            <View style={[styles.characterCardContainer, {paddingBottom: 20}]}>
+            <View style={styles.characterCardContainer}>
                 <View style={styles.characterCardColumn}>
                     <Text style={styles.characterCardColumnTitle}>
                         {characterData.name}
@@ -155,6 +146,12 @@ const styles = StyleSheet.create({
         lineHeight: typeface.Size.Normal * 1.3,
         marginBottom: padding.Normal,
     },
+    storyCardCheckOptionText: {
+        fontSize: typeface.Size.Normal,
+        color: typeface.Color.Content,
+        lineHeight: typeface.Size.Normal * 1.3,
+        marginBottom: 2,
+    },
     storyCardOptionGoto: {
         color: typeface.Color.Striking,
     },
@@ -170,6 +167,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: padding.Normal,
         borderTopRightRadius: padding.Normal,
         shadowRadius: 2,
+        paddingBottom: 20,
     },
     characterCardColumn: {
         flexDirection: 'column',
@@ -185,6 +183,12 @@ const styles = StyleSheet.create({
         marginTop: padding.Mini,
         fontSize: typeface.Size.Normal,
         color: typeface.Color.Subtitle,
+    },
+    takeText: {
+        fontSize: 36,
+        color: typeface.Color.Content,
+        fontWeight: typeface.Weight.Bold,
+        marginBottom: padding.Small,
     },
 })
 

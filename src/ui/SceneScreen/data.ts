@@ -4,7 +4,7 @@ import generateCharacter from './FakerCharacter'
 
 export const characterData: Character = generateCharacter()
 
-export const sceneData: {
+export const sceneData_CN: {
     [id: string]: Scene
 } = {
     '1': {
