@@ -10,18 +10,40 @@
   - 为解决构建阻塞，暂时移除了 Jest 测试框架。
   - 解决了 Android 构建过程中的 `AndroidManifest.xml` `package` 属性问题和 `react-native-reanimated` 的 Node.js 路径问题。
 - 初始化 Memory Bank 核心文件 (`projectbrief.md`, `productContext.md`, `systemPatterns.md`, `techContext.md`, `progress.md`)。
+- **剧本数据结构定义与核心交互逻辑初步实现**:
+  - 在 `src/interface/` 目录下定义了核心数据结构：
+    - `enums.ts`: 定义了如 `CheckObjectKey` (检定对象键，如技能、属性), `EffectType` (效果类型), `ConditionType` (条件类型), `CheckDifficulty` (检定难度) 等枚举。
+    - `Scene.ts`: 定义了 `Scene`, `SceneInteractOption`, `Check`, `Effect`, `SimpleOption`, `SceneCheckOptionDetails`, `SceneData` 等接口，用于描述游戏场景、选项、检定、效果等。
+    - `MyAppState.ts`: 更新了应用状态 `MyAppState`，加入了 `language` 和 `currentCheckAttempt` (用于存储检定过程中的中间状态，如掷骰值、结果、待处理的后续选项)。`AppAction` 联合类型也已扩展，加入了处理检定流程和语言设置的新 Action 类型 (`PERFORM_SCENE_CHECK`, `PERFORM_OPTION_CHECK`, `RESOLVE_CHECK_OUTCOME`, `CLEAR_CHECK_ATTEMPT`, `SET_LANGUAGE`, `APPLY_EFFECT`)。
+  - 在 `src/data/SceneData_CN.ts` 中，根据新的数据结构，按照树状分支填充了部分中文剧本的初始场景数据（约10个场景），用于初步测试。
+  - 重构了 `src/reducer.ts`：
+    - 支持了新的多阶段检定流程：检定执行后先更新 `currentCheckAttempt` 状态，待用户确认后再进行场景跳转和效果应用。
+    - 为新的 Action 类型添加了处理逻辑框架。检定和效果应用的具体实现（如访问真实角色数据、解析骰子字符串）尚有待完善的占位符。
+    - `CHANGE_SCENE` 和 `GO_BACK` action 现在会清除 `currentCheckAttempt`。
+  - 更新了 `src/ui/components/StoryCard.tsx`:
+    - 适配了新的场景数据结构 (`Scene`, `SceneInteractOption`)。
+    - 根据 `state.currentCheckAttempt` 的状态，实现了多阶段检定流程的UI展示：显示检定提示、执行检定、显示检定结果、显示检定后的唯一后续选项。
+    - 从 `state.language` 读取语言设置，用于本地化文本。
+  - 修复了 ESLint 报告的 `any` 类型警告和部分组件的 TypeScript 编译错误。
 
 ## 后续步骤
 
-根据 `projectbrief.md` 中的主要任务列表，下一个任务是：
-
-1.  **将 pdf 格式两个语言（中文和英文）的剧本转化为 json 数据格式**。
+1.  **完善核心游戏逻辑**:
+    - 在 `src/reducer.ts` 中，完整实现 `executeCheckLogic`（包括从 `characterData` 获取真实的技能/属性值、处理奖励/惩罚骰）和 `applySingleEffect`（包括解析如 "1D3" 的字符串值、处理所有 `EffectType`）。
+    - 在 `StoryCard.tsx` 中，实现选项的条件显示逻辑 (`option.condition`)。
+2.  **继续剧本数据转换**:
+    - 继续填充 `src/data/SceneData_CN.ts` 中的剩余中文剧本数据。
+    - 开始填充 `src/data/SceneData_EN.ts` 中的英文剧本数据。
+3.  **角色创建流程实现**: 实现角色创建相关场景（如属性分配、职业选择、技能点分配）与 `characterData` 状态的实际交互逻辑。
+4.  **测试与迭代**: 对已实现的功能进行测试，并根据测试反馈进行调整和优化。
 
 ## 当前决策与考量
 
 - **Memory Bank 语言**：已确定为中文。
-- **信息来源**：主要参考 `README.md` 初始化 Memory Bank 的核心文件，并通过实际操作完成了架构升级。
+- **信息来源**：主要参考 `README.md` 初始化 Memory Bank 的核心文件，并通过实际操作完成了架构升级。剧本数据结构和交互流程根据用户反馈进行了迭代。
 - **开发环境**：Android 构建环境已基本调通，iOS 环境在 Ruby 和 Pods 配置更新后也应准备就绪。
+- **检定流程**: 采纳了用户反馈，实现了多阶段检定流程：先执行检定并显示结果，再由用户点击确认后续操作，而不是检定后自动跳转。这对状态管理 (`currentCheckAttempt`) 和UI组件 (`StoryCard.tsx`) 均有较大影响。
+- **数据结构迭代**: `Scene.ts` 和 `MyAppState.ts` 中的数据结构经过了讨论和调整，以更好地支持游戏逻辑和检定流程。
 
 ## 重要模式与偏好
 
@@ -32,4 +54,6 @@
 
 - 架构升级为项目后续开发提供了更现代和稳定的基础。
 - 暂时移除测试框架是为了优先保证项目可构建和核心功能开发，测试框架可在后续迭代中重新引入和配置。
-- 下一步的数据转换任务是实现游戏内容的关键。
+- **数据转换是核心**: 将PDF剧本准确、完整地转换为结构化的JSON数据是实现游戏内容和逻辑的基础。这是一个细致且工作量较大的任务。
+- **交互流程驱动状态设计**: 用户期望的检定交互流程直接影响了 `MyAppState` 中 `currentCheckAttempt` 状态的设计，以及 `reducer` 中相关action的处理方式。
+- **逐步完善**: 对于复杂功能如检定逻辑和效果应用，采用先搭建框架，然后逐步填充和完善具体实现的策略。

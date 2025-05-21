@@ -12,9 +12,8 @@
 - **React Native**: [https://reactnative.dev/](https://reactnative.dev/) - 用于构建原生应用的 JavaScript 框架。
 - **React Navigation**: [https://reactnavigation.org/](https://reactnavigation.org/) - 应用导航解决方案。
 - **React Native Screens**: [https://github.com/software-mansion/react-native-screens](https://github.com/software-mansion/react-native-screens) - React Navigation 的插件，用于将导航容器转换为原生视图，提升性能。
-- **React Redux**: [https://react-redux.js.org/](https://react-redux.js.org/) - Redux 的官方 React 绑定库，用于状态管理。
-- **Redux Saga**: [https://redux-saga.js.org/](https://redux-saga.js.org/) - Redux 的中间件，用于处理应用中的副作用（例如异步请求）。
 - **React Native Reanimated**: [https://github.com/software-mansion/react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) - 用于创建流畅动画的库。
+  _注：状态管理目前通过 React 内置 Hooks (`useReducer`) 实现，遵循类似 Redux 的模式，但未直接引入 `react-redux` 或 `redux-saga` 库。_
 
 ## 开发环境设置
 

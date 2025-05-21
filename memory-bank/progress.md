@@ -28,10 +28,18 @@
   - 更新了 ESLint (`~8.57.0`) 和 TypeScript (`react-jsx`) 相关配置。
   - 移除了 Jest 测试框架以解决构建阻塞问题，待后续重新引入。
   - 解决了 Android 构建中 `AndroidManifest.xml` 的 `package` 属性问题和 `react-native-reanimated` 的 Node.js 路径问题。
+- [~] **剧本数据结构定义与核心交互逻辑初步实现**:
+  - 在 `src/interface/` 目录下定义了详细的游戏场景、选项、检定、效果等数据接口 (`Scene.ts`, `enums.ts`)。
+  - 更新了应用状态 `MyAppState.ts`，加入了 `language` 和 `currentCheckAttempt` (用于处理多阶段检定流程)。
+  - 扩展了 `AppAction` 联合类型，增加了处理检定、效果及语言设置的新 Action。
+  - 在 `src/data/SceneData_CN.ts` 中，根据新数据结构，按照树状分支填充了部分中文剧本的初始场景数据。
+  - 重构了 `src/reducer.ts`，初步支持了多阶段检定流程（检定执行 -> 显示结果 -> 用户确认后跳转/应用效果），并为新 Action 添加了处理框架。部分检定及效果应用逻辑仍为占位符。
+  - 更新了UI组件 `src/ui/components/StoryCard.tsx`，以适配新的数据结构，并能根据 `currentCheckAttempt` 状态展示检定提示、检定结果和后续操作。
+  - 修复了相关代码文件的 ESLint 警告和 TypeScript 编译错误。
 
 ## 未完成功能 (来自 projectbrief.md)
 
-- [ ] 将 pdf 格式两个语言（中文和英文）的剧本转化为 json 数据格式
+- [~] 将 pdf 格式两个语言（中文和英文）的剧本转化为 json 数据格式 (数据结构已定义，中文样本已填充，转换进行中)
 - [ ] 基于现有代码先实现游戏主体部分
   - 角色的人物卡先用 Fake 数据
   - 先不实现剧情卡片底部选项的具体判断，让玩家自己先选
@@ -44,7 +52,10 @@
 ## 当前状态
 
 - 项目核心依赖已升级，原生项目文件已适配新版 React Native。
-- ESLint 功能正常，但存在一些 linting 警告待处理。
+- 剧本的核心数据结构已定义完毕，并填充了少量中文样本数据。
+- 核心UI组件 (`StoryCard.tsx`) 和状态管理器 (`reducer.ts`) 已初步重构，以支持用户反馈的多阶段检定流程框架。
+- `reducer.ts` 中的具体检定逻辑（如根据角色属性掷骰）和效果应用逻辑（如解析"1D3"伤害）尚待完整实现。
+- ESLint 警告已处理。
 
 ## 已知问题
 
@@ -57,3 +68,9 @@
   - 确定 Memory Bank 的核心文件结构。
   - 基于 `README.md` 完成了 Memory Bank 核心文件的初步填充。
   - 完成了项目架构升级，包括 React Native 版本、核心依赖、构建工具链配置以及原生项目文件的适配。解决了 Android 构建过程中的多个问题。暂时移除了 Jest 测试框架。
+  - **2025-05-21 (续)**:
+    - 详细定义了游戏场景 (`Scene.ts`)、枚举 (`enums.ts`) 和应用状态 (`MyAppState.ts`) 的数据结构。
+    - 根据用户反馈，确定并实现了多阶段检定流程：1. 显示检定需求 -> 2. 用户触发检定 -> 3. 显示检定结果（点数、成功/失败） -> 4. 用户点击唯一后续选项以继续。
+    - 重构了 `reducer.ts` 以支持此多阶段检定流程，引入 `currentCheckAttempt` 状态来管理检定中间过程。
+    - 更新了 `StoryCard.tsx` UI组件以适配新的数据结构和检定流程的显示逻辑。
+    - 填充了 `SceneData_CN.ts` 中的部分中文样本数据，用于测试。
