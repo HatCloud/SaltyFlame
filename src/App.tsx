@@ -13,7 +13,7 @@ import {initialState} from './interface/MyAppState'
 
 export const AppContext = React.createContext(initialState)
 
-function App() {
+function App(): React.ReactElement {
   return (
     <AppContext.Provider value={initialState}>
       <View style={styles.container}>
