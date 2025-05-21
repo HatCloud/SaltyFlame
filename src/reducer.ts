@@ -12,6 +12,7 @@ import {
   SceneInteractOption, // Added for PERFORM_INLINE_CHECK payload
 } from './interface/Scene'
 import {EffectType, CheckDifficulty} from './interface/enums'
+import {Character} from './interface/Character' // Import Character type
 
 // --- Helper Functions ---
 
@@ -47,12 +48,22 @@ function executeCheckLogic(
 }
 
 function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
-  const newCharacterData = {...state.characterData}
+  if (!state.characterData) {
+    console.warn(
+      'Attempted to apply effect when characterData is null. Effect:',
+      effect,
+    )
+    return state
+  }
+
+  // Now we know state.characterData is not null, so it must be a Character object.
+  const newCharacterData = {...state.characterData} // This should be safe.
+
   switch (effect.type) {
     case EffectType.CHANGE_HP:
       if (typeof effect.value === 'number') {
-        newCharacterData.hitPoints.current =
-          (newCharacterData.hitPoints.current || 0) + effect.value
+        // Since hitPoints and hitPoints.current are mandatory in Character, direct assignment is fine.
+        newCharacterData.hitPoints.current += effect.value
       }
       console.log(
         `Applied HP Change: ${effect.value}, New HP: ${newCharacterData.hitPoints.current}`,
@@ -60,8 +71,8 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
       break
     case EffectType.CHANGE_SANITY:
       if (typeof effect.value === 'number') {
-        newCharacterData.sanity.current =
-          (newCharacterData.sanity.current || 0) + effect.value
+        // Since sanity and sanity.current are mandatory in Character, direct assignment is fine.
+        newCharacterData.sanity.current += effect.value
       }
       console.log(
         `Applied Sanity Change: ${effect.value}, New Sanity: ${newCharacterData.sanity.current}`,
@@ -69,7 +80,9 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
       break
     // Add other effect types
   }
-  return {...state, characterData: newCharacterData}
+  // Ensure the returned characterData conforms to Character type.
+  // If newCharacterData was correctly typed as Character from the spread, this should be fine.
+  return {...state, characterData: newCharacterData as Character}
 }
 
 function applyAllEffects(state: MyAppState, effects?: Effect[]): MyAppState {

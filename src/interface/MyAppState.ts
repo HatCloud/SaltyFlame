@@ -9,7 +9,7 @@ import {
 } from './Scene'
 import {loadAllCnSceneData} from '../data/loadInitialSceneData' //场景数据加载逻辑
 import {Character} from './Character'
-import FakerCharacter from '../utils/generateCharacter'
+import FakerCharacter from '../utils/generateCharacter' // Re-import for testing
 
 // Define language type
 export type Language = 'cn' | 'en'
@@ -37,7 +37,7 @@ export interface MyAppState {
   currentSceneKey: string // Changed from SceneId to string
   history: string[] // Changed from SceneId[] to string[]
   sceneData: SceneData
-  characterData: Character
+  characterData: Character | null
   language: Language
   currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check
 }
@@ -46,7 +46,7 @@ export const initialState: MyAppState = {
   currentSceneKey: '1',
   history: [],
   sceneData: loadAllCnSceneData(),
-  characterData: FakerCharacter(),
+  characterData: FakerCharacter(), // Temporarily use FakerCharacter for testing UI
   language: 'cn',
   currentCheckAttempt: null,
 }
