@@ -9,7 +9,7 @@ import {
   Check, // Added Check
   SimpleOption, // Added SimpleOption
 } from './Scene'
-import {sceneDataCN} from '../data/SceneData_CN'
+import {loadAllCnSceneData} from '../data/loadInitialSceneData' //场景数据加载逻辑
 import {Character} from './Character'
 import FakerCharacter from '../utils/generateCharacter'
 
@@ -37,9 +37,9 @@ export interface MyAppState {
 }
 
 export const initialState: MyAppState = {
-  currentSceneKey: '1',
+  currentSceneKey: '1', // TODO: Consider making this dynamic based on loaded data or a specific start scene ID
   history: [],
-  sceneData: sceneDataCN,
+  sceneData: loadAllCnSceneData(),
   characterData: FakerCharacter(),
   language: 'cn',
   currentCheckAttempt: null,

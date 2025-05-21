@@ -33,9 +33,10 @@ export interface Condition {
   // For FLAG_SET, FLAG_NOT_SET
   flagName?: string
   // For CHARACTERISTIC_COMPARE
-  characteristicKey?: CheckObjectKey
-  comparisonValue?: number
+  characteristicKey?: CheckObjectKey // The primary characteristic for comparison
   comparisonOperator?: 'eq' | 'gt' | 'lt' | 'gte' | 'lte'
+  comparisonValue?: number // Value to compare against (if not comparing against another characteristic)
+  comparisonCharacteristicKey?: CheckObjectKey // Optional: Second characteristic to compare against
   // Add more properties for other condition types as needed
 }
 

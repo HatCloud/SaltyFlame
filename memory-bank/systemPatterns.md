@@ -24,6 +24,7 @@ graph LR
 - **导航**：使用 React Navigation 进行页面间的导航。
 - **原生性能优化**：通过 `react-native-screens` 将非原生的导航容器转换为原生容器，提升导航性能。
 - **动画**：使用 `react-native-reanimated` 实现流畅的动画效果。
+- **数据存储**：中文场景数据采用模块化存储，分散在 `src/data/ts_cn/` 目录下的多个TS文件中，通过 `src/data/loadInitialSceneData.ts` 脚本在应用启动时加载和合并，便于管理和维护。
 
 ## 设计模式
 
@@ -40,7 +41,7 @@ graph LR
 
 1.  **数据结构定义与转换**：
     - 在 `src/interface/` 目录下定义详细的TypeScript接口（`Scene.ts`, `enums.ts`, `MyAppState.ts`），描述游戏场景、选项、条件、检定、效果等。
-    - 将 PDF 格式的剧本（中文和英文）转换为此结构化的 JSON 数据格式 (存放于 `src/data/`)，作为应用的内容源。
+    - 将 PDF 格式的剧本转换为此结构化的 TypeScript 数据格式。中文剧本数据（至场景270）已转换完成，存放于 `src/data/ts_cn/` 目录下的多个模块化TS文件，并通过 `src/data/loadInitialSceneData.ts` 脚本加载和合并。英文剧本数据 (`src/data/SceneData_EN.ts`) 的转换工作已推迟。
 2.  **游戏主体与检定流程实现**：
     - 在 `StoryCard.tsx` 中实现剧情卡片的展示。
     - 根据新的多阶段检定流程处理交互逻辑：
@@ -77,7 +78,8 @@ graph LR
     - `enums.ts` (游戏内使用的各种枚举，如检定对象、效果类型)
     - `Character.ts` (角色数据结构)
   - `data/` 转换后的剧本数据
-    - `SceneData_CN.ts` (中文剧本数据)
+    - `ts_cn/` 存放模块化的中文场景数据文件 (例如 `scenes_001-020.ts`)
+    - `loadInitialSceneData.ts` 脚本，用于导入并合并所有模块化的中文场景数据
     - `SceneData_EN.ts` (英文剧本数据，待填充)
   - `images/` 图片、Icon 资源
   - `theme/` 通用样式、颜色定义 (`padding.ts`, `palette.ts`, `typeface.ts`)
