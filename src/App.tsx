@@ -7,9 +7,9 @@
 
 import React from 'react'
 import {StatusBar, StyleSheet, View} from 'react-native'
-import SceneScreen from './src/ui/SceneScreen'
-import palette from './src/theme/palette'
-import {initialState} from './src/interface/MyAppState'
+import SceneScreen from './ui/SceneScreen'
+import palette from './theme/palette'
+import {initialState} from './interface/MyAppState'
 
 export const AppContext = React.createContext(initialState)
 
