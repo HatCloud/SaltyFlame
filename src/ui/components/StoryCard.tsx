@@ -4,82 +4,52 @@ import {padding} from '../../theme/padding'
 import palette from '../../theme/palette'
 import {typeface} from '../../theme/typeface'
 import {useAppReducer} from '../../hook'
-import type {Scene, SceneInteractOption} from '../../interface/Scene'
+import type {
+  Scene,
+  SceneInteractOption,
+  // CheckDrivenOption, // Not needed directly if using option.type
+  // GotoDrivenOption, // Not needed directly if using option.type
+} from '../../interface/Scene' // Ensure SceneInteractOption is the union type
 import {CheckObjectNames} from '../../interface/enums'
 
 const StoryCard: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer()
-  // Assuming state.sceneData is now of type SceneData from 'src/data/SceneData_CN.ts'
-  // and state.currentSceneKey is a SceneId (string)
   const currentScene: Scene | undefined =
     state.sceneData?.[state.currentSceneKey]
-  const sceneCheck = currentScene?.checkOption // Renamed for clarity from checkOption to sceneCheck
 
-  // TODO: Get language from state once it's available in AppState
   const lang = useMemo(
-    () => (state.language === 'en' ? 'en' : 'cn'), // Now reads from state.language
+    () => (state.language === 'en' ? 'en' : 'cn'),
     [state.language],
   )
-
-  const sceneCheckText = useMemo(() => {
-    if (!sceneCheck?.check) {
-      return null
-    }
-    const {object: checkObject, subObject, difficulty} = sceneCheck.check
-    let objectDisplay = ''
-
-    if (subObject && CheckObjectNames[subObject]) {
-      objectDisplay = CheckObjectNames[subObject][lang]
-    } else if (checkObject === 'luck') {
-      objectDisplay = lang === 'cn' ? '幸运' : 'Luck'
-    } else if (checkObject === 'sanity') {
-      objectDisplay = lang === 'cn' ? '理智' : 'Sanity'
-    } else {
-      objectDisplay = checkObject // Fallback
-    }
-    // TODO: Add difficulty display based on lang
-    return `${objectDisplay} ${lang === 'cn' ? '检定' : 'Check'} (${difficulty}) -->🎲`
-  }, [sceneCheck, lang])
 
   const goBack = useCallback(() => {
     dispatch({type: 'GO_BACK'})
   }, [dispatch])
 
-  const handleSimpleOptionPress = useCallback(
-    (goto: string) => {
-      // Here, you might also dispatch actions for option.effects if any
-      dispatch({
-        type: 'CHANGE_SCENE',
-        payload: goto,
-      })
-    },
-    [dispatch],
-  )
-
-  const handleSceneCheckPress = useCallback(() => {
-    if (currentScene && sceneCheck) {
-      // Ensure currentScene is defined
-      dispatch({
-        type: 'PERFORM_SCENE_CHECK',
-        payload: {sceneId: currentScene.id, checkDetails: sceneCheck},
-      })
-    }
-  }, [dispatch, currentScene, sceneCheck])
-
+  // Combined handler for all option types
   const handleInteractOptionPress = useCallback(
     (option: SceneInteractOption) => {
-      if (currentScene && option.check) {
-        // Ensure currentScene is defined
+      if (option.type === 'check') {
         dispatch({
-          type: 'PERFORM_OPTION_CHECK',
-          payload: {sceneId: currentScene.id, option},
+          type: 'PERFORM_INLINE_CHECK',
+          payload: {checkPayload: option.check, originalOption: option},
         })
-      } else {
-        // option.effects?.forEach(effect => dispatch({ type: 'APPLY_EFFECT', payload: effect }));
-        handleSimpleOptionPress(option.goto)
+      } else if (option.type === 'goto') {
+        // Effects on GotoDrivenOption are handled by reducer if CHANGE_SCENE is enhanced,
+        // or should be dispatched here if needed before navigation.
+        // For now, assuming reducer handles pre-navigation effects if any are associated with CHANGE_SCENE.
+        if (option.effects && option.effects.length > 0) {
+          option.effects.forEach(effect =>
+            dispatch({type: 'APPLY_EFFECT', payload: effect}),
+          )
+        }
+        dispatch({
+          type: 'CHANGE_SCENE',
+          payload: option.goto,
+        })
       }
     },
-    [dispatch, currentScene, handleSimpleOptionPress],
+    [dispatch],
   )
 
   const handleResolveCheckOutcome = useCallback(() => {
@@ -89,76 +59,93 @@ const StoryCard: React.FC = React.memo(() => {
   if (!currentScene) {
     return (
       <View style={styles.storyCardContainer}>
-        <Text>加载场景中...</Text>
+        <Text style={styles.storyCardContentText}>404 找不到场景</Text>
+        <Pressable onPress={goBack} style={styles.optionButton}>
+          <Text style={styles.storyCardOptionText}>
+            {lang === 'cn' ? '返回上级' : 'Go Back'}
+          </Text>
+        </Pressable>
       </View>
     )
   }
 
   return (
     <View style={styles.storyCardContainer}>
-      <Pressable onPress={goBack}>
-        <Text style={styles.takeText}>{currentScene.id}</Text>
-      </Pressable>
+      {/* <Pressable onPress={goBack}> */}
+      {/*  <Text style={styles.takeText}>{currentScene.id}</Text> */}
+      {/* </Pressable> */}
+      <Text style={styles.takeText}>{currentScene.id}</Text>
       <Text style={styles.storyCardContentText}>{currentScene.story}</Text>
 
       {/* Display area for an active check result */}
-      {state.currentCheckAttempt &&
-        state.currentCheckAttempt.outcomeOptionToDisplay && (
-          <View style={styles.checkResultContainer}>
-            <Text style={styles.checkInfoText}>
-              {lang === 'cn' ? '检定:' : 'Check:'}{' '}
-              {CheckObjectNames[
-                state.currentCheckAttempt.checkDefinition.subObject!
-              ]?.[lang] ||
-                state.currentCheckAttempt.checkDefinition.subObject}{' '}
-              ({state.currentCheckAttempt.checkDefinition.difficulty})
-            </Text>
-            <Text style={styles.checkInfoText}>
-              {lang === 'cn' ? '掷骰点数:' : 'Roll:'}{' '}
-              {state.currentCheckAttempt.rollValue}
-            </Text>
-            <Text style={styles.checkInfoText}>
-              {lang === 'cn' ? '结果:' : 'Result:'}{' '}
-              {state.currentCheckAttempt.result}
-            </Text>
-            <Pressable
-              onPress={handleResolveCheckOutcome}
-              style={styles.resolveButton}>
-              <Text style={styles.storyCardOptionText}>
-                {state.currentCheckAttempt.outcomeOptionToDisplay.text
-                  ? `${state.currentCheckAttempt.outcomeOptionToDisplay.text}，前往 `
-                  : lang === 'cn'
-                    ? '继续，前往 '
-                    : 'Continue, Go to '}
-                <Text style={styles.storyCardOptionGoto}>
-                  {state.currentCheckAttempt.outcomeOptionToDisplay.goto}
+      {state.currentCheckAttempt && (
+        <View style={styles.checkResultContainer}>
+          <Text style={styles.checkInfoText}>
+            {lang === 'cn' ? '检定:' : 'Check:'}{' '}
+            {CheckObjectNames[
+              state.currentCheckAttempt.checkDefinition.subObject
+            ]?.[lang] || state.currentCheckAttempt.checkDefinition.subObject}
+            {state.currentCheckAttempt.checkDefinition.difficulty
+              ? ` (${state.currentCheckAttempt.checkDefinition.difficulty})`
+              : ''}
+          </Text>
+          <Text style={styles.checkInfoText}>
+            {lang === 'cn' ? '掷骰点数:' : 'Roll:'}{' '}
+            {state.currentCheckAttempt.rollValue}
+          </Text>
+          <Text style={styles.checkInfoText}>
+            {lang === 'cn' ? '结果:' : 'Result:'}{' '}
+            {state.currentCheckAttempt.isSuccess
+              ? lang === 'cn'
+                ? '成功'
+                : 'Success'
+              : lang === 'cn'
+                ? '失败'
+                : 'Failure'}
+            {state.currentCheckAttempt.isSuccess &&
+              state.currentCheckAttempt.successMessage && (
+                <Text style={styles.checkInfoText}>
+                  {' '}
+                  ({state.currentCheckAttempt.successMessage})
                 </Text>
-              </Text>
-            </Pressable>
-          </View>
-        )}
+              )}
+            {!state.currentCheckAttempt.isSuccess &&
+              state.currentCheckAttempt.failureMessage && (
+                <Text style={styles.checkInfoText}>
+                  {' '}
+                  ({state.currentCheckAttempt.failureMessage})
+                </Text>
+              )}
+          </Text>
+          <Pressable
+            onPress={handleResolveCheckOutcome}
+            style={styles.resolveButton}>
+            <Text style={styles.storyCardOptionText}>
+              {lang === 'cn' ? '继续' : 'Continue'}
+            </Text>
+          </Pressable>
+        </View>
+      )}
 
-      {/* Display options or scene check button IF NO active check result is being shown */}
+      {/* Display options IF NO active check result is being shown */}
       {!state.currentCheckAttempt && (
         <>
-          {sceneCheck && sceneCheckText && (
-            <Pressable
-              onPress={handleSceneCheckPress}
-              style={styles.checkOptionButton}>
-              <Text style={styles.storyCardCheckOptionGoto}>
-                {sceneCheckText}
-              </Text>
-              {/* Success/Failure info can be part of the post-check display or a hint */}
-            </Pressable>
-          )}
-
           {currentScene.options?.map((option, index) => {
             // TODO: Implement condition logic for option visibility
             // const isVisible = checkCondition(option.condition, state);
             // if (!isVisible) return null;
 
-            if (option.check) {
-              const optionCheckText = `${option.text || (lang === 'cn' ? '进行检定' : 'Perform Check')} (${option.check.subObject && CheckObjectNames[option.check.subObject] ? CheckObjectNames[option.check.subObject][lang] : option.check.subObject} ${option.check.difficulty}) -->🎲`
+            if (option.type === 'check') {
+              const checkDetails = option.check.details
+              const subObjectDisplay =
+                checkDetails.subObject &&
+                CheckObjectNames[checkDetails.subObject]
+                  ? CheckObjectNames[checkDetails.subObject]?.[lang]
+                  : checkDetails.subObject
+              const difficultyDisplay = checkDetails.difficulty
+                ? ` (${checkDetails.difficulty})`
+                : ''
+              const optionCheckText = `${option.text || (lang === 'cn' ? '进行检定' : 'Perform Check')} (${subObjectDisplay}${difficultyDisplay}) -->🎲`
               return (
                 <Pressable
                   key={index.toString()}
@@ -169,23 +156,26 @@ const StoryCard: React.FC = React.memo(() => {
                   </Text>
                 </Pressable>
               )
+            } else if (option.type === 'goto') {
+              return (
+                <Pressable
+                  key={index.toString()}
+                  onPress={() => handleInteractOptionPress(option)}
+                  style={styles.optionButton}>
+                  <Text style={styles.storyCardOptionText}>
+                    {option.text
+                      ? `${option.text}，前往 `
+                      : lang === 'cn'
+                        ? '前往 '
+                        : 'Go to '}
+                    <Text style={styles.storyCardOptionGoto}>
+                      {option.goto}
+                    </Text>
+                  </Text>
+                </Pressable>
+              )
             }
-
-            return (
-              <Pressable
-                key={index.toString()}
-                onPress={() => handleInteractOptionPress(option)}
-                style={styles.optionButton}>
-                <Text style={styles.storyCardOptionText}>
-                  {option.text
-                    ? `${option.text}，前往 `
-                    : lang === 'cn'
-                      ? '前往 '
-                      : 'Go to '}
-                  <Text style={styles.storyCardOptionGoto}>{option.goto}</Text>
-                </Text>
-              </Pressable>
-            )
+            return null // Should ideally not happen with well-formed data
           })}
         </>
       )}

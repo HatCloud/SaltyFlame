@@ -1,13 +1,11 @@
 import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Scene, // Scene is used by SceneData type definition
-  SceneId,
   SceneData,
-  SceneCheckOptionDetails,
   SceneInteractOption,
   Effect,
-  Check, // Added Check
-  SimpleOption, // Added SimpleOption
+  Check,
+  CheckPayload, // Added new CheckPayload
 } from './Scene'
 import {loadAllCnSceneData} from '../data/loadInitialSceneData' //场景数据加载逻辑
 import {Character} from './Character'
@@ -18,26 +16,34 @@ export type Language = 'cn' | 'en'
 
 // For storing intermediate check results
 export interface CheckAttemptState {
-  checkDefinition: Check // The check being performed
+  checkDefinition: Check // The check being performed (from CheckPayload.details)
   rollValue?: number // The D100 roll result
-  result?: 'criticalSuccess' | 'success' | 'failure' | 'criticalFailure' // Outcome of the check
-  outcomeOptionToDisplay?: SimpleOption // The single option to display post-check (contains goto, text, effects)
-  isSceneCheck: boolean // Was this a scene check or an option check?
-  originalOptionPayload?: SceneInteractOption // If it was an option check, store the original option
+  isSuccess?: boolean // Simplified result: true for success, false for failure
+  // For more granular results like critical success/failure, add a new field:
+  // detailedResult?: 'criticalSuccess' | 'success' | 'failure' | 'criticalFailure';
+
+  // Information to display and use post-check, derived from CheckPayload
+  successMessage?: string
+  failureMessage?: string
+  nextSceneIdOnSuccess: string
+  nextSceneIdOnFailure: string
+  effectsToApplyOnSuccess?: Effect[]
+  effectsToApplyOnFailure?: Effect[]
+
+  originalOption?: SceneInteractOption // If the check was triggered by an option
 }
 
 export interface MyAppState {
-  currentSceneKey: SceneId
-  history: SceneId[]
+  currentSceneKey: string // Changed from SceneId to string
+  history: string[] // Changed from SceneId[] to string[]
   sceneData: SceneData
   characterData: Character
   language: Language
-  currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check before navigation
-  // TODO: Add other game state: flags, inventory, character stats modified during game
+  currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check
 }
 
 export const initialState: MyAppState = {
-  currentSceneKey: '1', // TODO: Consider making this dynamic based on loaded data or a specific start scene ID
+  currentSceneKey: '1',
   history: [],
   sceneData: loadAllCnSceneData(),
   characterData: FakerCharacter(),
@@ -48,35 +54,29 @@ export const initialState: MyAppState = {
 // Action Definitions
 interface ChangeSceneAction {
   type: 'CHANGE_SCENE'
-  payload: SceneId
+  payload: string // Changed from SceneId to string
 }
 
 interface GoBackAction {
   type: 'GO_BACK'
-  // No payload needed for GO_BACK
 }
 
-// Actions for check logic - these need to be implemented in the reducer
-interface PerformSceneCheckAction {
-  type: 'PERFORM_SCENE_CHECK'
-  // Payload should contain enough info for the reducer to find the check and its outcomes
-  payload: {sceneId: SceneId; checkDetails: SceneCheckOptionDetails}
+// New action for performing checks defined directly in options
+interface PerformInlineCheckAction {
+  type: 'PERFORM_INLINE_CHECK'
+  payload: {
+    checkPayload: CheckPayload // Contains all details for the check and its outcomes
+    originalOption?: SceneInteractOption // The option that triggered this check
+  }
 }
 
-interface PerformOptionCheckAction {
-  type: 'PERFORM_OPTION_CHECK'
-  // Payload should contain enough info for the reducer
-  payload: {sceneId: SceneId; option: SceneInteractOption} // option contains the check
-}
-
-// New action to proceed after a check result is displayed
+// Action to proceed after a check result is displayed
 interface ResolveCheckOutcomeAction {
   type: 'RESOLVE_CHECK_OUTCOME'
-  // No payload needed if outcomeOptionToDisplay is already in state.currentCheckAttempt
-  // Or, payload could be the chosen outcomeOption if there were multiple (but current design is one)
+  // No payload needed as currentCheckAttempt holds all necessary info
 }
 
-// New action to clear a pending check, e.g., if user navigates away or cancels
+// Action to clear a pending check
 interface ClearCheckAttemptAction {
   type: 'CLEAR_CHECK_ATTEMPT'
 }
@@ -97,8 +97,7 @@ interface SetLanguageAction {
 export type AppAction =
   | ChangeSceneAction
   | GoBackAction
-  | PerformSceneCheckAction
-  | PerformOptionCheckAction
+  | PerformInlineCheckAction // Added
   | ApplyEffectAction
   | SetLanguageAction
   | ResolveCheckOutcomeAction

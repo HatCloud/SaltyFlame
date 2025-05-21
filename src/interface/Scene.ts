@@ -1,84 +1,98 @@
 import {
   CheckObjectKey,
-  EffectType,
-  ConditionType,
   CheckDifficulty,
+  ConditionType,
+  EffectType,
 } from './enums'
 
-export type SceneId = string
-
-export interface Effect {
-  type: EffectType
-  value?: string | number // For HP/Sanity: "+1", "-1D3"; For Item/Flag: "item_id", "flag_name"; For skill mark: skill value to set
-  itemName?: string // For ADD_ITEM, REMOVE_ITEM
-  flagName?: string // For SET_FLAG, CLEAR_FLAG
-  skillKey?: CheckObjectKey // For MARK_SKILL_SUCCESS
-  spellName?: string // For LEARN_SPELL
-  // Add other parameters as needed for different effect types
-}
-
+// 基础检定定义
 export interface Check {
-  object: 'skill' | 'characteristic' | 'luck' | 'sanity'
-  subObject?: CheckObjectKey // Specific skill or characteristic key
-  difficulty: CheckDifficulty
-  bonusDice?: boolean
-  penaltyDice?: boolean
+  object: 'skill' | 'characteristic' | 'luck'
+  subObject: CheckObjectKey // 例如 CheckObjectKey.MEDICINE, CheckObjectKey.STRENGTH
+  difficulty?: CheckDifficulty
+  // bonusDice?: number; // 未来可扩展奖励骰
+  // penaltyDice?: number; // 未来可扩展惩罚骰
 }
 
-// Defines a condition for an option to be available or for an effect to trigger
+// 效果定义 (根据项目实际情况可能更复杂)
+export interface Effect {
+  type: EffectType // 例如 EffectType.GAIN_ITEM, EffectType.LOSE_HP
+  target?: string // 例如 物品名称, 或 'hp', 'san'
+  value?: string | number // 例如 '1D3', 1, '克苏鲁的护符'
+  gameFlag?: string // 用于设置/取消游戏标记
+  flagValue?: boolean // 游戏标记的值
+}
+
+// 条件定义 (根据项目实际情况可能更复杂)
 export interface Condition {
-  type: ConditionType
-  // For HAS_ITEM, HAS_NOT_ITEM
-  itemName?: string
-  // For FLAG_SET, FLAG_NOT_SET
-  flagName?: string
-  // For CHARACTERISTIC_COMPARE
-  characteristicKey?: CheckObjectKey // The primary characteristic for comparison
-  comparisonOperator?: 'eq' | 'gt' | 'lt' | 'gte' | 'lte'
-  comparisonValue?: number // Value to compare against (if not comparing against another characteristic)
-  comparisonCharacteristicKey?: CheckObjectKey // Optional: Second characteristic to compare against
-  // Add more properties for other condition types as needed
+  type: ConditionType // 例如 ConditionType.HAS_ITEM, ConditionType.GAME_FLAG_SET
+  item?: string // 需要检查的物品名称
+  gameFlag?: string // 需要检查的游戏标记
+  expectedValue?: boolean // 游戏标记的期望值
+  // Fields for characteristic comparison
+  characteristic?: CheckObjectKey // The characteristic to compare (e.g., SIZ, STR)
+  comparisonValue?: number // The value to compare against
+  comparisonOperator?: 'gt' | 'lt' | 'eq' | 'gte' | 'lte' // Comparison operator
 }
 
-// Option for simple "goto with text and effects" scenarios, like check success/failure branches
-export interface SimpleOption {
-  goto: SceneId
-  text?: string // Optional text to display for this path
-  effects?: Effect[]
+// 通用的“检定核心负载”接口
+// 这个接口描述了“进行一次检定，并根据结果决定后续”的完整信息包
+export interface CheckPayload {
+  details: Check // 具体检定什么
+  onSuccessSceneId: string // 成功后跳转到哪个场景
+  onFailureSceneId: string // 失败后跳转到哪个场景
+  successText?: string // 检定成功后，在当前卡片上显示的提示文本 (可选)
+  failureText?: string // 检定失败后，在当前卡片上显示的提示文本 (可选)
+  onSuccessEffects?: Effect[] // 检定成功后应用的效果 (可选)
+  onFailureEffects?: Effect[] // 检定失败后应用的效果 (可选)
 }
 
-// Represents an interactive choice presented to the player
-export interface SceneInteractOption extends SimpleOption {
-  condition?: Condition // Condition for this option to be visible/enabled
-  check?: Check // If selecting this option triggers a check
-  // If 'check' is present, successGoto and failureGoto define outcomes
-  successGoto?: SceneId // Overrides SimpleOption.goto if check succeeds
-  failureGoto?: SceneId // Overrides SimpleOption.goto if check fails
-  successEffects?: Effect[] // Additional effects on check success (besides those in SimpleOption.effects)
-  failureEffects?: Effect[] // Additional effects on check failure
-  hideAfterSelection?: boolean // If true, this option is removed after being selected once
+// 选项：点击后执行检定
+interface CheckDrivenOption {
+  text: string
+  type: 'check' // 用于类型守卫的辨别字段
+  condition?: Condition
+  check: CheckPayload // 直接使用通用的 CheckPayload
+  effects?: Effect[] // 点击选项后、检定执行前应用的效果 (可选)
 }
 
-// Describes the structure for a check that occurs upon entering a scene
-export interface SceneCheckOptionDetails {
-  // A check triggered upon entering the scene
-  check: Check
-  success: SimpleOption
-  failure: SimpleOption
-  criticalSuccess?: SimpleOption // Optional: special outcome for critical success
-  criticalFailure?: SimpleOption // Optional: special outcome for critical failure
+// 选项：点击后直接跳转
+interface GotoDrivenOption {
+  text: string
+  type: 'goto' // 用于类型守卫的辨别字段
+  condition?: Condition
+  goto: string
+  effects?: Effect[] // 点击选项后、跳转前应用的效果 (可选)
 }
 
+// 玩家可交互的选项是以上两者的联合类型
+export type SceneInteractOption = CheckDrivenOption | GotoDrivenOption
+
+// 场景定义
 export interface Scene {
-  id: SceneId
-  story: string // Narrative text of the scene
-  options?: SceneInteractOption[] // Player's choices
-  checkOption?: SceneCheckOptionDetails // Use the new exported interface
-  autoGoto?: SceneId // If no options or checkOption, automatically proceed to this scene
-  entryEffects?: Effect[] // Effects triggered upon entering this scene
-  isEnd?: boolean // True if this scene is a game ending
+  id: string
+  story: string
+  image?: string // 场景图片 (可选)
+  options?: SceneInteractOption[] // 场景的所有交互都通过选项进行
+  isEndScene?: boolean // 标记此场景是否为故事线结局
+  // 其他场景特定属性可在此添加
 }
 
+// 游戏中所有场景数据的结构
 export interface SceneData {
-  [id: string]: Scene
+  [sceneId: string]: Scene
 }
+
+// 此接口先前用于场景级检定或辅助检定场景。
+// 根据新的设计 (CheckPayload 和 CheckDrivenOption)，它很可能是多余的。
+// 暂时注释掉以供迁移时参考，之后可以删除。
+/*
+export interface SceneCheckOptionDetails {
+  check: Check;
+  onSuccessSceneId: string;
+  onFailureSceneId: string;
+  successText?: string;
+  failureText?: string;
+  // 需要考虑效果是否曾是此接口一部分，并映射到 onSuccessEffects/onFailureEffects
+}
+*/
