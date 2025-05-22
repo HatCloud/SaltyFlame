@@ -1,19 +1,29 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import React, { useCallback } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import palette from '../../theme/palette'
 import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
 import { useAppReducer } from '../../hook'
 import { useI18n } from '../../i18n/useI18n'
+import CharacterModal from './CharacterModal'
 
 const CharacterBottomSheet: React.FC = React.memo(() => {
-  const [state] = useAppReducer()
-  const { characterData } = state
+  const [state, dispatch] = useAppReducer() // Added dispatch
+  const { characterData, isCharacterModalVisible } = state
   const insets = useSafeAreaInsets()
   const { t } = useI18n()
   // setShowCharacteristics was unused, showCharacteristics is used to toggle display
   const [showCharacteristics] = React.useState(true) // Keep showCharacteristics if it's meant to be toggled elsewhere, or remove if always false
+
+  const handlePress = () => {
+    dispatch({ type: 'TOGGLE_CHARACTER_MODAL' })
+  }
+
+  console.log(
+    'CharacterBottomSheet rendered isCharacterModalVisible:',
+    isCharacterModalVisible,
+  )
 
   if (!characterData) {
     return null
@@ -35,106 +45,111 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
   // const occupationSkills: Record<string, number> | undefined = characterData?.personalData?.occupationSkills;
 
   return (
-    <View
-      style={[
-        styles.characterCardContainer,
-        { paddingBottom: insets.bottom || padding.Small },
-      ]}
-    >
-      {/* 主要信息栏 */}
-      <View style={styles.mainStatsRow}>
-        <View style={styles.leftColumn}>
-          <Text style={styles.statLabel}>
-            {displayValue(characterData.name)}
-          </Text>
-          <Text
-            style={[styles.nameText, styles.occupationText]} // Added style
-            numberOfLines={1}
-          >
-            {displayValue(characterData.occupation)}
-          </Text>
-        </View>
-
-        <View style={styles.centerColumn}>
-          <Text style={styles.statLabel}>{t('stats.hp')}</Text>
-          <Text style={[styles.statText, styles.hpText]}>
-            {' '}
-            {/* Added style */}
-            {displayValue(characterData.hitPoints?.current)}/
-            {displayValue(characterData.hitPoints?.max)}
-          </Text>
-        </View>
-
-        <View style={styles.rightColumn}>
-          <Text style={styles.statLabel}>{t('stats.san')}</Text>
-          <Text style={[styles.statText, styles.sanText]}>
-            {' '}
-            {/* Added style */}
-            {displayValue(characterData.sanity?.current)}/
-            {displayValue(characterData.sanity?.max)}
-          </Text>
-        </View>
-      </View>
-
-      {/* 属性值栏 */}
-      {showCharacteristics ? (
-        <View style={styles.attributesContainer}>
-          <View style={styles.attributesRow}>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.str')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.str)}
-              </Text>
+    <>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={handlePress}
+        style={[
+          styles.characterCardContainer,
+          { paddingBottom: insets.bottom || padding.Small },
+        ]}
+      >
+        {/* 主要信息栏 */}
+        <View style={styles.mainStatsRow}>
+          <View style={styles.leftColumn}>
+            <Text style={styles.statLabel}>
+              {displayValue(characterData.name)}
             </Text>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.con')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.con)}
-              </Text>
-            </Text>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.siz')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.siz)}
-              </Text>
-            </Text>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.dex')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.dex)}
-              </Text>
+            <Text
+              style={[styles.nameText, styles.occupationText]} // Added style
+              numberOfLines={1}
+            >
+              {displayValue(characterData.occupation)}
             </Text>
           </View>
 
-          <View style={styles.attributesRow}>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.app')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.app)}
-              </Text>
+          <View style={styles.centerColumn}>
+            <Text style={styles.statLabel}>{t('stats.hp')}</Text>
+            <Text style={[styles.statText, styles.hpText]}>
+              {' '}
+              {/* Added style */}
+              {displayValue(characterData.hitPoints?.current)}/
+              {displayValue(characterData.hitPoints?.max)}
             </Text>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.edu')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.edu)}
-              </Text>
-            </Text>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.int')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.int)}
-              </Text>
-            </Text>
-            <Text style={styles.attributeItem}>
-              <Text style={styles.attributeLabel}>{t('stats.pow')} </Text>
-              <Text style={styles.attributeValue}>
-                {displayValue(characteristics.pow)}
-              </Text>
+          </View>
+
+          <View style={styles.rightColumn}>
+            <Text style={styles.statLabel}>{t('stats.san')}</Text>
+            <Text style={[styles.statText, styles.sanText]}>
+              {' '}
+              {/* Added style */}
+              {displayValue(characterData.sanity?.current)}/
+              {displayValue(characterData.sanity?.max)}
             </Text>
           </View>
         </View>
-      ) : null}
-    </View>
+
+        {/* 属性值栏 */}
+        {showCharacteristics ? (
+          <View style={styles.attributesContainer}>
+            <View style={styles.attributesRow}>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.str')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.str)}
+                </Text>
+              </Text>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.con')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.con)}
+                </Text>
+              </Text>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.siz')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.siz)}
+                </Text>
+              </Text>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.dex')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.dex)}
+                </Text>
+              </Text>
+            </View>
+
+            <View style={styles.attributesRow}>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.app')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.app)}
+                </Text>
+              </Text>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.edu')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.edu)}
+                </Text>
+              </Text>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.int')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.int)}
+                </Text>
+              </Text>
+              <Text style={styles.attributeItem}>
+                <Text style={styles.attributeLabel}>{t('stats.pow')} </Text>
+                <Text style={styles.attributeValue}>
+                  {displayValue(characteristics.pow)}
+                </Text>
+              </Text>
+            </View>
+          </View>
+        ) : null}
+      </TouchableOpacity>
+      <CharacterModal />
+    </>
   )
 })
 

@@ -41,6 +41,7 @@ export interface MyAppState {
   language: Language
   currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check
   gameFlags: Record<string, boolean> // Added for game flags
+  isCharacterModalVisible?: boolean
 }
 
 export const initialState: MyAppState = {
@@ -51,6 +52,7 @@ export const initialState: MyAppState = {
   language: 'cn',
   currentCheckAttempt: null,
   gameFlags: {}, // Initialize gameFlags
+  isCharacterModalVisible: false,
 }
 
 // Action Definitions
@@ -95,6 +97,10 @@ interface SetLanguageAction {
   payload: Language
 }
 
+interface ToggleCharacterModalAction {
+  type: 'TOGGLE_CHARACTER_MODAL'
+}
+
 // AppAction is a union of all possible actions
 export type AppAction =
   | ChangeSceneAction
@@ -104,3 +110,4 @@ export type AppAction =
   | SetLanguageAction
   | ResolveCheckOutcomeAction
   | ClearCheckAttemptAction
+  | ToggleCharacterModalAction

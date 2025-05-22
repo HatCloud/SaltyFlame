@@ -162,9 +162,9 @@ const generateCharacter = (): Character => {
       personalInterests: personalInterestsData,
     },
     skills: newSkills,
-    inventory: [], // Keep random inventory for now
+    inventory: [randomWeapon()], // Use randomWeapon to add one weapon
     markedSkills: [],
-  } // This closing brace was misplaced, it should be after the return statement's object.
+  }
 }
 
 export default generateCharacter

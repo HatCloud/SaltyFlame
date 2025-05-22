@@ -10,6 +10,7 @@ const SceneScreen: React.FC = React.memo(() => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scrollView}
       >
         <StoryCard />
       </ScrollView>
@@ -23,6 +24,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: palette.Background,
+  },
+  scrollView: {
+    flexGrow: 1,
+    paddingBottom: 100,
   },
 })
 

@@ -16,7 +16,8 @@ export const scenes_001_020: SceneData = {
   '2': {
     id: '2',
     story:
-      '你勇敢地抵抗，但这男人的块头和决心还是压服了你。最后他打出一记重拳，你摔倒在地，眼前顿时一片黑暗。\n过了一会儿，你朦朦胧胧地感觉到你的两腿被人抬着，后背刮蹭地面，就像被人拖着走一样。\n（译注：如果你的 HP 归零）你可以回复 1 点耐久值。现在前往 108。',
+      '你勇敢地抵抗，但这男人的块头和决心还是压服了你。最后他打出一记重拳，你摔倒在地，眼前顿时一片黑暗。\n过了一会儿，你朦朦胧胧地感觉到你的两腿被人抬着，后背刮蹭地面，就像被人拖着走一样。',
+    info: '（译注：如果你的 HP 归零）你可以回复 1 点耐久值。',
     // entryEffects removed, should be handled by the option leading to this scene or a check outcome
     options: [
       {
@@ -85,11 +86,6 @@ export const scenes_001_020: SceneData = {
     options: [
       { type: 'goto', text: '尝试靠口才通过把守村口的人群', goto: '119' },
       { type: 'goto', text: '尝试化装通过', goto: '125' },
-      {
-        type: 'goto',
-        text: '难道......你还知道其他出村的办法吗？',
-        goto: '???',
-      },
     ],
   },
   '8': {
@@ -98,25 +94,25 @@ export const scenes_001_020: SceneData = {
       '司机叼着烟，看着你把箱子拖到长途汽车的后面去。行李架装在车顶上，十分不便。你握紧了沉重的箱子。',
     options: [
       {
-        text: '（如果你的“体型”是 40）',
+        text: '你光是将箱子抬起来都很费劲',
         type: 'goto',
         goto: '23',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
           characteristic: CheckObjectKey.SIZ, // Corrected from subObject
           comparisonValue: 40,
-          comparisonOperator: 'eq',
+          comparisonOperator: 'lt',
         },
       },
       {
-        text: '（如果你的“体型”高于 40）',
+        text: '你觉得这事难不倒你',
         type: 'goto',
         goto: '38',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
           characteristic: CheckObjectKey.SIZ, // Corrected from subObject
           comparisonValue: 40,
-          comparisonOperator: 'gt',
+          comparisonOperator: 'gte',
         },
       },
     ],
@@ -145,11 +141,12 @@ export const scenes_001_020: SceneData = {
   '12': {
     id: '12',
     story:
-      '你一个滑步溜出工坊。工匠紧随其后，你将门板甩到他的脸上。他踉跄后退，用手捂住鼻子，你趁机逃跑了。只要你愿意，你还可以继续调查；但离开村庄可能更加明智。\n你可以在「闪避」技能左边的小方框里打勾。前往120。',
+      '你一个滑步溜出工坊。工匠紧随其后，你将门板甩到他的脸上。他踉跄后退，用手捂住鼻子，你趁机逃跑了。只要你愿意，你还可以继续调查；但离开村庄可能更加明智。',
+    info: '你可以在「闪避」技能左边的小方框里打勾，标记你成功使用了这个技能。',
     options: [
       {
         type: 'goto',
-        text: '继续',
+        text: '离开这里',
         goto: '120',
         effects: [
           {
@@ -163,7 +160,7 @@ export const scenes_001_020: SceneData = {
   '13': {
     id: '13',
     story:
-      '你的脸上感受到暖意，身下还多出了床垫。你对着阳光眨眨眼睛，眼前飘进一个模糊的人影。\n“你醒啦。我是梅。梅·莱德贝特。”\n你动动身体，剧痛传遍全身。你感觉自己遍体鳞伤，脑袋也一阵阵地疼痛。你终于看清了梅。\n“你还活着真是走运。后半夜有个农夫发现你躺在路上。他给你处理了一下，用马车把你拉了回来。听说你当时在什么树林的中间？今天你就放轻松点儿吧。过一会儿我再来照看你。”\n农夫和马车当然早就不见踪影了。你又小睡了一会儿。\n你在失去意识的时候接受了急救，可以回复1点耐久值。现在前往64。',
+      '你的脸上感受到暖意，身下还多出了床垫。你对着阳光眨眨眼睛，眼前飘进一个模糊的人影。\n“你醒啦。我是梅。梅·莱德贝特。”\n你动动身体，剧痛传遍全身。你感觉自己遍体鳞伤，脑袋也一阵阵地疼痛。你终于看清了梅。\n“你还活着真是走运。后半夜有个农夫发现你躺在路上。他给你处理了一下，用马车把你拉了回来。听说你当时在什么树林的中间？今天你就放轻松点儿吧。过一会儿我再来照看你。”\n农夫和马车当然早就不见踪影了。你又小睡了一会儿。\n你在失去意识的时候接受了急救，可以回复1点耐久值。',
     options: [
       {
         type: 'goto',
@@ -192,7 +189,8 @@ export const scenes_001_020: SceneData = {
   '16': {
     id: '16',
     story:
-      '杂货店坐落在大街的拐角，过了杂货店就是南边的下坡。店主是位体形硕大但动作敏捷的女人，肩膀宽阔，穿着浆硬过的围裙。她死死盯着你这陌生的面孔。\n“坐车？这里每星期会来两辆长途车。没坐上？唔唔。每隔一星期的星期二会有卡车来给我送货，但他也要下星期才来。”她耸耸肩。\n看起来烬头村很乐意和外面的世界保持距离。\n你的钱足够在这里买到一两件便宜的日常用品。在你的调查员角色卡上把它们记下来。注意现在是1927年！商店里没有武器，只有一把积满尘土的狩猎小刀，如果想要，你可以买下它。\n然后前往25。',
+      '杂货店坐落在大街的拐角，过了杂货店就是南边的下坡。店主是位体形硕大但动作敏捷的女人，肩膀宽阔，穿着浆硬过的围裙。她死死盯着你这陌生的面孔。\n“坐车？这里每星期会来两辆长途车。没坐上？唔唔。每隔一星期的星期二会有卡车来给我送货，但他也要下星期才来。”她耸耸肩。\n看起来烬头村很乐意和外面的世界保持距离。',
+    info: '你的钱足够在这里买到一两件便宜的日常用品。在你的调查员角色卡上把它们记下来。注意现在是1927年！商店里没有武器，只有一把积满尘土的狩猎小刀，如果想要，你可以买下它。',
     options: [
       {
         type: 'goto',
@@ -205,11 +203,10 @@ export const scenes_001_020: SceneData = {
     id: '17',
     story:
       '你走过房间，地板在你脚下吱嘎作响。你感觉到脚下略微有些弹力。这个房间可能是给村里的孩子们做体操房用的。\n看起来，村里的大人们使用一块布告板，孩子们用另一块布告板。大人用的板子看上去很破旧，满是手写的字体，内容则是日用品的广告，还有一张泛黄的电报价目表。板上没有和节日相关的东西。\n孩子们的布告板上则写着托儿所的每周时间安排，还有一些明显由孩子们自己画出来的图画。这些画虽然五颜六色，但内容却支离破碎。你尽力分辨，也只能分辨他们在描绘焰火，或者是《创世纪》中约瑟的故事。有一张画少了一枚图钉，倒吊在板上。上面画着一只巨鸟正在攻击烬头村。不过也有可能只是小画家还没有掌握透视的精妙之处。',
-    // Removed checkOption, converted to a CheckDrivenOption below
     options: [
       {
         type: 'check',
-        text: '进行「侦查」检定', // Or "仔细查看布告板"
+        text: '仔细查看布告板',
         check: {
           details: {
             object: 'skill',
@@ -218,8 +215,8 @@ export const scenes_001_020: SceneData = {
           },
           onSuccessSceneId: '30',
           onFailureSceneId: '37',
-          successText: '侦查布告板（成功）',
-          failureText: '侦查布告板（失败）',
+          successText: '你似乎有所发现',
+          failureText: '你没有发现什么异常',
         },
       },
     ],
@@ -233,8 +230,8 @@ export const scenes_001_020: SceneData = {
   '19': {
     id: '19',
     story:
-      '你堵住梅的去路，坚持要知道她到底在做什么。你看见她的眼中流露出深深的恐惧。\n她说：“这什么都不是，只是些帮助你睡眠的东西。我是为了你好。你看，明天对于你是多么重要的一天......”\n你乘胜追击，要求她做出完整的解释。\n她说：“行行好，理解我一下吧。我还要照顾我女儿，我都已经没有丈夫了。”\n她扭身离开你，逃回她的房间去了。\n你可以在「恐吓」技能左边的小方框里打勾。',
-    // entryEffects moved to options
+      '你堵住梅的去路，坚持要知道她到底在做什么。你看见她的眼中流露出深深的恐惧。\n她说：“这什么都不是，只是些帮助你睡眠的东西。我是为了你好。你看，明天对于你是多么重要的一天......”\n你乘胜追击，要求她做出完整的解释。\n她说：“行行好，理解我一下吧。我还要照顾我女儿，我都已经没有丈夫了。”\n她扭身离开你，逃回她的房间去了。',
+    info: '你可以在「恐吓」技能左边的小方框里打勾。',
     options: [
       {
         type: 'goto',
@@ -243,7 +240,7 @@ export const scenes_001_020: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.INTIMIDATE, // Corrected from skillKey
+            target: CheckObjectKey.INTIMIDATE,
           },
         ],
       }, // Assuming the skill mark applies regardless of which option is chosen next from this point

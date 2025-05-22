@@ -338,6 +338,12 @@ export const appReducer = (
         currentCheckAttempt: null,
       }
 
+    case 'TOGGLE_CHARACTER_MODAL':
+      return {
+        ...newState,
+        isCharacterModalVisible: !newState.isCharacterModalVisible,
+      }
+
     default:
       return newState
   }
