@@ -75,7 +75,7 @@ export interface Scene {
   image?: string // 场景图片 (可选)
   options?: SceneInteractOption[] // 场景的所有交互都通过选项进行
   isEndScene?: boolean // 标记此场景是否为故事线结局
-  // 其他场景特定属性可在此添加
+  info?: string // 场景的额外信息 (可选)
 }
 
 // 游戏中所有场景数据的结构

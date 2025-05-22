@@ -10,7 +10,6 @@ import { StatusBar, StyleSheet, View } from 'react-native'
 import SceneScreen from './ui/SceneScreen'
 import palette from './theme/palette'
 import { initialState } from './interface/MyAppState'
-import { enableScreens } from 'react-native-screens'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export const AppContext = React.createContext(initialState)

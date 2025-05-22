@@ -31,6 +31,14 @@ export const translations = {
       fumble: '大失败',
       continue: '继续',
     },
+    condition: {
+      // Added condition section
+      hasItem: '需要物品：{{item}}',
+      hasNotItem: '不能拥有物品：{{item}}',
+      flagSet: '需要标记：{{flag}}',
+      flagNotSet: '不能有标记：{{flag}}',
+      // CHARACTERISTIC_COMPARE is handled directly in StoryCard for now
+    },
     roles: {
       privateInvestigator: '私家侦探',
     },
@@ -65,7 +73,14 @@ export const translations = {
       hardSuccess: 'Hard Success',
       extremeSuccess: 'Extreme Success',
       fumble: 'Fumble',
-      continue: 'Continue',
+      continue: 'CONTINUE',
+    },
+    condition: {
+      // Added condition section
+      hasItem: 'Requires item: {{item}}',
+      hasNotItem: 'Must not have item: {{item}}',
+      flagSet: 'Requires flag: {{flag}}',
+      flagNotSet: 'Must not have flag: {{flag}}',
     },
     roles: {
       privateInvestigator: 'Private Investigator',

@@ -4,13 +4,7 @@ import {
   Language,
   // CheckAttemptState,
 } from './interface/MyAppState'
-import {
-  Effect,
-  // SceneInteractOption,
-  Check,
-  CheckPayload, // Added for PERFORM_INLINE_CHECK
-  SceneInteractOption, // Added for PERFORM_INLINE_CHECK payload
-} from './interface/Scene'
+import { Effect, Check } from './interface/Scene'
 import { EffectType, CheckDifficulty } from './interface/enums'
 import { Character } from './interface/Character' // Import Character type
 
@@ -58,6 +52,7 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
 
   // Now we know state.characterData is not null, so it must be a Character object.
   const newCharacterData = { ...state.characterData } // This should be safe.
+  const newGameFlags = { ...state.gameFlags }
 
   switch (effect.type) {
     case EffectType.CHANGE_HP:
@@ -78,11 +73,40 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
         `Applied Sanity Change: ${effect.value}, New Sanity: ${newCharacterData.sanity.current}`,
       )
       break
-    // Add other effect types
+    case EffectType.SET_FLAG:
+      if (effect.gameFlag) {
+        newGameFlags[effect.gameFlag] =
+          effect.flagValue !== undefined ? effect.flagValue : true
+        console.log(
+          `Set flag: ${effect.gameFlag} to ${newGameFlags[effect.gameFlag]}`,
+        )
+      }
+      break
+    case EffectType.CLEAR_FLAG:
+      if (effect.gameFlag) {
+        delete newGameFlags[effect.gameFlag]
+        // Or set to false: newGameFlags[effect.gameFlag] = false;
+        // Depending on how "cleared" flags should be interpreted.
+        // Current ConditionType.FLAG_NOT_SET might expect it to be explicitly false or undefined.
+        // Let's go with delete for now, as it's cleaner for "not set".
+        console.log(`Cleared flag: ${effect.gameFlag}`)
+      }
+      break
+    // TODO: Implement ADD_ITEM, REMOVE_ITEM, MARK_SKILL_SUCCESS, LEARN_SPELL
+    // For ADD_ITEM/REMOVE_ITEM, you might use gameFlags like `item_itemName: true/false`
+    // or add an `inventory: string[]` to characterData.
+    // For now, these will fall through.
+    default:
+      console.warn(`Unhandled effect type: ${effect.type}`)
+      break
   }
   // Ensure the returned characterData conforms to Character type.
   // If newCharacterData was correctly typed as Character from the spread, this should be fine.
-  return { ...state, characterData: newCharacterData as Character }
+  return {
+    ...state,
+    characterData: newCharacterData as Character,
+    gameFlags: newGameFlags,
+  }
 }
 
 function applyAllEffects(state: MyAppState, effects?: Effect[]): MyAppState {

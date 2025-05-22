@@ -112,7 +112,6 @@ export enum EffectType {
   CLEAR_FLAG = 'CLEAR_FLAG', // 清除一个游戏状态标记
   MARK_SKILL_SUCCESS = 'MARK_SKILL_SUCCESS', // 技能检定成功后打勾
   LEARN_SPELL = 'LEARN_SPELL',
-  // Potentially: ADD_SKILL_POINTS, ADD_CHARACTERISTIC_POINTS
 }
 
 // Enum for Condition Types to make it more structured
@@ -121,8 +120,7 @@ export enum ConditionType {
   HAS_NOT_ITEM = 'HAS_NOT_ITEM',
   FLAG_SET = 'FLAG_SET',
   FLAG_NOT_SET = 'FLAG_NOT_SET',
-  CHARACTERISTIC_COMPARE = 'CHARACTERISTIC_COMPARE', // e.g. SIZ > 40
-  // Could add more complex conditions like PREVIOUS_SCENE_CHOICE etc.
+  CHARACTERISTIC_COMPARE = 'CHARACTERISTIC_COMPARE',
 }
 
 // Enum for Check Difficulty

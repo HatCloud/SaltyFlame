@@ -6,9 +6,16 @@ import { useI18n } from '../../i18n/useI18n'
 interface CheckOptionProps {
   option: SceneInteractOption
   onPress: (option: SceneInteractOption) => void
+  disabled?: boolean
+  conditionDescription?: string
 }
 
-const CheckOption: React.FC<CheckOptionProps> = ({ option, onPress }) => {
+const CheckOption: React.FC<CheckOptionProps> = ({
+  option,
+  onPress,
+  disabled,
+  conditionDescription,
+}) => {
   const { t } = useI18n()
 
   if (option.type !== 'check') {
@@ -16,8 +23,12 @@ const CheckOption: React.FC<CheckOptionProps> = ({ option, onPress }) => {
   }
 
   return (
-    <OptionButton onPress={() => onPress(option)}>
-      {option.text || t('check.perform') + t('check.skillCheck')}
+    <OptionButton
+      onPress={() => onPress(option)}
+      disabled={disabled}
+      conditionDescription={conditionDescription}
+    >
+      {'🎲 ' + option.text || t('check.perform') + t('check.skillCheck')}
     </OptionButton>
   )
 }

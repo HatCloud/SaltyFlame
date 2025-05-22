@@ -1,10 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native' // Pressable removed
 import React from 'react'
 import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
 import { CheckAttemptState } from '../../interface/MyAppState'
 import { CheckObjectNames } from '../../interface/enums'
 import { useI18n } from '../../i18n/useI18n'
+import OptionButton from './OptionButton'
 
 interface CheckResultProps {
   checkAttempt: CheckAttemptState
@@ -36,20 +37,22 @@ const CheckResult: React.FC<CheckResultProps> = ({
         {checkAttempt.isSuccess ? t('check.success') : t('check.failure')}
         {checkAttempt.isSuccess && checkAttempt.successMessage && (
           <Text style={styles.checkInfoText}>
-            {' '}
-            ({checkAttempt.successMessage})
+            {': '}
+            {checkAttempt.successMessage}
           </Text>
         )}
         {!checkAttempt.isSuccess && checkAttempt.failureMessage && (
           <Text style={styles.checkInfoText}>
-            {' '}
-            ({checkAttempt.failureMessage})
+            {': '}
+            {checkAttempt.failureMessage}
           </Text>
         )}
       </Text>
-      <Pressable onPress={onResolve} style={styles.resolveButton}>
-        <Text style={styles.storyCardOptionText}>{t('check.continue')}</Text>
-      </Pressable>
+      <OptionButton
+        onPress={onResolve}
+        disabled={false}
+        children={t('check.continue')}
+      />
     </View>
   )
 }
@@ -68,19 +71,6 @@ const styles = StyleSheet.create({
     fontSize: typeface.Size.Normal,
     color: typeface.Color.Highlight,
     marginBottom: padding.Small,
-  },
-  resolveButton: {
-    marginTop: padding.Normal,
-    paddingVertical: padding.Small,
-    paddingHorizontal: padding.Normal,
-    backgroundColor: typeface.Color.Striking,
-    borderRadius: padding.Mini,
-    alignItems: 'center',
-  },
-  storyCardOptionText: {
-    fontSize: typeface.Size.Normal,
-    color: typeface.Color.Content,
-    lineHeight: typeface.Size.Normal * 1.3,
   },
 })
 

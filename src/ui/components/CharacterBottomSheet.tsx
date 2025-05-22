@@ -12,20 +12,27 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
   const { characterData } = state
   const insets = useSafeAreaInsets()
   const { t } = useI18n()
-  const [showCharacteristics, setShowCharacteristics] = React.useState(false)
+  // setShowCharacteristics was unused, showCharacteristics is used to toggle display
+  const [showCharacteristics] = React.useState(false) // Keep showCharacteristics if it's meant to be toggled elsewhere, or remove if always false
 
   if (!characterData) {
     return null
   }
 
-  const displayValue = (value: any, defaultValue = 'N/A') => {
-    if (value === null || typeof value === 'undefined' || value === '') {
+  const displayValue = (
+    value: string | number | undefined | null,
+    defaultValue = 'N/A',
+  ) => {
+    if (value === null || value === undefined || value === '') {
+      // Added check for undefined
       return defaultValue
     }
-    return value
+    return String(value) // Ensure value is string for Text component
   }
 
   const characteristics = characterData.characteristics || {}
+  // 비용 (cost/skills?) - Assuming this was for occupationSkills, which is Record<string, number>
+  // const occupationSkills: Record<string, number> | undefined = characterData?.personalData?.occupationSkills;
 
   return (
     <View
@@ -41,7 +48,7 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
             {displayValue(characterData.name)}
           </Text>
           <Text
-            style={[styles.nameText, { color: '#a0a5ad' }]}
+            style={[styles.nameText, styles.occupationText]} // Added style
             numberOfLines={1}
           >
             {displayValue(characterData.occupation)}
@@ -50,7 +57,9 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
 
         <View style={styles.centerColumn}>
           <Text style={styles.statLabel}>{t('stats.hp')}</Text>
-          <Text style={[styles.statText, { color: '#cc702d' }]}>
+          <Text style={[styles.statText, styles.hpText]}>
+            {' '}
+            {/* Added style */}
             {displayValue(characterData.hitPoints?.current)}/
             {displayValue(characterData.hitPoints?.max)}
           </Text>
@@ -58,7 +67,9 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
 
         <View style={styles.rightColumn}>
           <Text style={styles.statLabel}>{t('stats.san')}</Text>
-          <Text style={[styles.statText, { color: '#82c6d7' }]}>
+          <Text style={[styles.statText, styles.sanText]}>
+            {' '}
+            {/* Added style */}
             {displayValue(characterData.sanity?.current)}/
             {displayValue(characterData.sanity?.max)}
           </Text>
@@ -174,6 +185,10 @@ const styles = StyleSheet.create({
     color: palette.White,
     fontWeight: '600',
   },
+  occupationText: {
+    // Style for occupation
+    color: '#a0a5ad',
+  },
   statLabel: {
     fontSize: 16,
     color: '#888888',
@@ -183,8 +198,16 @@ const styles = StyleSheet.create({
   },
   statText: {
     fontSize: 20,
-    color: palette.Gold,
+    // color: palette.Gold, // Base color can be set here if Gold is default
     fontWeight: '600',
+  },
+  hpText: {
+    // Style for HP
+    color: '#cc702d',
+  },
+  sanText: {
+    // Style for Sanity
+    color: '#82c6d7',
   },
   attributesContainer: {
     borderTopWidth: 1,

@@ -6,18 +6,38 @@ export function useI18n(): I18nContextType {
   const [state] = useAppReducer()
   const lang = (state.language === 'cn' ? 'cn' : 'en') as LanguageCode
 
-  const t = (path: string): string => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const t = (path: string, options?: Record<string, any>): string => {
     const keys = path.split('.')
-    let result: any = translations[lang]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let template: any = translations[lang]
 
     for (const key of keys) {
-      if (result?.[key] === undefined) {
+      if (template?.[key] === undefined) {
         console.warn(`Translation key not found: ${path}`)
-        return path
+        return path // Return the key itself if not found
       }
-      result = result[key]
+      template = template[key]
     }
 
+    if (typeof template !== 'string') {
+      console.warn(
+        `Translation for key '${path}' is not a string. Found:`,
+        template,
+      )
+      return path // Or some other fallback
+    }
+
+    // Basic interpolation: replace {{key}} with value from options
+    let result = template
+    if (options) {
+      for (const placeholderKey in options) {
+        if (Object.prototype.hasOwnProperty.call(options, placeholderKey)) {
+          const regex = new RegExp(`{{${placeholderKey}}}`, 'g')
+          result = result.replace(regex, String(options[placeholderKey]))
+        }
+      }
+    }
     return result
   }
 

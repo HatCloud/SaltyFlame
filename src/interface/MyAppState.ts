@@ -40,6 +40,7 @@ export interface MyAppState {
   characterData: Character | null
   language: Language
   currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check
+  gameFlags: Record<string, boolean> // Added for game flags
 }
 
 export const initialState: MyAppState = {
@@ -49,6 +50,7 @@ export const initialState: MyAppState = {
   characterData: FakerCharacter(), // Temporarily use FakerCharacter for testing UI
   language: 'cn',
   currentCheckAttempt: null,
+  gameFlags: {}, // Initialize gameFlags
 }
 
 // Action Definitions

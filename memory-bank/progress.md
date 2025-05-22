@@ -35,6 +35,18 @@
 - [x] **国际化 (i18n) 功能初步实现**:
   - 添加了 `src/i18n/` 目录及相关文件 (`useI18n.ts`, `resources.ts`, `types.ts`)。
   - `useI18n` hook 已在多个UI组件中用于文本本地化。
+- [x] **UI改进**:
+  - 为 `src/ui/components/OptionButton.tsx` 和 `src/ui/components/CheckResult.tsx` 中的 `resolveButton` 添加了按下效果。
+- [x] **选项条件显示**:
+  - 在 `StoryCard.tsx` 中实现了基于 `option.condition` 的选项显示逻辑，并根据用户反馈进行了改进：
+    - 如果选项有条件且条件满足，会在选项文本前显示条件的描述。
+    - 不满足条件的选项会显示为灰色且不可点击。
+    - 支持 `CHARACTERISTIC_COMPARE` 条件类型。
+    - 为 `HAS_ITEM`, `HAS_NOT_ITEM`, `FLAG_SET`, `FLAG_NOT_SET` 添加了初步支持（依赖 `gameFlags`）和本地化描述文本。
+  - `OptionButton.tsx` 和 `CheckOption.tsx` 已更新以支持 `disabled` 和 `conditionDescription` props。
+  - `i18n` 相关文件 (`resources.ts`, `useI18n.ts`, `types.ts`) 已更新以支持带插值的条件描述文本。
+  - 在 `MyAppState.ts` 中添加了 `gameFlags` 状态。
+  - 更新了 `reducer.ts` 以处理 `SET_FLAG` 和 `CLEAR_FLAG` 效果，修改 `gameFlags`。
 
 ## 未完成功能 (来自 projectbrief.md)
 
@@ -42,7 +54,7 @@
 - [ ] 英文剧本数据转换 (推迟)
 - [ ] 基于现有代码先实现游戏主体部分
   - 角色的人物卡先用 Fake 数据
-  - 先不实现剧情卡片底部选项的具体判断，让玩家自己先选
+  - [~] 先不实现剧情卡片底部选项的具体判断，让玩家自己先选 (条件显示已部分实现)
 - [ ] 实现全局级别的投骰子能力
 - [ ] 基于投骰子能力，实现 Call of Cthulhu 7th Ed. 规则中定义的相关判定能力，并接入到游戏中
 - [ ] 根据剧情开头的交互来生成真正的角色数据，提供相应的界面支持。
@@ -81,3 +93,10 @@
 - **2025-05-22 (续)**:
   - 引入并初步实现了国际化 (i18n) 功能，支持中英文切换。
   - `useI18n` hook 已集成到主要UI组件中。
+  - 为 `OptionButton` 和 `CheckResult` 中的 `resolveButton` 组件添加了视觉上的按下反馈效果。
+- **2025-05-22 (更晚)**:
+  - 在 `StoryCard.tsx` 中实现了选项的条件显示逻辑，基于 `option.condition`，并根据反馈进行了改进（显示条件文本、禁用不满足条件的选项）。
+  - 支持 `CHARACTERISTIC_COMPARE` 条件，并为物品和游戏标记条件添加了框架和本地化描述。
+  - `OptionButton.tsx` 和 `CheckOption.tsx` 更新以支持新功能。
+  - `i18n` 系统更新以支持插值。
+  - 在 `MyAppState` 中添加了 `gameFlags` 状态，并在 `reducer` 中实现了对 `SET_FLAG` 和 `CLEAR_FLAG` 效果的处理。

@@ -35,12 +35,20 @@
   - 在 `src/i18n/` 目录下添加了 `useI18n.ts` (自定义hook), `resources.ts` (翻译资源), 和 `types.ts` (相关类型定义)。
   - `useI18n` hook 从应用状态读取语言设置，并提供 `t` 函数用于文本翻译。
   - 已在 `CheckOption.tsx`, `CheckResult.tsx`, `StoryCard.tsx`, 和 `CharacterBottomSheet.tsx` 组件中使用 `useI18n` 实现文本本地化。
+- **UI改进**:
+  - 为 `src/ui/components/OptionButton.tsx` 和 `src/ui/components/CheckResult.tsx` 中的 `resolveButton` 添加了按下效果，通过在按下时改变背景颜色和不透明度来提升用户交互反馈。
 
 ## 后续步骤
 
 1.  **完善核心游戏逻辑**:
-    - 在 `src/reducer.ts` 中，完整实现 `executeCheckLogic`（包括从 `characterData` 获取真实的技能/属性值、处理奖励/惩罚骰）和 `applySingleEffect`（包括解析如 "1D3" 的字符串值、处理所有 `EffectType`，管理物品和游戏标记）。
-    - 在 `StoryCard.tsx` 中，实现选项的条件显示逻辑 (`option.condition`)。
+    - 在 `src/reducer.ts` 中，完整实现 `executeCheckLogic`（包括从 `characterData` 获取真实的技能/属性值、处理奖励/惩罚骰）和 `applySingleEffect`（包括解析如 "1D3" 的字符串值、处理所有 `EffectType`，管理物品和游戏标记）。**更新**: `applySingleEffect` 已更新以处理 `SET_FLAG` 和 `CLEAR_FLAG` 效果，修改 `state.gameFlags`。
+    - 在 `StoryCard.tsx` 中，实现选项的条件显示逻辑 (`option.condition`)。**已完成并改进**:
+      - `StoryCard.tsx` 现在会根据 `option.condition` 来决定是否显示选项。
+      - 如果选项有条件且条件满足，会在选项文本前显示条件的描述（例如“体型判定：大于40”）。
+      - 不满足条件的选项会显示为灰色且不可点击，而不是消失。
+      - `OptionButton.tsx` 和 `CheckOption.tsx` 已更新以支持 `disabled` 和 `conditionDescription` props。
+      - `i18n` 相关文件 (`resources.ts`, `useI18n.ts`, `types.ts`) 已更新以支持带插值的条件描述文本。
+      - `MyAppState` 已添加 `gameFlags` 属性。
 2.  **剧本数据转换**:
     - 英文剧本数据转换 (推迟)。
 3.  **角色创建流程实现**: 实现角色创建相关场景（如属性分配、职业选择、技能点分配）与 `characterData` 状态的实际交互逻辑。
