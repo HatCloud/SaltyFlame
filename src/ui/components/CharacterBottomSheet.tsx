@@ -13,7 +13,7 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
   const insets = useSafeAreaInsets()
   const { t } = useI18n()
   // setShowCharacteristics was unused, showCharacteristics is used to toggle display
-  const [showCharacteristics] = React.useState(false) // Keep showCharacteristics if it's meant to be toggled elsewhere, or remove if always false
+  const [showCharacteristics] = React.useState(true) // Keep showCharacteristics if it's meant to be toggled elsewhere, or remove if always false
 
   if (!characterData) {
     return null

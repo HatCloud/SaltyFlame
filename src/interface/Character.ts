@@ -50,7 +50,8 @@ export interface Character {
   skills: {
     [name: string]: number
   }
-  weapons: Weapon[]
+  inventory: (string | Weapon)[] // Inventory can hold item names or Weapon objects
+  markedSkills: string[] // Tracks skills successfully used
 }
 
 export type Dice = 4 | 6 | 8 | 10 | 12 | 20

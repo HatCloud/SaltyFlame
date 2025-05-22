@@ -111,7 +111,6 @@ export enum EffectType {
   SET_FLAG = 'SET_FLAG', // 设置一个游戏状态标记
   CLEAR_FLAG = 'CLEAR_FLAG', // 清除一个游戏状态标记
   MARK_SKILL_SUCCESS = 'MARK_SKILL_SUCCESS', // 技能检定成功后打勾
-  LEARN_SPELL = 'LEARN_SPELL',
 }
 
 // Enum for Condition Types to make it more structured

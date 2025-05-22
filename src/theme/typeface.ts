@@ -21,7 +21,7 @@ const Size = {
   XLarge: 18,
 
   Mini: 11,
-  Normal: 13,
+  Normal: 14,
   Small: 12,
 }
 

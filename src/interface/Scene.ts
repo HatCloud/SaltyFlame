@@ -4,6 +4,7 @@ import {
   ConditionType,
   EffectType,
 } from './enums'
+import { Weapon } from '../interface/Character' // Import Weapon type
 
 // 基础检定定义
 export interface Check {
@@ -21,6 +22,7 @@ export interface Effect {
   value?: string | number // 例如 '1D3', 1, '克苏鲁的护符'
   gameFlag?: string // 用于设置/取消游戏标记
   flagValue?: boolean // 游戏标记的值
+  item?: string | Weapon // For ADD_ITEM, REMOVE_ITEM: the item name or Weapon object
 }
 
 // 条件定义 (根据项目实际情况可能更复杂)

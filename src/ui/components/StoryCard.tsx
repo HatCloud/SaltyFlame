@@ -239,7 +239,7 @@ const StoryCard: React.FC = React.memo(() => {
 
   return (
     <View style={styles.storyCardContainer}>
-      <Text style={styles.takeText}>{currentScene.id}</Text>
+      <Text style={styles.takeText}>TAKE {currentScene.id}</Text>
       <Text style={styles.storyCardContentText}>{currentScene.story}</Text>
 
       {state.currentCheckAttempt && (
@@ -300,9 +300,10 @@ const StoryCard: React.FC = React.memo(() => {
 const styles = StyleSheet.create({
   takeText: {
     fontSize: 36,
-    color: typeface.Color.Content,
+    color: '#cecece',
     fontWeight: typeface.Weight.Bold,
     marginBottom: padding.Small,
+    letterSpacing: 2,
   },
   storyCardContainer: {
     marginHorizontal: padding.ScreenLR + padding.Large,
@@ -317,7 +318,7 @@ const styles = StyleSheet.create({
   storyCardContentText: {
     fontSize: typeface.Size.Normal,
     color: typeface.Color.Content,
-    lineHeight: typeface.Size.Normal * 1.3,
+    lineHeight: typeface.Size.Normal * 1.4,
     marginBottom: padding.Normal,
   },
 })

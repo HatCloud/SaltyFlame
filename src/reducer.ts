@@ -7,6 +7,7 @@ import {
 import { Effect, Check } from './interface/Scene'
 import { EffectType, CheckDifficulty } from './interface/enums'
 import { Character } from './interface/Character' // Import Character type
+import { parseDiceString } from './utils/utils' // Import parseDiceString
 
 // --- Helper Functions ---
 
@@ -55,24 +56,34 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
   const newGameFlags = { ...state.gameFlags }
 
   switch (effect.type) {
-    case EffectType.CHANGE_HP:
+    case EffectType.CHANGE_HP: {
+      let hpChange = 0
       if (typeof effect.value === 'number') {
-        // Since hitPoints and hitPoints.current are mandatory in Character, direct assignment is fine.
-        newCharacterData.hitPoints.current += effect.value
+        hpChange = effect.value
+      } else if (typeof effect.value === 'string') {
+        hpChange = parseDiceString(effect.value)
       }
+      // Since hitPoints and hitPoints.current are mandatory in Character, direct assignment is fine.
+      newCharacterData.hitPoints.current += hpChange
       console.log(
-        `Applied HP Change: ${effect.value}, New HP: ${newCharacterData.hitPoints.current}`,
+        `Applied HP Change: ${hpChange} (from ${effect.value}), New HP: ${newCharacterData.hitPoints.current}`,
       )
       break
-    case EffectType.CHANGE_SANITY:
+    }
+    case EffectType.CHANGE_SANITY: {
+      let sanityChange = 0
       if (typeof effect.value === 'number') {
-        // Since sanity and sanity.current are mandatory in Character, direct assignment is fine.
-        newCharacterData.sanity.current += effect.value
+        sanityChange = effect.value
+      } else if (typeof effect.value === 'string') {
+        sanityChange = parseDiceString(effect.value)
       }
+      // Since sanity and sanity.current are mandatory in Character, direct assignment is fine.
+      newCharacterData.sanity.current += sanityChange
       console.log(
-        `Applied Sanity Change: ${effect.value}, New Sanity: ${newCharacterData.sanity.current}`,
+        `Applied Sanity Change: ${sanityChange} (from ${effect.value}), New Sanity: ${newCharacterData.sanity.current}`,
       )
       break
+    }
     case EffectType.SET_FLAG:
       if (effect.gameFlag) {
         newGameFlags[effect.gameFlag] =
@@ -85,17 +96,107 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
     case EffectType.CLEAR_FLAG:
       if (effect.gameFlag) {
         delete newGameFlags[effect.gameFlag]
-        // Or set to false: newGameFlags[effect.gameFlag] = false;
-        // Depending on how "cleared" flags should be interpreted.
-        // Current ConditionType.FLAG_NOT_SET might expect it to be explicitly false or undefined.
-        // Let's go with delete for now, as it's cleaner for "not set".
         console.log(`Cleared flag: ${effect.gameFlag}`)
       }
       break
-    // TODO: Implement ADD_ITEM, REMOVE_ITEM, MARK_SKILL_SUCCESS, LEARN_SPELL
-    // For ADD_ITEM/REMOVE_ITEM, you might use gameFlags like `item_itemName: true/false`
-    // or add an `inventory: string[]` to characterData.
-    // For now, these will fall through.
+    case EffectType.ADD_ITEM:
+      if (effect.item) {
+        // Ensure inventory exists and is an array
+        if (!Array.isArray(newCharacterData.inventory)) {
+          newCharacterData.inventory = [] // Should not happen if initialState is correct
+        }
+
+        const itemToAdd = effect.item
+        let alreadyExists = false
+        if (typeof itemToAdd === 'string') {
+          alreadyExists = newCharacterData.inventory.some(
+            invItem => typeof invItem === 'string' && invItem === itemToAdd,
+          )
+        } else {
+          // itemToAdd is a Weapon object
+          alreadyExists = newCharacterData.inventory.some(
+            invItem =>
+              typeof invItem !== 'string' && invItem.name === itemToAdd.name,
+          )
+        }
+
+        if (!alreadyExists) {
+          newCharacterData.inventory.push(itemToAdd)
+          const itemName =
+            typeof itemToAdd === 'string' ? itemToAdd : itemToAdd.name
+          console.log(
+            `Added item: ${itemName}. Inventory: ${newCharacterData.inventory
+              .map(i => (typeof i === 'string' ? i : i.name))
+              .join(', ')}`,
+          )
+        } else {
+          const itemName =
+            typeof itemToAdd === 'string' ? itemToAdd : itemToAdd.name
+          console.log(
+            `Item ${itemName} already in inventory. Inventory: ${newCharacterData.inventory
+              .map(i => (typeof i === 'string' ? i : i.name))
+              .join(', ')}`,
+          )
+        }
+      }
+      break
+    case EffectType.REMOVE_ITEM:
+      if (effect.item && Array.isArray(newCharacterData.inventory)) {
+        const itemToRemove = effect.item
+        let itemIndex = -1
+
+        if (typeof itemToRemove === 'string') {
+          itemIndex = newCharacterData.inventory.findIndex(
+            invItem => typeof invItem === 'string' && invItem === itemToRemove,
+          )
+        } else {
+          // itemToRemove is a Weapon object, remove by name
+          itemIndex = newCharacterData.inventory.findIndex(
+            invItem =>
+              typeof invItem !== 'string' && invItem.name === itemToRemove.name,
+          )
+        }
+
+        if (itemIndex > -1) {
+          const removed = newCharacterData.inventory.splice(itemIndex, 1)[0]
+          const itemName = typeof removed === 'string' ? removed : removed.name
+          console.log(
+            `Removed item: ${itemName}. Inventory: ${newCharacterData.inventory
+              .map(i => (typeof i === 'string' ? i : i.name))
+              .join(', ')}`,
+          )
+        } else {
+          const itemName =
+            typeof itemToRemove === 'string' ? itemToRemove : itemToRemove.name
+          console.log(
+            `Item ${itemName} not found in inventory. Inventory: ${newCharacterData.inventory
+              .map(i => (typeof i === 'string' ? i : i.name))
+              .join(', ')}`,
+          )
+        }
+      }
+      break
+    case EffectType.MARK_SKILL_SUCCESS:
+      if (effect.target && typeof effect.target === 'string') {
+        // Ensure markedSkills exists and is an array
+        if (!Array.isArray(newCharacterData.markedSkills)) {
+          newCharacterData.markedSkills = []
+        }
+        // Add skill to markedSkills if not already present
+        if (!newCharacterData.markedSkills.includes(effect.target)) {
+          newCharacterData.markedSkills.push(effect.target)
+          console.log(
+            `Marked skill success: ${
+              effect.target
+            }. Marked skills: ${newCharacterData.markedSkills.join(', ')}`,
+          )
+        }
+      } else {
+        console.warn(
+          'MARK_SKILL_SUCCESS effect missing or invalid target (skill name).',
+        )
+      }
+      break
     default:
       console.warn(`Unhandled effect type: ${effect.type}`)
       break
