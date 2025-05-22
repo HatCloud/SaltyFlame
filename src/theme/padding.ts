@@ -1,13 +1,14 @@
 export const padding = {
-  Extra: 30,
-  Large: 18,
-  Mini: 6,
+  Extra: 32,
+  Large: 24,
+  Medium: 16,
   Normal: 12,
   Small: 8,
+  Mini: 4,
 
-  MarginNavBar: 10,
+  MarginNavBar: 44,
 
-  ContentR: 18, // 内容页右侧空距
-  ScreenLR: 18, // 屏幕左右
-  ScreenTB: 15, // 屏幕上下
+  ContentR: 16, // 内容页右侧空距
+  ScreenLR: 24, // 屏幕左右
+  ScreenTB: 32, // 屏幕上下
 }

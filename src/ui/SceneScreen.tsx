@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import React from 'react'
 import palette from '../theme/palette'
 import StoryCard from './components/StoryCard'
-import CharacterCard from './components/CharacterCard'
+import CharacterBottomSheet from './components/CharacterBottomSheet'
 
 const SceneScreen: React.FC = React.memo(() => {
   return (
@@ -13,7 +13,7 @@ const SceneScreen: React.FC = React.memo(() => {
       >
         <StoryCard />
       </ScrollView>
-      <CharacterCard />
+      <CharacterBottomSheet />
     </View>
   )
 })
