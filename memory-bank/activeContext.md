@@ -37,6 +37,23 @@
   - 已在 `CheckOption.tsx`, `CheckResult.tsx`, `StoryCard.tsx`, 和 `CharacterBottomSheet.tsx` 组件中使用 `useI18n` 实现文本本地化。
 - **UI改进**:
   - 为 `src/ui/components/OptionButton.tsx` 和 `src/ui/components/CheckResult.tsx` 中的 `resolveButton` 添加了按下效果，通过在按下时改变背景颜色和不透明度来提升用户交互反馈。
+- **检定UI改进 (显示角色检定值)**:
+  - 在 `src/utils/skillUtils.ts` 中添加了 `getCheckValue` 工具函数，用于根据 `CheckObjectKey` 从角色数据中获取对应的属性或技能值。该函数能正确处理常规属性、技能以及特殊的 `LUCK` 和 `SANITY` 值。
+  - 澄清了 `src/interface/Scene.ts` 中 `CheckDrivenOption` 内的 `check` 属性类型为 `CheckPayload`，而实际的检定目标键 (`CheckObjectKey`) 位于 `CheckPayload.details.subObject`。基于此理解修正了相关组件的代码。
+  - 更新了 `src/ui/components/OptionButton.tsx`，为其增加了 `checkValueDescription` prop，允许在其主文本上方显示一行额外的描述信息，用于展示角色当前的检定相关数值。
+  - 在 `src/i18n/resources.ts` 的 `check` 分类下添加了新的翻译键 `yourValueIs` (例如，中文：“你的 {skillName} 为 {value}”，英文：“Your {skillName} is {value}”)，用于格式化角色检定值的显示。
+  - 重构了 `src/ui/components/CheckOption.tsx`：
+    - 利用 `getCheckValue` 函数和新增的 `yourValueIs` i18n 键，在检定选项按钮的上方（通过传递 `checkValueDescription` 给 `OptionButton`）显示当前角色进行该项检定所依据的属性或技能的点数（例如“你的侦查为 50”）。
+    - 解决了在实现过程中遇到的多个 TypeScript 类型推断问题，确保了对 `option.check.details.subObject` 的正确访问。
+  - 修改了 `src/ui/components/CheckResult.tsx`：
+    - 同样利用 `getCheckValue` 和 `yourValueIs` i18n 键，在显示检定掷骰结果的同时，补充显示角色进行该项检定时所依据的属性/技能的点数。
+    - 修正了该组件样式中对一个不存在的 `padding.Tiny` 的引用，将其更改为 `padding.Mini`。
+  - 修正了 `src/i18n/resources.ts` 中 `check.yourValueIs` 翻译键的占位符格式，从单花括号 (`{key}`) 改为双花括号 (`{{key}}`)，以匹配 `src/i18n/useI18n.ts` 中 `t` 函数的插值逻辑，解决了插值未生效的问题。
+- **UI改进 (StoryCard 段落间距)**:
+  - 修改了 `src/ui/components/StoryCard.tsx`：
+    - 将 `currentScene.story` 按换行符分割，为每个段落渲染单独的 `<Text>` 组件。
+    - 应用 `styles.storyCardContentText` 样式，并确保其 `marginBottom` 为 `padding.Normal` 以实现段落间距。
+    - (已移除) 根据用户反馈，取消了中文段落首行缩进的逻辑。
 
 ## 后续步骤
 

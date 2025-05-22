@@ -70,6 +70,9 @@ export const skillToCategoryMap: Record<string, SkillCategory> = {
   // using their English-based keys.
 }
 
+import { Character } from '../interface/Character'
+import { CheckObjectKey } from '../interface/enums'
+
 // Helper function to group skills by category.
 // Skills in the input `skills` object are expected to have keys that match
 // those in `skillToCategoryMap` (i.e., CheckObjectKey string values).
@@ -112,4 +115,55 @@ export const groupSkills = (
   }
 
   return finalGrouped
+}
+
+/**
+ * Retrieves the value of a specific characteristic or skill for a character.
+ * @param character The character object.
+ * @param objectKey The key of the characteristic or skill to retrieve.
+ * @returns The value of the characteristic or skill, or 0 if not found.
+ */
+export const getCheckValue = (
+  character: Character,
+  objectKey: CheckObjectKey,
+): number => {
+  // Handle LUCK and SANITY separately as they are special cases
+  if (objectKey === CheckObjectKey.LUCK) {
+    return character.luck
+  }
+  if (objectKey === CheckObjectKey.SANITY) {
+    return character.sanity.current
+  }
+
+  // Handle standard characteristics (STR, CON, etc.)
+  // These are stored with lowercase keys in character.characteristics
+  const characteristicKeyLC =
+    objectKey.toLowerCase() as keyof Character['characteristics']
+  if (characteristicKeyLC in character.characteristics) {
+    // Check if the lowercase key is a valid characteristic key
+    const validCharacteristicKeys: (keyof Character['characteristics'])[] = [
+      'str',
+      'con',
+      'dex',
+      'app',
+      'edu',
+      'pow',
+      'siz',
+      'int',
+    ]
+    if (validCharacteristicKeys.includes(characteristicKeyLC)) {
+      return character.characteristics[characteristicKeyLC]
+    }
+  }
+
+  // Handle skills (stored with uppercase keys, matching CheckObjectKey values)
+  if (objectKey in character.skills) {
+    return character.skills[objectKey] // No need for `as keyof typeof character.skills` if keys are strings
+  }
+
+  // If the key is not found, log a warning and return a default value
+  console.warn(
+    `[getCheckValue] CheckObjectKey "${objectKey}" (lc: "${characteristicKeyLC}") not found in character. Returning 0.`,
+  )
+  return 0
 }

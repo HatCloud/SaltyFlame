@@ -8,6 +8,7 @@ interface OptionButtonProps {
   children: React.ReactNode
   disabled?: boolean
   conditionDescription?: string
+  checkValueDescription?: string // New prop for check value
 }
 
 const OptionButton: React.FC<OptionButtonProps> = ({
@@ -15,6 +16,7 @@ const OptionButton: React.FC<OptionButtonProps> = ({
   children,
   disabled,
   conditionDescription,
+  checkValueDescription, // Destructure new prop
 }) => {
   const buttonStyle = [
     styles.optionButton,
@@ -37,6 +39,11 @@ const OptionButton: React.FC<OptionButtonProps> = ({
       {conditionDescription && (
         <Text style={[textStyle, styles.conditionDescriptionText]}>
           {conditionDescription}
+        </Text>
+      )}
+      {checkValueDescription && ( // Render check value description if provided
+        <Text style={[textStyle, styles.checkValueDescriptionText]}>
+          {checkValueDescription}
         </Text>
       )}
       <Text style={textStyle}>{children}</Text>
@@ -86,6 +93,13 @@ const styles = StyleSheet.create({
     color: '#AEAEB2', // Slightly lighter grey for condition description
     marginBottom: padding.Mini, // Changed from Tiny to Mini
     fontStyle: 'italic',
+  },
+  // Style for the check value description, similar to conditionDescriptionText
+  checkValueDescriptionText: {
+    fontSize: typeface.Size.Small,
+    color: '#8A8A8E', // Slightly different color for distinction, or same as condition
+    marginBottom: padding.Mini,
+    fontStyle: 'normal', // Or italic if preferred
   },
 })
 

@@ -31,6 +31,7 @@ export const translations = {
       extremeSuccess: '极限成功',
       fumble: '大失败',
       continue: '继续',
+      yourValueIs: '你的 {{skillName}} 为 {{value}}',
     },
     condition: {
       // Added condition section
@@ -115,6 +116,7 @@ export const translations = {
       extremeSuccess: 'Extreme Success',
       fumble: 'Fumble',
       continue: 'CONTINUE',
+      yourValueIs: 'Your {{skillName}} is {{value}}',
     },
     condition: {
       // Added condition section

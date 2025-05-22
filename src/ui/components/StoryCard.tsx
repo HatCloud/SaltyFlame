@@ -239,8 +239,14 @@ const StoryCard: React.FC = React.memo(() => {
 
   return (
     <View style={styles.storyCardContainer}>
-      <Text style={styles.takeText}>TAKE {currentScene.id}</Text>
-      <Text style={styles.storyCardContentText}>{currentScene.story}</Text>
+      <Text style={styles.takeText} onPress={goBack}>
+        TAKE {currentScene.id}
+      </Text>
+      {currentScene.story.split('\n').map((paragraph, index) => (
+        <Text key={`story-para-${index}`} style={styles.storyCardContentText}>
+          {paragraph}
+        </Text>
+      ))}
 
       {state.currentCheckAttempt && (
         <CheckResult
@@ -319,7 +325,7 @@ const styles = StyleSheet.create({
     fontSize: typeface.Size.Normal,
     color: typeface.Color.Content,
     lineHeight: typeface.Size.Normal * 1.4,
-    marginBottom: padding.Normal,
+    marginBottom: padding.Normal, // Ensure inter-paragraph spacing is Normal
   },
 })
 
