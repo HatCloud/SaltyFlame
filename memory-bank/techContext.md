@@ -15,6 +15,21 @@
 - **React Native Reanimated**: [https://github.com/software-mansion/react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) - 用于创建流畅动画的库。
   _注：状态管理目前通过 React 内置 Hooks (`useReducer`) 实现，遵循类似 Redux 的模式，但未直接引入 `react-redux` 或 `redux-saga` 库。_
 
+## 国际化 (i18n)
+
+项目采用自定义的 React Hook (`useI18n`) 来实现国际化功能，支持中文和英文。
+
+- **`src/i18n/useI18n.ts`**: 定义了 `useI18n` hook。该 hook 从全局应用状态 (`state.language`) 获取当前选择的语言（'cn' 或 'en'）。它提供一个 `t(path: string)` 函数，用于根据传入的点分隔路径（如 `common.goBack`）从语言资源中查找并返回对应的翻译文本。如果找不到翻译，会输出警告并返回原始路径。
+- **`src/i18n/resources.ts`**: 包含一个 `translations` 对象，该对象按语言代码（`cn`, `en`）组织嵌套的翻译字符串。例如，`translations.cn.common.goBack` 对应中文的“返回上级”。该文件还导出了 `I18nResources` 类型，它基于 `translations.cn` 的结构生成，用于在代码中提供翻译键的类型提示和检查。
+- **`src/i18n/types.ts`**: 定义了 `LanguageCode` 类型（`'cn' | 'en'`）和 `I18nContextType` 接口，后者描述了 `useI18n` hook 返回的对象结构（包含 `t` 函数和当前 `lang`）。
+
+`useI18n` hook 目前在以下UI组件中使用以提供本地化文本：
+
+- `src/ui/components/CheckOption.tsx`
+- `src/ui/components/CheckResult.tsx`
+- `src/ui/components/StoryCard.tsx`
+- `src/ui/components/CharacterBottomSheet.tsx`
+
 ## 开发环境设置
 
 （这部分内容将在后续开发过程中，根据实际环境配置进行补充。例如：Node.js 版本、Yarn 版本、React Native CLI 版本、Android Studio/Xcode 配置等。）

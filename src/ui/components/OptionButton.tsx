@@ -18,13 +18,18 @@ const OptionButton: React.FC<OptionButtonProps> = ({ onPress, children }) => {
 
 const styles = StyleSheet.create({
   optionButton: {
-    marginBottom: padding.Small,
+    marginTop: padding.Mini,
+    marginBottom: padding.Mini,
+    padding: padding.Normal,
+    backgroundColor: '#2C2C2E',
+    borderRadius: padding.Mini,
+    borderWidth: 1,
+    borderColor: '#444',
   },
   storyCardOptionText: {
     fontSize: typeface.Size.Normal,
     color: typeface.Color.Content,
     lineHeight: typeface.Size.Normal * 1.3,
-    marginBottom: padding.Normal,
   },
 })
 

@@ -5,11 +5,14 @@ import palette from '../../theme/palette'
 import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
 import { useAppReducer } from '../../hook'
+import { useI18n } from '../../i18n/useI18n'
 
 const CharacterBottomSheet: React.FC = React.memo(() => {
   const [state] = useAppReducer()
   const { characterData } = state
   const insets = useSafeAreaInsets()
+  const { t } = useI18n()
+  const [showCharacteristics, setShowCharacteristics] = React.useState(false)
 
   if (!characterData) {
     return null
@@ -46,7 +49,7 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
         </View>
 
         <View style={styles.centerColumn}>
-          <Text style={styles.statLabel}>HP</Text>
+          <Text style={styles.statLabel}>{t('stats.hp')}</Text>
           <Text style={[styles.statText, { color: '#cc702d' }]}>
             {displayValue(characterData.hitPoints?.current)}/
             {displayValue(characterData.hitPoints?.max)}
@@ -54,7 +57,7 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
         </View>
 
         <View style={styles.rightColumn}>
-          <Text style={styles.statLabel}>SAN</Text>
+          <Text style={styles.statLabel}>{t('stats.san')}</Text>
           <Text style={[styles.statText, { color: '#82c6d7' }]}>
             {displayValue(characterData.sanity?.current)}/
             {displayValue(characterData.sanity?.max)}
@@ -63,61 +66,63 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
       </View>
 
       {/* 属性值栏 */}
-      <View style={styles.attributesContainer}>
-        <View style={styles.attributesRow}>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>STR </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.str)}
+      {showCharacteristics ? (
+        <View style={styles.attributesContainer}>
+          <View style={styles.attributesRow}>
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.str')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.str)}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>CON </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.con)}
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.con')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.con)}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>SIZ </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.siz)}
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.siz')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.siz)}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>DEX </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.dex)}
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.dex')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.dex)}
+              </Text>
             </Text>
-          </Text>
-        </View>
+          </View>
 
-        <View style={styles.attributesRow}>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>APP </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.app)}
+          <View style={styles.attributesRow}>
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.app')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.app)}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>EDU </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.edu)}
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.edu')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.edu)}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>INT </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.int)}
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.int')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.int)}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.attributeItem}>
-            <Text style={styles.attributeLabel}>POW </Text>
-            <Text style={styles.attributeValue}>
-              {displayValue(characteristics.pow)}
+            <Text style={styles.attributeItem}>
+              <Text style={styles.attributeLabel}>{t('stats.pow')} </Text>
+              <Text style={styles.attributeValue}>
+                {displayValue(characteristics.pow)}
+              </Text>
             </Text>
-          </Text>
+          </View>
         </View>
-      </View>
+      ) : null}
     </View>
   )
 })
@@ -180,7 +185,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: palette.Gold,
     fontWeight: '600',
-    letterSpacing: padding.Mini,
   },
   attributesContainer: {
     borderTopWidth: 1,
@@ -203,7 +207,7 @@ const styles = StyleSheet.create({
   },
   attributeValue: {
     fontSize: 12,
-    color: palette.Gold,
+    color: '#a0a5ad',
     fontWeight: '500',
   },
 })

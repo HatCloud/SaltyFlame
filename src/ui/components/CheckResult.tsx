@@ -4,40 +4,36 @@ import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
 import { CheckAttemptState } from '../../interface/MyAppState'
 import { CheckObjectNames } from '../../interface/enums'
+import { useI18n } from '../../i18n/useI18n'
 
 interface CheckResultProps {
   checkAttempt: CheckAttemptState
-  lang: 'cn' | 'en'
   onResolve: () => void
 }
 
 const CheckResult: React.FC<CheckResultProps> = ({
   checkAttempt,
-  lang,
   onResolve,
 }) => {
+  const { t, lang } = useI18n()
+
+  const checkName =
+    CheckObjectNames[checkAttempt.checkDefinition.subObject]?.[lang] ||
+    String(checkAttempt.checkDefinition.subObject)
+
   return (
     <View style={styles.checkResultContainer}>
       <Text style={styles.checkInfoText}>
-        {lang === 'cn' ? '检定:' : 'Check:'}{' '}
-        {CheckObjectNames[checkAttempt.checkDefinition.subObject]?.[lang] ||
-          String(checkAttempt.checkDefinition.subObject)}
+        {t('check.result')} {checkName}
         {checkAttempt.checkDefinition.difficulty
           ? ` (${checkAttempt.checkDefinition.difficulty})`
           : ''}
       </Text>
       <Text style={styles.checkInfoText}>
-        {lang === 'cn' ? '掷骰点数:' : 'Roll:'} {checkAttempt.rollValue}
+        {t('check.rollValue')}: {checkAttempt.rollValue}
       </Text>
       <Text style={styles.checkInfoText}>
-        {lang === 'cn' ? '结果:' : 'Result:'}{' '}
-        {checkAttempt.isSuccess
-          ? lang === 'cn'
-            ? '成功'
-            : 'Success'
-          : lang === 'cn'
-            ? '失败'
-            : 'Failure'}
+        {checkAttempt.isSuccess ? t('check.success') : t('check.failure')}
         {checkAttempt.isSuccess && checkAttempt.successMessage && (
           <Text style={styles.checkInfoText}>
             {' '}
@@ -52,9 +48,7 @@ const CheckResult: React.FC<CheckResultProps> = ({
         )}
       </Text>
       <Pressable onPress={onResolve} style={styles.resolveButton}>
-        <Text style={styles.storyCardOptionText}>
-          {lang === 'cn' ? '继续' : 'Continue'}
-        </Text>
+        <Text style={styles.storyCardOptionText}>{t('check.continue')}</Text>
       </Pressable>
     </View>
   )
@@ -87,7 +81,6 @@ const styles = StyleSheet.create({
     fontSize: typeface.Size.Normal,
     color: typeface.Color.Content,
     lineHeight: typeface.Size.Normal * 1.3,
-    marginBottom: padding.Normal,
   },
 })
 

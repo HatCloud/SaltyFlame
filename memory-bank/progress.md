@@ -32,6 +32,9 @@
   - 创建了 `src/data/loadInitialSceneData.ts` 脚本，用于导入并合并所有模块化的中文场景数据，并清除了其中的占位符。
   - `src/interface/MyAppState.ts` 中的 `initialState` 已更新，通过调用 `loadAllCnSceneData()` 来加载场景数据。
   - 旧的单一数据文件 `src/data/SceneData_CN.ts` 已被删除。
+- [x] **国际化 (i18n) 功能初步实现**:
+  - 添加了 `src/i18n/` 目录及相关文件 (`useI18n.ts`, `resources.ts`, `types.ts`)。
+  - `useI18n` hook 已在多个UI组件中用于文本本地化。
 
 ## 未完成功能 (来自 projectbrief.md)
 
@@ -75,3 +78,6 @@
   - 实施了新的数据存储策略：场景数据存储于 `src/data/ts_cn/` 目录下的多个文件中，并通过 `src/data/loadInitialSceneData.ts` 统一加载。
   - 清理了 `src/data/loadInitialSceneData.ts` 中的加载占位符。
   - 决定将英文剧本数据的转换工作推迟。
+- **2025-05-22 (续)**:
+  - 引入并初步实现了国际化 (i18n) 功能，支持中英文切换。
+  - `useI18n` hook 已集成到主要UI组件中。

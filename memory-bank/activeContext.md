@@ -31,6 +31,10 @@
   - `src/interface/MyAppState.ts` 中的 `initialState` 已更新，通过调用 `loadAllCnSceneData()` 来加载场景数据。
   - 旧的单一数据文件 `src/data/SceneData_CN.ts` 已被删除。
   - `src/data/loadInitialSceneData.ts` 文件中的占位符和临时注释已清理完毕。
+- **国际化 (i18n) 功能初步实现**:
+  - 在 `src/i18n/` 目录下添加了 `useI18n.ts` (自定义hook), `resources.ts` (翻译资源), 和 `types.ts` (相关类型定义)。
+  - `useI18n` hook 从应用状态读取语言设置，并提供 `t` 函数用于文本翻译。
+  - 已在 `CheckOption.tsx`, `CheckResult.tsx`, `StoryCard.tsx`, 和 `CharacterBottomSheet.tsx` 组件中使用 `useI18n` 实现文本本地化。
 
 ## 后续步骤
 
@@ -64,3 +68,4 @@
 - **模块化数据管理**: 将场景数据拆分为多个小文件，更易于维护、版本控制和潜在的协作。
 - **交互流程驱动状态设计**: 用户期望的检定交互流程直接影响了 `MyAppState` 中 `currentCheckAttempt` 状态的设计，以及 `reducer` 中相关action的处理方式。
 - **逐步完善**: 对于复杂功能如检定逻辑和效果应用，采用先搭建框架，然后逐步填充和完善具体实现的策略。
+- **i18n集成**: 引入国际化支持，使得应用能够方便地支持多种语言，提升了用户体验的灵活性。

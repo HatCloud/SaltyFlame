@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { padding } from '../../theme/padding'
 import palette from '../../theme/palette'
 import { typeface } from '../../theme/typeface'
@@ -8,20 +8,14 @@ import type { Scene, SceneInteractOption } from '../../interface/Scene'
 import OptionButton from './OptionButton'
 import CheckResult from './CheckResult'
 import CheckOption from './CheckOption'
+import { useI18n } from '../../i18n/useI18n'
+import type { LanguageCode } from '../../i18n/types'
 
 const StoryCard: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer()
+  const { t, lang } = useI18n()
   const currentScene: Scene | undefined =
     state.sceneData?.[state.currentSceneKey]
-
-  const lang = useMemo(
-    () => (state.language === 'en' ? 'en' : 'cn'),
-    [state.language],
-  )
-
-  const goBack = useCallback(() => {
-    dispatch({ type: 'GO_BACK' })
-  }, [dispatch])
 
   const handleInteractOptionPress = useCallback(
     (option: SceneInteractOption) => {
@@ -49,13 +43,15 @@ const StoryCard: React.FC = React.memo(() => {
     dispatch({ type: 'RESOLVE_CHECK_OUTCOME' })
   }, [dispatch])
 
+  const goBack = useCallback(() => {
+    dispatch({ type: 'GO_BACK' })
+  }, [dispatch])
+
   if (!currentScene) {
     return (
       <View style={styles.storyCardContainer}>
-        <Text style={styles.storyCardContentText}>404 找不到场景</Text>
-        <OptionButton onPress={goBack}>
-          {lang === 'cn' ? '返回上级' : 'Go Back'}
-        </OptionButton>
+        <Text style={styles.storyCardContentText}>{t('common.notFound')}</Text>
+        <OptionButton onPress={goBack}>{t('common.goBack')}</OptionButton>
       </View>
     )
   }
@@ -68,7 +64,7 @@ const StoryCard: React.FC = React.memo(() => {
       {state.currentCheckAttempt && (
         <CheckResult
           checkAttempt={state.currentCheckAttempt}
-          lang={lang}
+          lang={lang as LanguageCode}
           onResolve={handleResolveCheckOutcome}
         />
       )}
@@ -81,7 +77,7 @@ const StoryCard: React.FC = React.memo(() => {
                 <CheckOption
                   key={index.toString()}
                   option={option}
-                  lang={lang}
+                  lang={lang as LanguageCode}
                   onPress={handleInteractOptionPress}
                 />
               )
@@ -92,10 +88,8 @@ const StoryCard: React.FC = React.memo(() => {
                   onPress={() => handleInteractOptionPress(option)}
                 >
                   {option.text
-                    ? `${option.text}，前往 `
-                    : lang === 'cn'
-                      ? '前往 '
-                      : 'Go to '}
+                    ? `${option.text}，${t('common.goTo')} `
+                    : `${t('common.goTo')} `}
                   <Text style={styles.storyCardOptionGoto}>{option.goto}</Text>
                 </OptionButton>
               )
