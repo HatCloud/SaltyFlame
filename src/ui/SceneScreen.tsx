@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, View} from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import React from 'react'
 import palette from '../theme/palette'
 import StoryCard from './components/StoryCard'
@@ -9,7 +9,8 @@ const SceneScreen: React.FC = React.memo(() => {
     <View style={styles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
+        showsHorizontalScrollIndicator={false}
+      >
         <StoryCard />
       </ScrollView>
       <CharacterCard />

@@ -1,4 +1,4 @@
-import {Platform} from 'react-native'
+import { Platform } from 'react-native'
 
 const Color = {
   Button: '#5A6470',
@@ -27,7 +27,7 @@ const Size = {
 
 type WeightKey = 'Bold' | 'Medium' | 'Regular' | 'Heavy'
 type WeightValue = '600' | '500' | '400' | '800' | 'normal' | 'bold'
-const Weight: {[P in WeightKey]: WeightValue} = {
+const Weight: { [P in WeightKey]: WeightValue } = {
   Bold: Platform.select({
     android: 'bold',
     default: '600',

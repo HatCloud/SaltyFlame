@@ -1,16 +1,16 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native'
-import React, {useCallback, useMemo} from 'react'
-import {padding} from '../../theme/padding'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+import React, { useCallback, useMemo } from 'react'
+import { padding } from '../../theme/padding'
 import palette from '../../theme/palette'
-import {typeface} from '../../theme/typeface'
-import {useAppReducer} from '../../hook'
+import { typeface } from '../../theme/typeface'
+import { useAppReducer } from '../../hook'
 import type {
   Scene,
   SceneInteractOption,
   // CheckDrivenOption, // Not needed directly if using option.type
   // GotoDrivenOption, // Not needed directly if using option.type
 } from '../../interface/Scene' // Ensure SceneInteractOption is the union type
-import {CheckObjectNames} from '../../interface/enums'
+import { CheckObjectNames } from '../../interface/enums'
 
 const StoryCard: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer()
@@ -23,7 +23,7 @@ const StoryCard: React.FC = React.memo(() => {
   )
 
   const goBack = useCallback(() => {
-    dispatch({type: 'GO_BACK'})
+    dispatch({ type: 'GO_BACK' })
   }, [dispatch])
 
   // Combined handler for all option types
@@ -32,7 +32,7 @@ const StoryCard: React.FC = React.memo(() => {
       if (option.type === 'check') {
         dispatch({
           type: 'PERFORM_INLINE_CHECK',
-          payload: {checkPayload: option.check, originalOption: option},
+          payload: { checkPayload: option.check, originalOption: option },
         })
       } else if (option.type === 'goto') {
         // Effects on GotoDrivenOption are handled by reducer if CHANGE_SCENE is enhanced,
@@ -40,7 +40,7 @@ const StoryCard: React.FC = React.memo(() => {
         // For now, assuming reducer handles pre-navigation effects if any are associated with CHANGE_SCENE.
         if (option.effects && option.effects.length > 0) {
           option.effects.forEach(effect =>
-            dispatch({type: 'APPLY_EFFECT', payload: effect}),
+            dispatch({ type: 'APPLY_EFFECT', payload: effect }),
           )
         }
         dispatch({
@@ -53,7 +53,7 @@ const StoryCard: React.FC = React.memo(() => {
   )
 
   const handleResolveCheckOutcome = useCallback(() => {
-    dispatch({type: 'RESOLVE_CHECK_OUTCOME'})
+    dispatch({ type: 'RESOLVE_CHECK_OUTCOME' })
   }, [dispatch])
 
   if (!currentScene) {
@@ -119,7 +119,8 @@ const StoryCard: React.FC = React.memo(() => {
           </Text>
           <Pressable
             onPress={handleResolveCheckOutcome}
-            style={styles.resolveButton}>
+            style={styles.resolveButton}
+          >
             <Text style={styles.storyCardOptionText}>
               {lang === 'cn' ? '继续' : 'Continue'}
             </Text>
@@ -150,7 +151,8 @@ const StoryCard: React.FC = React.memo(() => {
                 <Pressable
                   key={index.toString()}
                   onPress={() => handleInteractOptionPress(option)}
-                  style={styles.optionButton}>
+                  style={styles.optionButton}
+                >
                   <Text style={styles.storyCardOptionText}>
                     {optionCheckText}
                   </Text>
@@ -161,7 +163,8 @@ const StoryCard: React.FC = React.memo(() => {
                 <Pressable
                   key={index.toString()}
                   onPress={() => handleInteractOptionPress(option)}
-                  style={styles.optionButton}>
+                  style={styles.optionButton}
+                >
                   <Text style={styles.storyCardOptionText}>
                     {option.text
                       ? `${option.text}，前往 `

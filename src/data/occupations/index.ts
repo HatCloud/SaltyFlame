@@ -1,10 +1,10 @@
-import {antiquarianTemplate} from './antiquarian'
-import {doctorTemplate} from './doctor'
-import {journalistTemplate} from './journalist'
-import {privateInvestigatorTemplate} from './privateInvestigator'
-import {professorTemplate} from './professor'
-import {OccupationTemplate} from '../../interface/OccupationTemplate'
-import {CheckObjectKey} from '../../interface/enums' // 虽然在此文件不直接用，但导出类型可能需要
+import { antiquarianTemplate } from './antiquarian'
+import { doctorTemplate } from './doctor'
+import { journalistTemplate } from './journalist'
+import { privateInvestigatorTemplate } from './privateInvestigator'
+import { professorTemplate } from './professor'
+import { OccupationTemplate } from '../../interface/OccupationTemplate'
+import { CheckObjectKey } from '../../interface/enums' // 虽然在此文件不直接用，但导出类型可能需要
 
 export const occupationTemplates: Record<string, OccupationTemplate> = {
   antiquarian: antiquarianTemplate,
@@ -35,4 +35,4 @@ export type {
   OccupationTemplate,
   OccupationBackgroundTemplate,
 } from '../../interface/OccupationTemplate'
-export {CheckObjectKey} // Re-exporting enums if they are part of the public API of this module
+export { CheckObjectKey } // Re-exporting enums if they are part of the public API of this module

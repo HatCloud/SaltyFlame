@@ -1,4 +1,4 @@
-import type {SceneData} from '../../interface/Scene'
+import type { SceneData } from '../../interface/Scene'
 import {
   CheckObjectKey,
   EffectType,
@@ -25,7 +25,7 @@ export const scenes_141_160: SceneData = {
           onFailureSceneId: '63', // Goes to 63 in both cases, but failure applies an effect
           successText: '理智检定成功',
           failureText: '理智检定失败',
-          onFailureEffects: [{type: EffectType.CHANGE_SANITY, value: '-1D2'}],
+          onFailureEffects: [{ type: EffectType.CHANGE_SANITY, value: '-1D2' }],
         },
       },
     ],
@@ -36,8 +36,8 @@ export const scenes_141_160: SceneData = {
     story:
       '你绕着庄稼地跟随这个男人。他向上看了一眼，往两块岩石之间一迈步，居然消失了！\n仔细观察就会发现，有一道狭窄的通道通往悬崖。光线很微弱，刚刚能看清悬崖下有一个自然形成的小山洞。你如果进去，会和这男人很不舒服地贴在一起。',
     options: [
-      {type: 'goto', text: '跟着他进去', goto: '191'},
-      {type: 'goto', text: '保持距离', goto: '160'},
+      { type: 'goto', text: '跟着他进去', goto: '191' },
+      { type: 'goto', text: '保持距离', goto: '160' },
     ],
   },
   '143': {
@@ -102,7 +102,7 @@ export const scenes_141_160: SceneData = {
     story:
       '“好吧......我想我几分钟以后就回来。”梅抓起一件外套，走进夜色之中。你等了一会儿，到看不见她以后，才开始敲卧室的门。没有人回答，一片沉默。脚步声从地面传来，门开了几寸宽的一道缝。露丝的两只眼睛透过门缝向外张望，从左边看到右边。你告诉她她妈妈出门了，问她在烦恼什么。这双眼一下就盯住了你。\n她低声说：“是明天，每年都会有的。他们带走了我大。如果他们得手了，也会带走你的。”\n她坚定的目光令你不寒而栗。你反复追问。她到底说的是什么？\n“所有人。每个人。你刚一来，他们就在看着你。你被盯上了。”她的声音十分空洞。“过几年，等我再大一些......他们也会带走我。”\n你听到门外传过来脚步声。露丝眨了一下眼睛，随即碰上了卧室的大门。你回头去晾干碗碟。梅走进来，脱下她的外套。\n“和这男人讲话是白费时间，”她不忿地嘟哝着回到了卧室里。\n你可以在所用技能左边的小方框里打勾。',
     // entryEffects depend on the skill used in scene 138. This needs to be handled by the CheckPayload's onSuccessEffects from scene 138.
-    options: [{type: 'goto', text: '继续', goto: '157'}],
+    options: [{ type: 'goto', text: '继续', goto: '157' }],
   },
   '146': {
     id: '146',
@@ -127,23 +127,23 @@ export const scenes_141_160: SceneData = {
     story:
       '你检查书脊的时候，注意到了书架和北墙之间的距离。从外面看，窗户边缘和墙之间估计足有三四尺。书架覆盖了整面用砖砌住的窗户。\n进一步检查之下，你发现了用粘在书架上的书套制成的巧妙机关。当你向左拉机关的时候，就会有一整段书架向外敞开。\n灯塔四周活动的哐哐声似乎越来越响，每当有说话声离房门太近，你都会下意识地退缩。',
     options: [
-      {type: 'goto', text: '调查书架后面', goto: '153'},
-      {type: 'goto', text: '关上书架，趁着还早赶快逃离', goto: '120'},
+      { type: 'goto', text: '调查书架后面', goto: '153' },
+      { type: 'goto', text: '关上书架，趁着还早赶快逃离', goto: '120' },
     ],
   },
   '148': {
     id: '148',
     story:
       '第一名舞者说：“你的牺牲，会让村子重生；”\n第二名舞者说：“你为了我们大家，直升云霄；”\n第三名舞者说：“愿你在这白热之中获得至福 。”\n她们迂回地跳着舞远去，消失在房子后面。',
-    options: [{type: 'goto', text: '继续', goto: '18'}],
+    options: [{ type: 'goto', text: '继续', goto: '18' }],
   },
   '149': {
     id: '149',
     story:
       '你在靠近熊的时候失去了平衡，被一棵小树绊倒了。小树树干折断，发出了步枪开火一般的劈裂声。熊扭过头来，用漆黑的眼珠锁定了你。\n它以惊人的速度向你疾驰而来。这巨兽猛冲起来相当吓人。',
     options: [
-      {type: 'goto', text: '逃开熊', goto: '155'},
-      {type: 'goto', text: '坚守不动', goto: '173'},
+      { type: 'goto', text: '逃开熊', goto: '155' },
+      { type: 'goto', text: '坚守不动', goto: '173' },
     ],
   },
   '150': {
@@ -153,15 +153,15 @@ export const scenes_141_160: SceneData = {
     // This is a complex opposed roll. For now, representing as two outcomes.
     // True implementation would require more complex reducer logic or a dedicated action.
     options: [
-      {type: 'goto', text: '进行对抗检定（假设你胜出）', goto: '172'},
-      {type: 'goto', text: '进行对抗检定（假设你落败）', goto: '87'},
+      { type: 'goto', text: '进行对抗检定（假设你胜出）', goto: '172' },
+      { type: 'goto', text: '进行对抗检定（假设你落败）', goto: '87' },
     ],
   },
   '151': {
     id: '151',
     story:
       '梅打了个呵欠，摇摇头：“我觉得明天早上去找他才好。我现在必须要管教下露丝。她今天太不让人省心。”她哐当一声把卧室门关上了。',
-    options: [{type: 'goto', text: '继续', goto: '157'}],
+    options: [{ type: 'goto', text: '继续', goto: '157' }],
   },
   '152': {
     id: '152',
@@ -190,8 +190,8 @@ export const scenes_141_160: SceneData = {
     story:
       '你侧身挤进书架后面的暗室。这是个小小的壁龛，大小仅容一人，两边各有一个隐蔽的书架。这种亮度下你没办法看清书名。',
     options: [
-      {type: 'goto', text: '冒险把悬崖边的窗户打开一点点', goto: '165'},
-      {type: 'goto', text: '抓上几本书就离开', goto: '159'},
+      { type: 'goto', text: '冒险把悬崖边的窗户打开一点点', goto: '165' },
+      { type: 'goto', text: '抓上几本书就离开', goto: '159' },
     ],
   },
   '154': {
@@ -203,7 +203,7 @@ export const scenes_141_160: SceneData = {
         type: 'goto',
         text: '继续',
         goto: '166',
-        effects: [{type: EffectType.CHANGE_HP, value: '+1'}], // TODO: Conditional logic for "if injured"
+        effects: [{ type: EffectType.CHANGE_HP, value: '+1' }], // TODO: Conditional logic for "if injured"
       },
     ],
   },
@@ -213,8 +213,8 @@ export const scenes_141_160: SceneData = {
       '你慌忙在树丛间攀爬，强行抑制恐惧感，想要回到道路上。\n想要从熊掌下逃脱，你必须用你的“敏捷”和熊的“敏捷”进行一次对抗检定。熊的“敏捷”是58。它掷出小于等于29点为困难成功，小于等于11点为极难成功。先进行熊的“敏捷”检定，再做你的“敏捷”检定。\n比较你们两方的成功等级。极难成功胜过困难成功，困难成功胜过常规（普通）成功，常规成功胜过失败。如果成功等级相同，技能值高的一方胜出。',
     // Opposed roll, similar to scene 150.
     options: [
-      {type: 'goto', text: '进行对抗检定（假设你胜出）', goto: '161'},
-      {type: 'goto', text: '进行对抗检定（假设你落败）', goto: '167'},
+      { type: 'goto', text: '进行对抗检定（假设你胜出）', goto: '161' },
+      { type: 'goto', text: '进行对抗检定（假设你落败）', goto: '167' },
     ],
   },
   '156': {
@@ -222,8 +222,8 @@ export const scenes_141_160: SceneData = {
     story:
       '所有村民都聚集在灯塔边，马路空荡无人，你可以轻声慢步地远离火场。他们结束之前，你必须离开村子。\n当你转过街角前往南边的道路时，吟诵似乎在加速。当你来到杂货店的时候，你终于遇到了来烬头村以来第一桩幸运的事。杂货店的墙边停着一辆自行车！你在普罗维登斯曾经学过骑车。\n你坐上鞍座。你烧伤的皮肉在拒绝着触碰。',
     options: [
-      {type: 'goto', text: '等等看灯塔会发生什么', goto: '168'},
-      {type: 'goto', text: '立即骑车出村', goto: '185'},
+      { type: 'goto', text: '等等看灯塔会发生什么', goto: '168' },
+      { type: 'goto', text: '立即骑车出村', goto: '185' },
     ],
   },
   '157': {
@@ -231,8 +231,8 @@ export const scenes_141_160: SceneData = {
     story:
       '客房里熟悉的陈设似乎愈加狭小。干净的床铺、小巧的衣橱和穿衣镜却令你联想到牢房。你留在烬头村还有什么可做？你的新生活离这里还远得很。\n你躺在床上，瞪着天花板上的一处裂缝。你回想这一天经历的事情，思考你发现的微末细节。\n高海拔和新鲜的空气令你倦怠。但你在这里还有安全感吗？',
     options: [
-      {type: 'goto', text: '就这样睡觉', goto: '224'},
-      {type: 'goto', text: '还不睡', goto: '230'},
+      { type: 'goto', text: '就这样睡觉', goto: '224' },
+      { type: 'goto', text: '还不睡', goto: '230' },
     ],
   },
   '158': {
@@ -272,7 +272,7 @@ export const scenes_141_160: SceneData = {
         type: 'goto',
         text: '继续',
         goto: '120',
-        effects: [{type: EffectType.ADD_ITEM, target: '阿撒托斯及其他'}], // Corrected from itemName to target
+        effects: [{ type: EffectType.ADD_ITEM, target: '阿撒托斯及其他' }], // Corrected from itemName to target
       },
     ],
   },
@@ -280,7 +280,7 @@ export const scenes_141_160: SceneData = {
     id: '160',
     story:
       '你回到路上，继续你最重要的任务：离开烬头村，前往奥西皮。山脊上的视野很好，你可以从这里看到道路延伸的方向。它随着山峦弯曲，在林地里消失了一段，又再次浮现，继续向远方伸展。当它向第二片林地连接过去的时候，你终于看不到它了。你觉得往最少里说，整个距离都至少有六七英里。一路上既无村庄，又无车马。\n走过去碰碰运气也许值得尝试。天气还很好。\n但你在尝试之前，还需要不少补给。',
-    options: [{type: 'goto', text: '继续', goto: '25'}],
+    options: [{ type: 'goto', text: '继续', goto: '25' }],
   },
 }
 

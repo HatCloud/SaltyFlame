@@ -1,4 +1,4 @@
-import {Dice} from '../data/Character'
+import { Dice } from '../data/Character'
 
 /**
  * 投掷 count 次 dice 面的骰子

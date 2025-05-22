@@ -1,4 +1,4 @@
-import type {SceneData} from '../../interface/Scene'
+import type { SceneData } from '../../interface/Scene'
 import {
   CheckObjectKey,
   EffectType,
@@ -11,7 +11,7 @@ export const scenes_161_180: SceneData = {
     id: '161',
     story:
       '你甩掉了熊，回到道路上，心脏咚咚地锤打着你的胸腔。你又奔跑了几分钟，直到你确认它不再理会你，才停了下来。',
-    options: [{type: 'goto', text: '继续', goto: '79'}],
+    options: [{ type: 'goto', text: '继续', goto: '79' }],
   },
   '162': {
     id: '162',
@@ -35,15 +35,15 @@ export const scenes_161_180: SceneData = {
     id: '163',
     story:
       '你追上一个黑影，大声呼喊。它滑进了阴影之中。等到你转过墙角，它已经不见踪影。你压住怒火，去追另一个黑影。在你接近时，它也融入黑暗。但第一个黑影又从你身后的阴暗院子里浮现出来。\n你可以这样持续追一整晚，但这些监视者对村子的了解比你多得多。你可能已经让他们明白你不会轻易被吓倒了。你疲惫地返回了莱德贝特的房子。',
-    options: [{type: 'goto', text: '继续', goto: '157'}],
+    options: [{ type: 'goto', text: '继续', goto: '157' }],
   },
   '164': {
     id: '164',
     story:
       '这些人比你更熟悉村子。你瞅准他们当中最大的空档，一头钻过去。他们紧随其后。你朝南边的路跑过去。你跑到的时候，发现四个村民正在东盘山路口中央把守，明显是守卫。你换个方向，跑向残破的教堂，不住地喘着粗气。\n你从破窗户里溜进教堂，猫腰穿过划分空间的古旧木板，移向另一边的门。这扇门相当完整，长满青苔，而且锁着。\n追你的人有两个已经从窗户爬进了教堂，另外两个从正门进来。\n“投降吧。”男人用棍子嘭嘭地敲击着手掌。“放弃抵抗对你有好处.”\n你几乎没有选择。',
     options: [
-      {type: 'goto', text: '放弃抵抗', goto: '108'},
-      {type: 'goto', text: '弄塌他们头上的一段屋顶', goto: '176'},
+      { type: 'goto', text: '放弃抵抗', goto: '108' },
+      { type: 'goto', text: '弄塌他们头上的一段屋顶', goto: '176' },
     ],
   },
   '165': {
@@ -83,7 +83,7 @@ export const scenes_161_180: SceneData = {
           expectedValue: true,
         },
       },
-      {type: 'goto', text: '（否则）', goto: '192'},
+      { type: 'goto', text: '（否则）', goto: '192' },
     ],
   },
   '167': {
@@ -93,30 +93,30 @@ export const scenes_161_180: SceneData = {
     // This is combat, very complex. For now, simplified.
     // TODO: Implement combat logic.
     options: [
-      {type: 'goto', text: '（假设受到重伤）', goto: '179'},
-      {type: 'goto', text: '（假设未受重伤）', goto: '186'},
+      { type: 'goto', text: '（假设受到重伤）', goto: '179' },
+      { type: 'goto', text: '（假设未受重伤）', goto: '186' },
     ],
   },
   '168': {
     id: '168',
     story:
       '你四下里确认自己没有被监视，就往回看向大道尽头。整个村子的人都在专注地望着灯塔。\n他们的吟诵升到了狂热的新音调。你不太清楚为什么，但你模糊地感觉到有哪里出了差错。吟诵开始被打断，人群在动摇。然后——\n轰！！有什么白热的东西像雷霆一样劈进灯塔前面的人群，在你的视野里留下一道炽烈的印迹。你觉得自行车下的地面都在震颤。轰！！又有一发坠落附近，火星四射。吟诵支吾不清，逐渐被尖叫声压过。\n火焰扫过灯塔前的建筑物，烟雾顺着街巷翻滚。一个女子脚步蹒跚地走向你，放声哭号。她的手臂上着着火，在墙上不住地拍打着。\n轰！！又一发坠落到你的视线之外，向着村会堂而去。是时候离开了。',
-    options: [{type: 'goto', text: '离开', goto: '185'}],
+    options: [{ type: 'goto', text: '离开', goto: '185' }],
   },
   '169': {
     id: '169',
     story:
       '阿博加斯特带着你穿过大道，躲过一座座房子。金属建筑物耸立在道路尽头。他说：“灯塔现在很安静，但它明天就会复活.”\n他领你到了村学校后面的壁凹里，往后扫视一圈，然后坐了下来。你挨着这个伤疤满脸的人，还是感觉不舒服。他抬起一只变形的眼皮。\n“你的时间不多了。听懂我的话。以前我是中转者，也是解密者。但后来文特斯这个蠢材用他的花言巧语改变了一切。来烬头村的东西才不理睬什么语言。那些白痴认为这是人祭仪式！”他向草地上吐了口痰。“这是控制的仪式。他们只懂得咒语，但他们不懂得自己召唤的是什么力量.”\n他抽了抽鼻子，坐了回去。“他们不懂！你没有时间问这问那。我来告诉你，在一切都要结束的时候，怎样让它终结。你可以把这山丘还给大地，送回四十年前造访过这里的死亡。我自己已经试过了。但......”他垂下头，“我已经没有那种集中力了。咒语很简单；我可以教给你。但你使用时必须有清晰的头脑，我已经失去它很久了.”',
     options: [
-      {type: 'goto', text: '学习奇怪的咒语', goto: '175'},
-      {type: 'goto', text: '已经受够阿博加斯特了', goto: '182'},
+      { type: 'goto', text: '学习奇怪的咒语', goto: '175' },
+      { type: 'goto', text: '已经受够阿博加斯特了', goto: '182' },
     ],
   },
   '170': {
     id: '170',
     story:
       '你转过一个街角，直接朝那个眼神凶狠的难对付女人冲了过去。她揪过你的肩膀，一下就把你扳倒。少年和拿着棍子的男人一齐冲上来，你很快就被制服了。',
-    options: [{type: 'goto', text: '继续', goto: '108'}],
+    options: [{ type: 'goto', text: '继续', goto: '108' }],
   },
   '171': {
     id: '171',
@@ -137,7 +137,7 @@ export const scenes_161_180: SceneData = {
           successText: '理智检定成功',
           failureText: '理智检定失败',
           onSuccessEffects: [
-            {type: EffectType.CHANGE_SANITY, value: '-1'},
+            { type: EffectType.CHANGE_SANITY, value: '-1' },
             {
               type: EffectType.SET_FLAG,
               gameFlag: 'FLAG_INCREASE_CTHULHU_MYTHOS_4', // Corrected
@@ -145,7 +145,7 @@ export const scenes_161_180: SceneData = {
             },
           ],
           onFailureEffects: [
-            {type: EffectType.CHANGE_SANITY, value: '-1D4'},
+            { type: EffectType.CHANGE_SANITY, value: '-1D4' },
             {
               type: EffectType.SET_FLAG,
               gameFlag: 'FLAG_INCREASE_CTHULHU_MYTHOS_4', // Corrected
@@ -160,7 +160,7 @@ export const scenes_161_180: SceneData = {
     id: '172',
     story:
       '你逐渐靠近那个男人。他回头怒视着你。“你这混账，”他啐道，放慢了脚步。“你能离开我吗？”\n你向他保证自己对他没有恶意。\n他说：“我们不能在这里说话。跟我来.”',
-    options: [{type: 'goto', text: '继续', goto: '142'}],
+    options: [{ type: 'goto', text: '继续', goto: '142' }],
   },
   '173': {
     id: '173',
@@ -169,8 +169,8 @@ export const scenes_161_180: SceneData = {
     // Combat scene. Very complex.
     // TODO: Implement full combat. For now, simplified options.
     options: [
-      {type: 'goto', text: '（战斗后，假设失败并受重伤）', goto: '193'},
-      {type: 'goto', text: '（战斗后，假设三轮后未倒下）', goto: '201'},
+      { type: 'goto', text: '（战斗后，假设失败并受重伤）', goto: '193' },
+      { type: 'goto', text: '（战斗后，假设三轮后未倒下）', goto: '201' },
     ],
   },
   '174': {
@@ -320,8 +320,8 @@ export const scenes_161_180: SceneData = {
     story:
       '天色渐晚，你回到莱德贝特家，简单地吃了一顿晚饭。梅反常地沉默。吃饭时，露丝轻轻瞟了你几眼，似乎有一种你难以理解的急迫感。吃完饭，梅就拉着女儿回了屋。\n你在烬头村已经停留将近一整天了，这里从地理到社会无不给你一种闭塞的感觉。这一晚似乎没有什么事可做。',
     options: [
-      {type: 'goto', text: '到外面眺望星空', goto: '131'},
-      {type: 'goto', text: '试着和露丝说说话', goto: '138'},
+      { type: 'goto', text: '到外面眺望星空', goto: '131' },
+      { type: 'goto', text: '试着和露丝说说话', goto: '138' },
       // TODO: Option for "如果你之前和人有约，现在是时候赴约了。" - needs a flag like 'HAS_APPOINTMENT'
       // { type: 'goto', text: '赴约', goto: 'SCENE_ID_FOR_APPOINTMENT', condition: { type: ConditionType.FLAG_SET, gameFlag: 'HAS_APPOINTMENT', expectedValue: true } },
     ],

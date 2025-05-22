@@ -1,7 +1,7 @@
 // 生成一个随机的骰子面数
 
 // 生成一个随机的骰子面数
-import {Character, Dice, Weapon} from '../interface/Character'
+import { Character, Dice, Weapon } from '../interface/Character'
 
 const randomDice = (): Dice => {
   const possibleValues: Dice[] = [4, 6, 8, 10, 12, 20]

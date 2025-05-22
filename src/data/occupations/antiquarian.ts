@@ -1,5 +1,5 @@
-import {CheckObjectKey} from '../../interface/enums'
-import {OccupationTemplate} from '../../interface/OccupationTemplate'
+import { CheckObjectKey } from '../../interface/enums'
+import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const antiquarianTemplate: OccupationTemplate = {
   name_cn: '文物学家',

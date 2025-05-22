@@ -6,23 +6,27 @@
  */
 
 import React from 'react'
-import {StatusBar, StyleSheet, View} from 'react-native'
+import { StatusBar, StyleSheet, View } from 'react-native'
 import SceneScreen from './ui/SceneScreen'
 import palette from './theme/palette'
-import {initialState} from './interface/MyAppState'
+import { initialState } from './interface/MyAppState'
+import { enableScreens } from 'react-native-screens'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export const AppContext = React.createContext(initialState)
 
 function App(): React.ReactElement {
   return (
     <AppContext.Provider value={initialState}>
-      <View style={styles.container}>
-        <StatusBar
-          barStyle={'light-content'}
-          backgroundColor={palette.Background}
-        />
-        <SceneScreen />
-      </View>
+      <SafeAreaProvider>
+        <View style={styles.container}>
+          <StatusBar
+            barStyle={'light-content'}
+            backgroundColor={palette.Background}
+          />
+          <SceneScreen />
+        </View>
+      </SafeAreaProvider>
     </AppContext.Provider>
   )
 }

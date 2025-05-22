@@ -1,5 +1,5 @@
-import {CheckObjectKey} from '../../interface/enums'
-import {OccupationTemplate} from '../../interface/OccupationTemplate'
+import { CheckObjectKey } from '../../interface/enums'
+import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const journalistTemplate: OccupationTemplate = {
   name_cn: '记者',

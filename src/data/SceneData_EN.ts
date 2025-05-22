@@ -1,4 +1,4 @@
-import type {SceneData} from '../interface/Scene'
+import type { SceneData } from '../interface/Scene'
 // import { CheckObjectKey, EffectType, CheckDifficulty, ConditionType } from '../interface/enums';
 
 export const sceneDataEN: SceneData = {

@@ -11,8 +11,8 @@ import {
   CheckPayload, // Added for PERFORM_INLINE_CHECK
   SceneInteractOption, // Added for PERFORM_INLINE_CHECK payload
 } from './interface/Scene'
-import {EffectType, CheckDifficulty} from './interface/enums'
-import {Character} from './interface/Character' // Import Character type
+import { EffectType, CheckDifficulty } from './interface/enums'
+import { Character } from './interface/Character' // Import Character type
 
 // --- Helper Functions ---
 
@@ -22,7 +22,7 @@ const rollD100 = (): number => Math.floor(Math.random() * 100) + 1
 function executeCheckLogic(
   state: MyAppState,
   check: Check,
-): {rollValue: number; isSuccess: boolean} {
+): { rollValue: number; isSuccess: boolean } {
   const characterValue = 50 // Placeholder for actual character skill/characteristic
   const roll = rollD100()
   let targetValue = characterValue
@@ -44,7 +44,7 @@ function executeCheckLogic(
   // TODO: Consider if critical success/failure (e.g. roll 1 or 100) should modify isSuccess
   // or be handled via specific text/effects from CheckPayload.
   // For now, a roll of 1 is success, 100 is failure if targetValue is typical.
-  return {rollValue: roll, isSuccess}
+  return { rollValue: roll, isSuccess }
 }
 
 function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
@@ -57,7 +57,7 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
   }
 
   // Now we know state.characterData is not null, so it must be a Character object.
-  const newCharacterData = {...state.characterData} // This should be safe.
+  const newCharacterData = { ...state.characterData } // This should be safe.
 
   switch (effect.type) {
     case EffectType.CHANGE_HP:
@@ -82,7 +82,7 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
   }
   // Ensure the returned characterData conforms to Character type.
   // If newCharacterData was correctly typed as Character from the spread, this should be fine.
-  return {...state, characterData: newCharacterData as Character}
+  return { ...state, characterData: newCharacterData as Character }
 }
 
 function applyAllEffects(state: MyAppState, effects?: Effect[]): MyAppState {
@@ -104,7 +104,7 @@ export const appReducer = (
     action.type,
     'payload' in action ? action.payload : undefined,
   )
-  let newState = {...state}
+  let newState = { ...state }
 
   switch (action.type) {
     case 'CHANGE_SCENE': {
@@ -143,15 +143,15 @@ export const appReducer = (
     // PERFORM_SCENE_CHECK and PERFORM_OPTION_CHECK are removed.
     // New handler for PERFORM_INLINE_CHECK:
     case 'PERFORM_INLINE_CHECK': {
-      const {checkPayload, originalOption} = action.payload
-      let tempState = {...newState}
+      const { checkPayload, originalOption } = action.payload
+      let tempState = { ...newState }
 
       // Apply effects from the original option before performing the check, if any
       if (originalOption && originalOption.effects) {
         tempState = applyAllEffects(tempState, originalOption.effects)
       }
 
-      const {rollValue, isSuccess} = executeCheckLogic(
+      const { rollValue, isSuccess } = executeCheckLogic(
         tempState, // Use tempState which has pre-check effects applied
         checkPayload.details,
       )

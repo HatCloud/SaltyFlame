@@ -1,16 +1,16 @@
-import {StyleSheet, Text, View} from 'react-native' // Removed Dimensions
+import { StyleSheet, Text, View } from 'react-native' // Removed Dimensions
 import React from 'react' // Removed useState, useCallback
 // Removed Animated and gesture handler imports
 import palette from '../../theme/palette'
-import {padding} from '../../theme/padding'
-import {typeface} from '../../theme/typeface'
-import {useAppReducer} from '../../hook'
+import { padding } from '../../theme/padding'
+import { typeface } from '../../theme/typeface'
+import { useAppReducer } from '../../hook'
 
 // Removed animation-related constants and types
 
 const CharacterCard: React.FC = React.memo(() => {
   const [state] = useAppReducer()
-  const {characterData} = state
+  const { characterData } = state
   // Removed isExpanded state, translateY shared value, onContentLayout, gestureHandler, animatedCardStyle
 
   if (!characterData) {

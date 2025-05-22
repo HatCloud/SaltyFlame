@@ -1,3 +1,18 @@
 {
-  "java.compile.nullAnalysis.mode": "automatic"
+  // ✅ 使用 Prettier 插件作为默认格式化工具
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // ✅ 每次保存自动格式化
+  "editor.formatOnSave": true,
+
+  // ✅ 避免 Prettier 忽略工作区 .prettierrc.js 配置
+  "prettier.configPath": ".prettierrc.js",
+
+  // ✅ 使用项目本地 Prettier 而不是 VSCode 自带的
+  "prettier.useEditorConfig": false,
+
+  // 可选：让 ESLint 也在保存时修复（如果你有 ESLint 插件）
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  }
 }
