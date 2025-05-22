@@ -8,7 +8,8 @@
     "start": "react-native start",
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "android:release": "cd android && ./gradlew assembleRelease && cd .. && VERSION=$(node -p \"require('./package.json').version\") && DATETIME=$(date +%Y%m%d%H%M) && APK_NAME=\"SaltyFlame_${VERSION}_${DATETIME}.apk\" && mv android/app/build/outputs/apk/release/app-release.apk \"android/app/build/outputs/apk/release/${APK_NAME}\" && cp \"android/app/build/outputs/apk/release/${APK_NAME}\" ~/Downloads/ && adb install \"android/app/build/outputs/apk/release/${APK_NAME}\""
   },
   "dependencies": {
     "@react-navigation/native": "^7.1.9",

@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   storyCardContainer: {
-    marginHorizontal: padding.ScreenLR + padding.Large,
+    marginHorizontal: padding.ScreenLR,
     marginTop: padding.ScreenTB + padding.Large + 40,
     borderRadius: padding.Mini,
     paddingHorizontal: padding.Large,
