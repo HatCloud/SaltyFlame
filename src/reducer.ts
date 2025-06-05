@@ -1,15 +1,44 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
   AppAction,
   MyAppState,
   Language,
-  // CheckAttemptState,
+  initialState as defaultInitialState, // Rename to avoid conflict
 } from './interface/MyAppState'
 import { Effect, Check } from './interface/Scene'
 import { EffectType, CheckDifficulty, SkillKey } from './constant/enums' // Added SkillKey
 import { Character } from './interface/Character' // Import Character type
 import { parseDiceString } from './utils/utils' // Import parseDiceString
 
+// --- AsyncStorage Keys ---
+const PERSISTED_STATE_KEY = 'SaltyFlameAppState'
+
+// Fields to persist
+const PERSISTED_FIELDS: (keyof MyAppState)[] = [
+  'currentSceneKey',
+  'history',
+  'characterData',
+  'language',
+  'gameFlags',
+]
+
 // --- Helper Functions ---
+
+// Function to save relevant parts of the state to AsyncStorage
+const saveStateToStorage = async (state: MyAppState) => {
+  try {
+    const stateToPersist: Partial<MyAppState> = {}
+    PERSISTED_FIELDS.forEach(key => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(stateToPersist as any)[key] = state[key]
+    })
+    const jsonValue = JSON.stringify(stateToPersist)
+    await AsyncStorage.setItem(PERSISTED_STATE_KEY, jsonValue)
+    console.log('State persisted to AsyncStorage:', stateToPersist)
+  } catch (e) {
+    console.error('Failed to save state to AsyncStorage:', e)
+  }
+}
 
 const rollD100 = (): number => Math.floor(Math.random() * 100) + 1
 
@@ -233,52 +262,65 @@ export const appReducer = (
   let newState = { ...state }
 
   switch (action.type) {
+    case 'HYDRATE_STATE': // New action to load persisted state
+      // Ensure payload is Partial<MyAppState>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      newState = { ...defaultInitialState, ...(action.payload as any) }
+      console.log('State hydrated from AsyncStorage:', newState)
+      // No need to save here, this is the load operation
+      return newState
+
     case 'CHANGE_SCENE': {
-      const newSceneKey = action.payload as string // SceneId removed
-      // Clear any pending check when changing scene directly
+      const newSceneKey = action.payload as string
       newState.currentCheckAttempt = null
       if (state.currentSceneKey !== newSceneKey) {
         newState.history = [...state.history, state.currentSceneKey]
       }
       newState.currentSceneKey = newSceneKey
-      // entryEffects removed from Scene type
+      saveStateToStorage(newState)
       return newState
     }
 
     case 'GO_BACK': {
-      // Clear any pending check when going back
       newState.currentCheckAttempt = null
       if (newState.history.length === 0) {
-        return newState
+        return newState // No change, no save needed
       }
       const previousSceneKey = newState.history[newState.history.length - 1]
       newState.currentSceneKey = previousSceneKey
       newState.history = newState.history.slice(0, -1)
+      saveStateToStorage(newState)
       return newState
     }
 
     case 'SET_LANGUAGE':
-      return {
+      newState = {
         ...newState,
         language: action.payload as Language,
       }
+      saveStateToStorage(newState)
+      return newState
 
     case 'APPLY_EFFECT':
-      return applySingleEffect(newState, action.payload as Effect)
+      newState = applySingleEffect(newState, action.payload as Effect)
+      // applySingleEffect already modifies characterData and gameFlags,
+      // which are persisted fields.
+      saveStateToStorage(newState)
+      return newState
 
-    // PERFORM_SCENE_CHECK and PERFORM_OPTION_CHECK are removed.
-    // New handler for PERFORM_INLINE_CHECK:
     case 'PERFORM_INLINE_CHECK': {
       const { checkPayload, originalOption } = action.payload
       let tempState = { ...newState }
 
-      // Apply effects from the original option before performing the check, if any
       if (originalOption && originalOption.effects) {
         tempState = applyAllEffects(tempState, originalOption.effects)
+        // If effects modified persisted fields, save them
+        // This check is a bit broad, but applyAllEffects can modify characterData/gameFlags
+        saveStateToStorage(tempState)
       }
 
       const { rollValue, isSuccess } = executeCheckLogic(
-        tempState, // Use tempState which has pre-check effects applied
+        tempState,
         checkPayload.details,
       )
 
@@ -292,15 +334,17 @@ export const appReducer = (
         nextSceneIdOnFailure: checkPayload.onFailureSceneId,
         effectsToApplyOnSuccess: checkPayload.onSuccessEffects,
         effectsToApplyOnFailure: checkPayload.onFailureEffects,
-        originalOption: originalOption, // Store the original option if provided
+        originalOption: originalOption,
       }
-      return tempState // Scene does not change yet, only currentCheckAttempt is updated
+      // currentCheckAttempt is not persisted, so no saveStateToStorage here for this field.
+      // However, if pre-check effects were applied and saved, that's handled above.
+      return tempState
     }
 
     case 'RESOLVE_CHECK_OUTCOME': {
       if (!newState.currentCheckAttempt) {
         console.warn('RESOLVE_CHECK_OUTCOME called without a pending check.')
-        return newState // Should not happen if UI logic is correct
+        return newState
       }
 
       const {
@@ -328,28 +372,32 @@ export const appReducer = (
         newState.history = [...newState.history, newState.currentSceneKey]
       }
       newState.currentSceneKey = nextSceneId
-      // entryEffects removed from Scene type
-      newState.currentCheckAttempt = null // Clear the check attempt
+      newState.currentCheckAttempt = null
+      saveStateToStorage(newState) // Persist changes from effects and scene change
       return newState
     }
 
     case 'CLEAR_CHECK_ATTEMPT':
+      // currentCheckAttempt is not persisted, so no save needed.
       return {
         ...newState,
         currentCheckAttempt: null,
       }
 
     case 'TOGGLE_CHARACTER_MODAL':
+      // isCharacterModalVisible is not persisted.
       return {
         ...newState,
         isCharacterModalVisible: !newState.isCharacterModalVisible,
       }
 
     case 'STORE_CHARACTER':
-      return {
+      newState = {
         ...newState,
         characterData: action.payload as Character,
       }
+      saveStateToStorage(newState) // characterData is persisted
+      return newState
 
     default:
       return newState

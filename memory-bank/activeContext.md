@@ -54,6 +54,18 @@
     - 将 `currentScene.story` 按换行符分割，为每个段落渲染单独的 `<Text>` 组件。
     - 应用 `styles.storyCardContentText` 样式，并确保其 `marginBottom` 为 `padding.Normal` 以实现段落间距。
     - (已移除) 根据用户反馈，取消了中文段落首行缩进的逻辑。
+- **应用状态持久化**:
+  - 安装了 `@react-native-async-storage/async-storage` 库。
+  - 修改了 `src/reducer.ts`：
+    - 添加了 `saveStateToStorage` 辅助函数，用于将指定字段 (`currentSceneKey`, `history`, `characterData`, `language`, `gameFlags`) 保存到 AsyncStorage。
+    - 在处理会改变这些持久化字段的 action (如 `CHANGE_SCENE`, `GO_BACK`, `SET_LANGUAGE`, `APPLY_EFFECT`, `RESOLVE_CHECK_OUTCOME`, `STORE_CHARACTER`) 后调用 `saveStateToStorage`。
+    - 添加了 `HYDRATE_STATE` action 类型及其处理逻辑，用于在应用启动时用 AsyncStorage 中的数据覆盖初始状态。
+  - 修改了 `src/interface/MyAppState.ts`：
+    - 定义了 `HydrateStateAction` 接口。
+    - 将 `HydrateStateAction` 添加到 `AppAction` 联合类型中。
+  - 修改了 `src/App.tsx`：
+    - 添加了 `useEffect` hook，在应用首次加载时从 AsyncStorage 读取持久化的状态。
+    - 如果读取成功，则 dispatch `HYDRATE_STATE` action 来更新应用状态。
 
 ## 后续步骤
 
@@ -78,7 +90,9 @@
 - **开发环境**：Android 构建环境已基本调通，iOS 环境在 Ruby 和 Pods 配置更新后也应准备就绪。
 - **检定流程**: 采纳了用户反馈，实现了多阶段检定流程：先执行检定并显示结果，再由用户点击确认后续操作，而不是检定后自动跳转。这对状态管理 (`currentCheckAttempt`) 和UI组件 (`StoryCard.tsx`) 均有较大影响。
 - **数据结构迭代**: `Scene.ts` 和 `MyAppState.ts` 中的数据结构经过了讨论和调整，以更好地支持游戏逻辑和检定流程。
-- **数据存储策略**：中文场景数据已从单一大型文件迁移到 `src/data/ts_cn/` 目录下的多个模块化TS文件，并通过 `loadInitialSceneData.ts` 统一加载。此策略已成功实施。
+- **数据存储策略**：
+  - 中文场景数据已从单一大型文件迁移到 `src/data/ts_cn/` 目录下的多个模块化TS文件，并通过 `loadInitialSceneData.ts` 统一加载。此策略已成功实施。
+  - 应用的关键状态字段现在会通过 AsyncStorage 持久化到本地，并在应用启动时加载。
 
 ## 重要模式与偏好
 

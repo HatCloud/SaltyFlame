@@ -63,6 +63,12 @@
     - 将 `currentScene.story` 按换行符分割，为每个段落渲染单独的 `<Text>` 组件。
     - 应用 `styles.storyCardContentText` 样式，并确保其 `marginBottom` 为 `padding.Normal` 以实现段落间距。
     - (已移除) 根据用户反馈，取消了中文段落首行缩进的逻辑。
+- [x] **应用状态持久化**:
+  - 安装了 `@react-native-async-storage/async-storage`。
+  - 修改了 `src/reducer.ts`，增加了保存状态到 AsyncStorage 的逻辑，并在相关 action 后调用。
+  - 添加了 `HYDRATE_STATE` action 用于在应用启动时加载持久化状态。
+  - 修改了 `src/interface/MyAppState.ts`，定义了 `HydrateStateAction`。
+  - 修改了 `src/App.tsx`，在应用启动时从 AsyncStorage 加载状态并 dispatch `HYDRATE_STATE`。
 
 ## 未完成功能 (来自 projectbrief.md)
 
@@ -126,3 +132,10 @@
   - 修正了 `src/i18n/resources.ts` 中 `check.yourValueIs` 翻译键的占位符格式，从单花括号 (`{key}`) 改为双花括号 (`{{key}}`)，以匹配 `src/i18n/useI18n.ts` 中 `t` 函数的插值逻辑，解决了插值未生效的问题。
 - **2025-05-22 (更更更晚)**:
   - 在 `src/ui/components/StoryCard.tsx` 中为剧情文本实现了段落间距（通过分割故事文本并应用 `marginBottom: padding.Normal` 样式）。根据用户反馈，移除了先前添加的中文首行缩进逻辑。
+- **2025-06-05**:
+  - 实现了应用状态持久化功能：
+    - 安装了 `@react-native-async-storage/async-storage`。
+    - 更新了 `reducer.ts` 以在状态变更时保存 `currentSceneKey`, `history`, `characterData`, `language`, `gameFlags` 到 AsyncStorage，并添加了 `HYDRATE_STATE` action 以在启动时加载这些状态。
+    - 更新了 `MyAppState.ts` 以包含 `HydrateStateAction`。
+    - 更新了 `App.tsx` 以在应用启动时从 AsyncStorage 加载并应用持久化的状态。
+    - 更新了 Memory Bank (`techContext.md`, `systemPatterns.md`, `activeContext.md`, `progress.md`) 以记录此项变更。

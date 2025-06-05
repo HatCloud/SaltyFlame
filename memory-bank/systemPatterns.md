@@ -25,7 +25,9 @@ graph LR
 - **本地化策略**: 通过自定义的 `useI18n` React Hook 和结构化的资源文件 (`src/i18n/`) 实现中英文语言支持。该 Hook 从应用状态读取当前语言设置，并提供翻译函数供 UI 组件使用。
 - **原生性能优化**：通过 `react-native-screens` 将非原生的导航容器转换为原生容器，提升导航性能。
 - **动画**：使用 `react-native-reanimated` 实现流畅的动画效果。
-- **数据存储**：中文场景数据采用模块化存储，分散在 `src/data/ts_cn/` 目录下的多个TS文件中，通过 `src/data/loadInitialSceneData.ts` 脚本在应用启动时加载和合并，便于管理和维护。
+- **数据存储**:
+  - **场景数据**: 中文场景数据采用模块化存储，分散在 `src/data/ts_cn/` 目录下的多个TS文件中，通过 `src/data/loadInitialSceneData.ts` 脚本在应用启动时加载和合并，便于管理和维护。
+  - **应用状态持久化**: 使用 `@react-native-async-storage/async-storage` 持久化部分应用状态（`currentSceneKey`, `history`, `characterData`, `language`, `gameFlags`）。状态在相关 action dispatch 后保存，并在应用启动时从 AsyncStorage 加载。
 
 ## 设计模式
 

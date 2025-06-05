@@ -13,6 +13,7 @@
 - **React Navigation**: [https://reactnavigation.org/](https://reactnavigation.org/) - 应用导航解决方案。
 - **React Native Screens**: [https://github.com/software-mansion/react-native-screens](https://github.com/software-mansion/react-native-screens) - React Navigation 的插件，用于将导航容器转换为原生视图，提升性能。
 - **React Native Reanimated**: [https://github.com/software-mansion/react-native-reanimated](https://github.com/software-mansion/react-native-reanimated) - 用于创建流畅动画的库。
+- **AsyncStorage**: [https://react-native-async-storage.github.io/async-storage/](https://react-native-async-storage.github.io/async-storage/) - React Native 的异步、持久化键值存储系统。用于持久化部分应用状态。
   _注：状态管理目前通过 React 内置 Hooks (`useReducer`) 实现，遵循类似 Redux 的模式，但未直接引入 `react-redux` 或 `redux-saga` 库。_
 
 ## 国际化 (i18n)
