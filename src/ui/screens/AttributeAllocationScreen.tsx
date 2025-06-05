@@ -289,14 +289,14 @@ const styles = StyleSheet.create({
     backgroundColor: palette.Background,
   },
   title: {
-    fontSize: 22,
+    fontSize: typeface.Size.Extra,
     fontWeight: 'bold',
     marginTop: 30,
     marginBottom: 15,
     color: typeface.Color.Content,
   },
   instructions: {
-    fontSize: 15,
+    fontSize: typeface.Size.Normal,
     textAlign: 'center',
     marginBottom: 15,
   },
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: palette.Gallery,
     borderRadius: 5,
     alignItems: 'center',
   },
@@ -320,8 +320,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   subHeader: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: typeface.Size.XLarge,
+    fontWeight: typeface.Weight.Bold,
     marginBottom: 10,
     textAlign: 'center',
     color: typeface.Color.Content,
@@ -335,8 +335,8 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   attributeLabel: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: typeface.Size.Large,
+    fontWeight: typeface.Weight.Medium,
     marginRight: 10,
     color: typeface.Color.Content,
   },
@@ -344,14 +344,14 @@ const styles = StyleSheet.create({
     height: ATTRIBUTE_SLOT_HEIGHT,
     width: 80,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: palette.Grey,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
   },
   emptySlotText: {
-    color: '#aaa',
+    color: typeface.Color.Inactive,
     fontStyle: 'italic',
   },
   valueItem: {
@@ -360,24 +360,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     margin: 4,
     borderWidth: 1,
-    borderColor: '#b0b0b0',
+    borderColor: palette.Grey,
     borderRadius: 4,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: palette.Gallery,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: palette.Black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
   },
   valueText: {
-    fontSize: 16,
+    fontSize: typeface.Size.Large,
     fontWeight: 'bold',
   },
   dropTargetHovered: {
-    backgroundColor: '#e0f7fa', // Light cyan
-    borderColor: '#007bff', // Blue
+    backgroundColor: palette.LightCyan, // Light cyan
+    borderColor: palette.LightBlue, // Blue
     borderWidth: 1.5, // Slightly thicker border when hovered
   },
 })

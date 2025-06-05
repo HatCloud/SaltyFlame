@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text } from 'react-native'
 import React from 'react'
 import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
+import palette from '../../theme/palette'
 
 interface OptionButtonProps {
   onPress: () => void
@@ -58,10 +59,9 @@ const styles = StyleSheet.create({
     padding: padding.Normal,
     paddingVertical: padding.Small,
     paddingHorizontal: padding.Normal,
-    backgroundColor: '#e5d099',
+    backgroundColor: palette.LightYellow,
     alignItems: 'flex-start',
-    //需要有阴影
-    shadowColor: '#000',
+    shadowColor: palette.Black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -72,32 +72,31 @@ const styles = StyleSheet.create({
     borderRadius: padding.Mini,
   },
   optionButtonDisabled: {
-    backgroundColor: '#48484A', // Darker grey for disabled state
-    borderColor: '#555',
+    backgroundColor: palette.DarkGrey, // Darker grey for disabled state
   },
   optionButtonPressed: {
-    backgroundColor: '#D4B77A', // 略深的背景色
-    opacity: 0.9, // 或轻微降低不透明度
+    backgroundColor: palette.DarkYellow,
+    opacity: 0.9,
   },
   storyCardOptionText: {
     fontSize: typeface.Size.Normal,
-    color: '#1c1b1c',
+    color: typeface.Color.ContentDark,
     lineHeight: typeface.Size.Normal * 1.3,
-    fontWeight: '600',
+    fontWeight: typeface.Weight.Bold,
   },
   storyCardOptionTextDisabled: {
-    color: '#8A8A8E', // Lighter grey text for disabled state
+    color: typeface.Color.Inactive, // Lighter grey text for disabled state
   },
   conditionDescriptionText: {
     fontSize: typeface.Size.Small,
-    color: '#AEAEB2', // Slightly lighter grey for condition description
+    color: typeface.Color.Desc, // Slightly lighter grey for condition description
     marginBottom: padding.Mini, // Changed from Tiny to Mini
     fontStyle: 'italic',
   },
   // Style for the check value description, similar to conditionDescriptionText
   checkValueDescriptionText: {
     fontSize: typeface.Size.Small,
-    color: '#8A8A8E', // Slightly different color for distinction, or same as condition
+    color: typeface.Color.Desc, // Slightly different color for distinction, or same as condition
     marginBottom: padding.Mini,
     fontStyle: 'normal', // Or italic if preferred
   },

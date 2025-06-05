@@ -8,6 +8,7 @@ import { useI18n } from '../../i18n/useI18n'
 import OptionButton from './OptionButton'
 import { useAppReducer } from '../../hook' // Import useAppReducer
 import { getCheckValue } from '../../utils/skillUtils' // Import getCheckValue
+import palette from '../../theme/palette'
 
 interface CheckResultProps {
   checkAttempt: CheckAttemptState
@@ -71,10 +72,9 @@ const styles = StyleSheet.create({
     marginTop: padding.Normal,
     marginBottom: padding.Normal,
     padding: padding.Normal,
-    backgroundColor: '#2C2C2E',
     borderRadius: padding.Mini,
     borderWidth: 1,
-    borderColor: '#444',
+    borderColor: palette.DarkGrey,
   },
   checkInfoText: {
     fontSize: typeface.Size.Normal,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: typeface.Size.Small, // Slightly smaller
-    color: '#AEAEB2', // A less prominent color
+    color: typeface.Color.Desc, // A less prominent color
     fontStyle: 'italic',
     marginBottom: padding.Small,
   },

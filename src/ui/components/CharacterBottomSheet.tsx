@@ -158,10 +158,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#161515',
+    backgroundColor: palette.BackgroundDrak,
     paddingHorizontal: padding.Medium,
     paddingTop: padding.Medium,
-    shadowColor: '#000',
+    shadowColor: palette.Black,
     shadowOffset: {
       width: 0,
       height: -4,
@@ -195,20 +195,19 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   contentText: {
-    fontWeight: '600',
+    fontWeight: typeface.Weight.Bold,
     height: 30,
     lineHeight: 30,
     textAlign: 'center',
   },
   nameText: {
-    // Style for occupation
-    color: '#a0a5ad',
+    color: palette.Grey,
     textAlign: 'center',
     fontSize: 14,
   },
   statLabel: {
     fontSize: 16,
-    color: '#888888',
+    color: typeface.Color.Desc,
     marginBottom: padding.Mini,
     fontFamily: typeface.Weight.Bold,
     letterSpacing: 2,
@@ -217,12 +216,12 @@ const styles = StyleSheet.create({
   },
   hpText: {
     // Style for HP
-    color: '#cc702d',
+    color: palette.Tango,
     fontSize: 20,
   },
   sanText: {
     // Style for Sanity
-    color: '#82c6d7',
+    color: palette.Spray,
     fontSize: 20,
   },
   attributesContainer: {
@@ -242,11 +241,11 @@ const styles = StyleSheet.create({
   },
   attributeLabel: {
     fontSize: 12,
-    color: palette.Grey,
+    color: typeface.Color.Inactive,
   },
   attributeValue: {
     fontSize: 12,
-    color: '#a0a5ad',
+    color: palette.Grey,
     fontWeight: '500',
   },
 })

@@ -1,9 +1,19 @@
 const palette = {
   Background: '#0a0a0a',
   BackgroundGrey: '#1A1A1A',
+  BackgroundDrak: '#161515',
   White: '#FFFFFF',
+  Black: '#000000',
+  LightYellow: '#E5D099',
+  DarkYellow: '#D4B77A',
   Grey: '#999999',
-  Gold: '#E6B31E', // 添加金色用于数值显示
+  DarkGrey: '#48484A',
+  Tango: '#CC702D',
+  Spray: '#82C6D7',
+  Tomato: '#FF6347',
+  LightCyan: '#E0F7FA',
+  LightBlue: '#478CFE',
+  Gallery: '#F0F0F0',
 }
 
 export default palette

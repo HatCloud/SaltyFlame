@@ -286,10 +286,10 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '90%',
     maxHeight: '90%',
-    backgroundColor: palette.Background,
+    backgroundColor: palette.BackgroundGrey,
     borderRadius: 10,
     padding: padding.Medium,
-    shadowColor: '#000',
+    shadowColor: palette.Black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontFamily: typeface.Weight.Bold, // Changed from SemiBold
-    color: palette.Gold,
+    color: palette.LightYellow,
     marginTop: padding.Medium,
     marginBottom: padding.Small,
     borderBottomWidth: 1,
@@ -325,12 +325,12 @@ const styles = StyleSheet.create({
     paddingVertical: padding.Mini, // Changed from Tiny
   },
   infoLabel: {
-    fontSize: 16,
+    fontSize: typeface.Size.Large,
     color: palette.Grey, // Changed from MediumGrey
     fontFamily: typeface.Weight.Regular,
   },
   infoValue: {
-    fontSize: 16,
+    fontSize: typeface.Size.Large,
     color: palette.White,
     fontFamily: typeface.Weight.Medium,
     textAlign: 'right',
@@ -340,20 +340,20 @@ const styles = StyleSheet.create({
     marginBottom: padding.Small,
   },
   backgroundLabel: {
-    fontSize: 16,
+    fontSize: typeface.Size.Large,
     color: palette.Grey,
     fontFamily: typeface.Weight.Medium, // Changed from SemiBold
     marginBottom: padding.Mini, // Changed from Tiny
   },
   backgroundValue: {
-    fontSize: 15,
+    fontSize: typeface.Size.Normal,
     color: palette.White,
     fontFamily: typeface.Weight.Regular,
     textAlign: 'left',
   },
   statusWarning: {
-    fontSize: 14,
-    color: '#FF6347', // Changed from palette.Red to Tomato Red
+    fontSize: typeface.Size.Normal,
+    color: palette.Tomato,
     fontFamily: typeface.Weight.Medium,
     marginLeft: padding.Small,
     marginBottom: padding.Mini, // Changed from Tiny
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
   skillCategoryTitle: {
     fontSize: 18,
     fontFamily: typeface.Weight.Medium,
-    color: palette.Gold, // Changed from LightBlue
+    color: palette.LightYellow, // Changed from LightBlue
     marginBottom: padding.Mini, // Changed from Tiny
   },
   itemContainer: {
@@ -386,13 +386,13 @@ const styles = StyleSheet.create({
   },
   emptySectionText: {
     fontSize: 16,
-    color: palette.Grey, // Changed from MediumGrey
+    color: palette.Grey,
     fontFamily: typeface.Weight.Regular,
     textAlign: 'center',
     paddingVertical: padding.Small,
   },
   closeButton: {
-    backgroundColor: palette.Gold,
+    backgroundColor: palette.LightYellow,
     borderRadius: 5,
     paddingVertical: padding.Small,
     paddingHorizontal: padding.Medium,

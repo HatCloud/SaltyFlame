@@ -1,16 +1,14 @@
 import { Platform } from 'react-native'
 
 const Color = {
-  Button: '#5A6470',
-  CommentDesc: '#555555',
   Content: '#FFFFFF',
+  ContentDark: '#1c1b1c',
   Desc: '#8E8E93',
   Highlight: '#E8E8E8',
   Inactive: '#787878',
   Normal: '#9696A0',
   Striking: '#478CFE',
   Subtitle: '#616770',
-  TimelineComment: '#616770',
 }
 
 const Size = {
