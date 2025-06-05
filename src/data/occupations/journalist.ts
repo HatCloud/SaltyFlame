@@ -1,4 +1,4 @@
-import { CheckObjectKey } from '../../interface/enums'
+import { CheckObjectKey } from '../../constant/enums'
 import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const journalistTemplate: OccupationTemplate = {

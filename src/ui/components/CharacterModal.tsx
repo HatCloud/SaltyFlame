@@ -11,7 +11,7 @@ import {
 import { useAppReducer } from '../../hook'
 import { useI18n } from '../../i18n/useI18n'
 import { Weapon } from '../../interface/Character'
-import { CheckObjectKey, CheckObjectNames } from '../../interface/enums'
+import { CheckObjectKey, CheckObjectNames } from '../../constant/enums'
 import { groupSkills, SkillCategory } from '../../utils/skillUtils'
 import palette from '../../theme/palette'
 import { padding } from '../../theme/padding'

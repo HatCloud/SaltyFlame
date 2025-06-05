@@ -1,4 +1,4 @@
-import { CheckObjectKey } from './enums'
+import { CheckObjectKey } from '../constant/enums'
 
 /**
  * Defines the structure for pre-filled background information for an occupation.

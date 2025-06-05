@@ -4,7 +4,7 @@ import {
   EffectType,
   CheckDifficulty,
   // ConditionType, // Removed as not used in scenes 141-160
-} from '../../interface/enums'
+} from '../../constant/enums'
 
 export const scenes_141_160: SceneData = {
   '141': {

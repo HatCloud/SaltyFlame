@@ -48,7 +48,7 @@ export const initialState: MyAppState = {
   currentSceneKey: '1',
   history: [],
   sceneData: loadAllCnSceneData(),
-  characterData: FakerCharacter(), // Use FakerCharacter directly, it now includes inventory
+  characterData: null, // Use FakerCharacter directly, it now includes inventory
   language: 'cn',
   currentCheckAttempt: null,
   gameFlags: {}, // Initialize gameFlags

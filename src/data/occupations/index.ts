@@ -4,7 +4,7 @@ import { journalistTemplate } from './journalist'
 import { privateInvestigatorTemplate } from './privateInvestigator'
 import { professorTemplate } from './professor'
 import { OccupationTemplate } from '../../interface/OccupationTemplate'
-import { CheckObjectKey } from '../../interface/enums' // 虽然在此文件不直接用，但导出类型可能需要
+import { CheckObjectKey } from '../../constant/enums' // 虽然在此文件不直接用，但导出类型可能需要
 
 export const occupationTemplates: Record<string, OccupationTemplate> = {
   antiquarian: antiquarianTemplate,

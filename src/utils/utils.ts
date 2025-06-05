@@ -1,4 +1,4 @@
-import { Dice } from '../interface/Character' // Corrected import path
+import { Dice } from '../interface/Dice' // Corrected import path
 
 /**
  * 投掷 count 次 dice 面的骰子

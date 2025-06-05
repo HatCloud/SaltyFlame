@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useCallback } from 'react'
 import { Character } from '../../interface/Character'
 import { Condition } from '../../interface/Scene'
-import { ConditionType, CheckObjectNames } from '../../interface/enums' // Corrected import for ConditionType, CheckObjectKey removed
+import { ConditionType, CheckObjectNames } from '../../constant/enums' // Corrected import for ConditionType, CheckObjectKey removed
 import type { LanguageCode } from '../../i18n/types'
 // Assuming gameFlags will be part of MyAppState, adjust import if necessary
 // import { MyAppState } from '../../interface/MyAppState';

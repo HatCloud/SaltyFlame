@@ -3,7 +3,7 @@ import {
   CheckDifficulty,
   ConditionType,
   EffectType,
-} from './enums'
+} from '../constant/enums'
 import { Weapon } from '../interface/Character' // Import Weapon type
 
 // 基础检定定义
@@ -84,17 +84,3 @@ export interface Scene {
 export interface SceneData {
   [sceneId: string]: Scene
 }
-
-// 此接口先前用于场景级检定或辅助检定场景。
-// 根据新的设计 (CheckPayload 和 CheckDrivenOption)，它很可能是多余的。
-// 暂时注释掉以供迁移时参考，之后可以删除。
-/*
-export interface SceneCheckOptionDetails {
-  check: Check;
-  onSuccessSceneId: string;
-  onFailureSceneId: string;
-  successText?: string;
-  failureText?: string;
-  // 需要考虑效果是否曾是此接口一部分，并映射到 onSuccessEffects/onFailureEffects
-}
-*/

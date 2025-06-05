@@ -71,7 +71,7 @@ export const skillToCategoryMap: Record<string, SkillCategory> = {
 }
 
 import { Character } from '../interface/Character'
-import { CheckObjectKey } from '../interface/enums'
+import { CheckObjectKey } from '../constant/enums'
 
 // Helper function to group skills by category.
 // Skills in the input `skills` object are expected to have keys that match

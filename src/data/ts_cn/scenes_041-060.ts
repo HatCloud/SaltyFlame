@@ -4,7 +4,7 @@ import {
   CheckObjectKey,
   CheckDifficulty,
   // ConditionType, // Will be added if used by scenes 41-60
-} from '../../interface/enums'
+} from '../../constant/enums'
 
 export const scenes_041_060: SceneData = {
   '41': {

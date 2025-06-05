@@ -3,7 +3,7 @@ import React from 'react'
 import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
 import { CheckAttemptState } from '../../interface/MyAppState'
-import { CheckObjectNames, CheckObjectKey } from '../../interface/enums' // Import CheckObjectKey
+import { CheckObjectNames, CheckObjectKey } from '../../constant/enums' // Import CheckObjectKey
 import { useI18n } from '../../i18n/useI18n'
 import OptionButton from './OptionButton'
 import { useAppReducer } from '../../hook' // Import useAppReducer

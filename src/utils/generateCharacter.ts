@@ -1,7 +1,8 @@
-import { Character, Dice, Weapon } from '../interface/Character'
+import { Character, Weapon } from '../interface/Character'
 import { allOccupationTemplates, OccupationTemplate } from '../data/occupations' // Import occupation templates
-import { CheckObjectKey } from '../interface/enums' // For skill keys
+import { CheckObjectKey } from '../constant/enums' // For skill keys
 import { rollDie } from './utils' // Import rollDie
+import { Dice } from '../interface/Dice'
 
 const randomDice = (): Dice => {
   const possibleValues: Dice[] = [4, 6, 8, 10, 12, 20]

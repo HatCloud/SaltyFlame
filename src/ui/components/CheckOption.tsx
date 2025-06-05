@@ -4,7 +4,7 @@ import OptionButton from './OptionButton'
 import { useI18n } from '../../i18n/useI18n'
 import { useAppReducer } from '../../hook'
 import { getCheckValue } from '../../utils/skillUtils'
-import { CheckObjectNames, CheckObjectKey } from '../../interface/enums' // Import CheckObjectKey
+import { CheckObjectNames, CheckObjectKey } from '../../constant/enums' // Import CheckObjectKey
 
 interface CheckOptionProps {
   option: SceneInteractOption

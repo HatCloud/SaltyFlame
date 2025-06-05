@@ -5,7 +5,7 @@ import {
   // CheckAttemptState,
 } from './interface/MyAppState'
 import { Effect, Check } from './interface/Scene'
-import { EffectType, CheckDifficulty } from './interface/enums'
+import { EffectType, CheckDifficulty } from './constant/enums'
 import { Character } from './interface/Character' // Import Character type
 import { parseDiceString } from './utils/utils' // Import parseDiceString
 

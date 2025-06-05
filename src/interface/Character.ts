@@ -1,3 +1,5 @@
+import { Dice } from './Dice'
+
 /**
  * character in call of cthulhu
  */
@@ -53,8 +55,6 @@ export interface Character {
   inventory: (string | Weapon)[] // Inventory can hold item names or Weapon objects
   markedSkills: string[] // Tracks skills successfully used
 }
-
-export type Dice = 4 | 6 | 8 | 10 | 12 | 20
 
 /**
  * weapon in call of cthulhu
