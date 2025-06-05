@@ -1,6 +1,7 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
   ConditionType, // Re-added
@@ -23,13 +24,13 @@ export const scenes_201_220: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.FIGHTING_BRAWL,
+            target: SkillEnum.FIGHTING_BRAWL,
           },
         ],
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.FIRST_AID,
+            subObject: SkillEnum.FIRST_AID,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '79',
@@ -40,7 +41,7 @@ export const scenes_201_220: SceneData = {
             { type: EffectType.CHANGE_HP, value: '+1' },
             {
               type: EffectType.MARK_SKILL_SUCCESS,
-              target: CheckObjectKey.FIRST_AID,
+              target: SkillEnum.FIRST_AID,
             },
           ],
         },
@@ -52,7 +53,7 @@ export const scenes_201_220: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.FIGHTING_BRAWL,
+            target: SkillEnum.FIGHTING_BRAWL,
           },
         ],
       },
@@ -120,7 +121,7 @@ export const scenes_201_220: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.DEX,
+            subObject: CoreCharacteristicEnum.DEX,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '213',
@@ -142,7 +143,7 @@ export const scenes_201_220: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.CLIMB,
+            subObject: SkillEnum.CLIMB,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '228',
@@ -197,7 +198,7 @@ export const scenes_201_220: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.STEALTH,
+            target: SkillEnum.STEALTH,
           },
         ],
       },

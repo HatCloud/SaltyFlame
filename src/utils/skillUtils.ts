@@ -1,9 +1,12 @@
 import { Character } from '../interface/Character'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  RollEnum, // Added
+  SkillEnum, // Added
   CheckObjectDefaultValues,
   CoreCharacteristicKey,
   SkillKey,
+  CheckObjectKey, // Keep for CheckObjectDefaultValues and getCheckValue parameter
 } from '../constant/enums'
 
 // Defines categories for skills to group them in the UI.
@@ -22,64 +25,64 @@ export enum SkillCategory {
 // Maps skill keys (expected to be CheckObjectKey string values) to SkillCategory.
 // These keys should match how skills are stored in characterData.skills.
 export const skillToCategoryMap: Record<string, SkillCategory> = {
-  // From CheckObjectKey in enums.ts
-  [CheckObjectKey.APPRAISE]: SkillCategory.Knowledge,
-  [CheckObjectKey.ARCHAEOLOGY]: SkillCategory.Knowledge,
-  [CheckObjectKey.ART_CRAFT_PHOTOGRAPHY]: SkillCategory.ArtCraft,
-  [CheckObjectKey.CHARM]: SkillCategory.Communication,
-  [CheckObjectKey.CLIMB]: SkillCategory.Manipulation,
-  [CheckObjectKey.CREDIT_RATING]: SkillCategory.Communication,
-  [CheckObjectKey.CTHULHU_MYTHOS]: SkillCategory.Mythos,
-  [CheckObjectKey.DISGUISE]: SkillCategory.ArtCraft,
-  [CheckObjectKey.DODGE]: SkillCategory.Combat,
-  [CheckObjectKey.DRIVE_AUTO]: SkillCategory.Manipulation,
-  [CheckObjectKey.FAST_TALK]: SkillCategory.Communication,
-  [CheckObjectKey.FIGHTING_BRAWL]: SkillCategory.Combat,
-  [CheckObjectKey.FIRST_AID]: SkillCategory.Manipulation,
-  [CheckObjectKey.HISTORY]: SkillCategory.Knowledge,
-  [CheckObjectKey.INTIMIDATE]: SkillCategory.Communication,
-  [CheckObjectKey.LIBRARY_USE]: SkillCategory.Knowledge,
-  [CheckObjectKey.LISTEN]: SkillCategory.Perception,
-  [CheckObjectKey.LOCKSMITH]: SkillCategory.Manipulation,
-  [CheckObjectKey.MEDICINE]: SkillCategory.Knowledge,
-  [CheckObjectKey.NATURAL_WORLD]: SkillCategory.Knowledge,
-  [CheckObjectKey.PERSUADE]: SkillCategory.Communication,
-  [CheckObjectKey.PSYCHOLOGY]: SkillCategory.Communication,
-  [CheckObjectKey.RIDE]: SkillCategory.Manipulation,
-  [CheckObjectKey.SCIENCE_BOTANY]: SkillCategory.Knowledge,
-  [CheckObjectKey.SPOT_HIDDEN]: SkillCategory.Perception,
-  [CheckObjectKey.STEALTH]: SkillCategory.Manipulation,
-  [CheckObjectKey.TRACK]: SkillCategory.Perception,
-  [CheckObjectKey.OTHER_LANGUAGE_LATIN]: SkillCategory.Knowledge,
-  [CheckObjectKey.OWN_LANGUAGE]: SkillCategory.Knowledge,
-  [CheckObjectKey.FIREARMS_HANDGUN]: SkillCategory.Combat,
-  [CheckObjectKey.FIREARMS_RIFLE_SHOTGUN]: SkillCategory.Combat,
-  [CheckObjectKey.MECHANICAL_REPAIR]: SkillCategory.Manipulation,
-  [CheckObjectKey.ELECTRICAL_REPAIR]: SkillCategory.Manipulation,
-  [CheckObjectKey.SLEIGHT_OF_HAND]: SkillCategory.Manipulation,
-  [CheckObjectKey.SWIM]: SkillCategory.Manipulation,
-  [CheckObjectKey.THROW]: SkillCategory.Manipulation,
-  [CheckObjectKey.ACCOUNTING]: SkillCategory.Knowledge,
-  [CheckObjectKey.ANTHROPOLOGY]: SkillCategory.Knowledge,
-  [CheckObjectKey.LAW]: SkillCategory.Knowledge,
-  // [CheckObjectKey.PHARMACY]: SkillCategory.Knowledge, // PHARMACY is not in CheckObjectKey yet
-  // [CheckObjectKey.SCIENCE_ASTRONOMY]: SkillCategory.Knowledge, // Not in CheckObjectKey
-  // [CheckObjectKey.SCIENCE_CHEMISTRY]: SkillCategory.Knowledge, // Not in CheckObjectKey
-  // [CheckObjectKey.SCIENCE_GEOLOGY]: SkillCategory.Knowledge, // Not in CheckObjectKey
-  // [CheckObjectKey.SCIENCE_PHYSICS]: SkillCategory.Knowledge, // Not in CheckObjectKey
-  // [CheckObjectKey.ART_CRAFT_ACTING]: SkillCategory.ArtCraft, // Not in CheckObjectKey
-  // [CheckObjectKey.ART_CRAFT_PAINTING]: SkillCategory.ArtCraft, // Not in CheckObjectKey
-  [CheckObjectKey.JUMP]: SkillCategory.Manipulation,
-  [CheckObjectKey.APPEASE]: SkillCategory.Communication,
-  [CheckObjectKey.ART_CRAFT]: SkillCategory.ArtCraft,
-  [CheckObjectKey.MANIPULATE]: SkillCategory.Manipulation,
-  [CheckObjectKey.NAVIGATE]: SkillCategory.Manipulation,
-  [CheckObjectKey.OCCULT]: SkillCategory.Mythos,
-  [CheckObjectKey.OPERATE_HEAVY_MACHINERY]: SkillCategory.Manipulation,
-  [CheckObjectKey.OTHER_LANGUAGE]: SkillCategory.Knowledge,
-  [CheckObjectKey.PSYCHOANALYSIS]: SkillCategory.Communication,
-  [CheckObjectKey.SCIENCE]: SkillCategory.Knowledge,
-  [CheckObjectKey.SURVIVAL]: SkillCategory.Perception,
+  // From SkillEnum in enums.ts
+  [SkillEnum.APPRAISE]: SkillCategory.Knowledge,
+  [SkillEnum.ARCHAEOLOGY]: SkillCategory.Knowledge,
+  [SkillEnum.ART_CRAFT_PHOTOGRAPHY]: SkillCategory.ArtCraft,
+  [SkillEnum.CHARM]: SkillCategory.Communication,
+  [SkillEnum.CLIMB]: SkillCategory.Manipulation,
+  [SkillEnum.CREDIT_RATING]: SkillCategory.Communication,
+  [SkillEnum.CTHULHU_MYTHOS]: SkillCategory.Mythos,
+  [SkillEnum.DISGUISE]: SkillCategory.ArtCraft,
+  [SkillEnum.DODGE]: SkillCategory.Combat,
+  [SkillEnum.DRIVE_AUTO]: SkillCategory.Manipulation,
+  [SkillEnum.FAST_TALK]: SkillCategory.Communication,
+  [SkillEnum.FIGHTING_BRAWL]: SkillCategory.Combat,
+  [SkillEnum.FIRST_AID]: SkillCategory.Manipulation,
+  [SkillEnum.HISTORY]: SkillCategory.Knowledge,
+  [SkillEnum.INTIMIDATE]: SkillCategory.Communication,
+  [SkillEnum.LIBRARY_USE]: SkillCategory.Knowledge,
+  [SkillEnum.LISTEN]: SkillCategory.Perception,
+  [SkillEnum.LOCKSMITH]: SkillCategory.Manipulation,
+  [SkillEnum.MEDICINE]: SkillCategory.Knowledge,
+  [SkillEnum.NATURAL_WORLD]: SkillCategory.Knowledge,
+  [SkillEnum.PERSUADE]: SkillCategory.Communication,
+  [SkillEnum.PSYCHOLOGY]: SkillCategory.Communication,
+  [SkillEnum.RIDE]: SkillCategory.Manipulation,
+  [SkillEnum.SCIENCE_BOTANY]: SkillCategory.Knowledge,
+  [SkillEnum.SPOT_HIDDEN]: SkillCategory.Perception,
+  [SkillEnum.STEALTH]: SkillCategory.Manipulation,
+  [SkillEnum.TRACK]: SkillCategory.Perception,
+  [SkillEnum.OTHER_LANGUAGE_LATIN]: SkillCategory.Knowledge,
+  [SkillEnum.OWN_LANGUAGE]: SkillCategory.Knowledge,
+  [SkillEnum.FIREARMS_HANDGUN]: SkillCategory.Combat,
+  [SkillEnum.FIREARMS_RIFLE_SHOTGUN]: SkillCategory.Combat,
+  [SkillEnum.MECHANICAL_REPAIR]: SkillCategory.Manipulation,
+  [SkillEnum.ELECTRICAL_REPAIR]: SkillCategory.Manipulation,
+  [SkillEnum.SLEIGHT_OF_HAND]: SkillCategory.Manipulation,
+  [SkillEnum.SWIM]: SkillCategory.Manipulation,
+  [SkillEnum.THROW]: SkillCategory.Manipulation,
+  [SkillEnum.ACCOUNTING]: SkillCategory.Knowledge,
+  [SkillEnum.ANTHROPOLOGY]: SkillCategory.Knowledge,
+  [SkillEnum.LAW]: SkillCategory.Knowledge,
+  // [SkillEnum.PHARMACY]: SkillCategory.Knowledge, // PHARMACY is not in SkillEnum yet
+  // [SkillEnum.SCIENCE_ASTRONOMY]: SkillCategory.Knowledge, // Not in SkillEnum
+  // [SkillEnum.SCIENCE_CHEMISTRY]: SkillCategory.Knowledge, // Not in SkillEnum
+  // [SkillEnum.SCIENCE_GEOLOGY]: SkillCategory.Knowledge, // Not in SkillEnum
+  // [SkillEnum.SCIENCE_PHYSICS]: SkillCategory.Knowledge, // Not in SkillEnum
+  // [SkillEnum.ART_CRAFT_ACTING]: SkillCategory.ArtCraft, // Not in SkillEnum
+  // [SkillEnum.ART_CRAFT_PAINTING]: SkillCategory.ArtCraft, // Not in SkillEnum
+  [SkillEnum.JUMP]: SkillCategory.Manipulation,
+  [SkillEnum.APPEASE]: SkillCategory.Communication,
+  [SkillEnum.ART_CRAFT]: SkillCategory.ArtCraft,
+  [SkillEnum.MANIPULATE]: SkillCategory.Manipulation,
+  [SkillEnum.NAVIGATE]: SkillCategory.Manipulation,
+  [SkillEnum.OCCULT]: SkillCategory.Mythos,
+  [SkillEnum.OPERATE_HEAVY_MACHINERY]: SkillCategory.Manipulation,
+  [SkillEnum.OTHER_LANGUAGE]: SkillCategory.Knowledge,
+  [SkillEnum.PSYCHOANALYSIS]: SkillCategory.Communication,
+  [SkillEnum.SCIENCE]: SkillCategory.Knowledge,
+  [SkillEnum.SURVIVAL]: SkillCategory.Perception,
 }
 
 // Helper function to group skills by category.
@@ -151,11 +154,11 @@ export const getCheckValue = (
 
   // Check if it's a special RollKey
   switch (objectKey) {
-    case CheckObjectKey.LUCK:
+    case RollEnum.LUCK:
       return character.luck
-    case CheckObjectKey.SANITY:
+    case RollEnum.SANITY:
       return character.sanity.current
-    case CheckObjectKey.MOV:
+    case RollEnum.MOV:
       return character.personalData.movementRate
   }
 
@@ -175,10 +178,12 @@ export const getCheckValue = (
     }
     if (typeof defaultValue === 'string') {
       if (defaultValue === 'DEX/2') {
-        return Math.floor(character.characteristics[CheckObjectKey.DEX] / 2)
+        return Math.floor(
+          character.characteristics[CoreCharacteristicEnum.DEX] / 2,
+        )
       }
       if (defaultValue === 'EDU') {
-        return character.characteristics[CheckObjectKey.EDU]
+        return character.characteristics[CoreCharacteristicEnum.EDU]
       }
       console.warn(
         `[getCheckValue] Unhandled string default for ${objectKey}: ${defaultValue}`,

@@ -1,4 +1,4 @@
-import { CheckObjectKey } from '../../constant/enums'
+import { SkillEnum } from '../../constant/enums' // Changed CheckObjectKey to SkillEnum
 import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const privateInvestigatorTemplate: OccupationTemplate = {
@@ -11,32 +11,32 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
   creditRatingRange: [9, 40], // 根据CoC核心规则书，私家侦探信用评级与记者类似
 
   occupationalSkills: [
-    CheckObjectKey.FAST_TALK,
-    CheckObjectKey.PERSUADE,
-    CheckObjectKey.INTIMIDATE,
-    CheckObjectKey.SPOT_HIDDEN,
-    CheckObjectKey.LISTEN,
-    CheckObjectKey.LIBRARY_USE, // 调查背景资料
-    CheckObjectKey.PSYCHOLOGY, //洞察人心
-    CheckObjectKey.STEALTH, // 跟踪与潜入
+    SkillEnum.FAST_TALK,
+    SkillEnum.PERSUADE,
+    SkillEnum.INTIMIDATE,
+    SkillEnum.SPOT_HIDDEN,
+    SkillEnum.LISTEN,
+    SkillEnum.LIBRARY_USE, // 调查背景资料
+    SkillEnum.PSYCHOLOGY, //洞察人心
+    SkillEnum.STEALTH, // 跟踪与潜入
   ],
 
   occupationalSkillTargets: {
-    [CheckObjectKey.FAST_TALK]: 70,
-    [CheckObjectKey.SPOT_HIDDEN]: 60,
-    [CheckObjectKey.PERSUADE]: 60,
-    [CheckObjectKey.PSYCHOLOGY]: 50,
-    [CheckObjectKey.LISTEN]: 50,
-    [CheckObjectKey.INTIMIDATE]: 50,
-    [CheckObjectKey.LIBRARY_USE]: 40,
-    [CheckObjectKey.STEALTH]: 40,
+    [SkillEnum.FAST_TALK]: 70,
+    [SkillEnum.SPOT_HIDDEN]: 60,
+    [SkillEnum.PERSUADE]: 60,
+    [SkillEnum.PSYCHOLOGY]: 50,
+    [SkillEnum.LISTEN]: 50,
+    [SkillEnum.INTIMIDATE]: 50,
+    [SkillEnum.LIBRARY_USE]: 40,
+    [SkillEnum.STEALTH]: 40,
   },
 
   interestSkills: [
-    CheckObjectKey.DRIVE_AUTO, // 跟踪，快速移动
-    CheckObjectKey.LOCKSMITH, // 进入搜查
-    CheckObjectKey.FIGHTING_BRAWL, // 自卫
-    CheckObjectKey.DISGUISE, // 伪装身份
+    SkillEnum.DRIVE_AUTO, // 跟踪，快速移动
+    SkillEnum.LOCKSMITH, // 进入搜查
+    SkillEnum.FIGHTING_BRAWL, // 自卫
+    SkillEnum.DISGUISE, // 伪装身份
   ],
 
   background_cn: {
@@ -51,7 +51,7 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
     treasuredPossessions:
       '一把小巧的左轮手枪（可能并未实际使用过，更多是威慑）；或是一个记录了所有经手案件细节的黑色笔记本。',
     traits: '观察力敏锐，行事谨慎，足智多谋。习惯独立思考，不轻易相信任何人。',
-    keyConnection: 'significantPeople',
+    keyConnection: '重要之人',
     injuriesScars: '下巴上有一道几乎看不见的旧伤，是在一次追捕嫌疑人时留下的。',
     phobiasManias:
       '对被人跟踪或监视有高度警觉（职业病）；有反复检查门窗是否锁好的习惯。',
@@ -69,7 +69,7 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
       'A small revolver (perhaps never actually used, more for deterrence); or a black notebook detailing every case handled.',
     traits:
       'Observant, cautious, and resourceful. Accustomed to thinking independently and not trusting anyone easily.',
-    keyConnection: 'significantPeople',
+    keyConnection: 'Significant People',
     injuriesScars:
       'A barely visible old scar on the chin, from a pursuit of a suspect.',
     phobiasManias:
@@ -77,8 +77,8 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
   },
 
   // Example character pre-fill data
-  exampleCharacterName_cn: '塞缪尔·“萨姆”·斯佩德',
-  exampleCharacterName_en: 'Samuel "Sam" Spade',
+  exampleCharacterName_cn: '塞缪尔·斯佩德',
+  exampleCharacterName_en: 'Samuel Spade',
   exampleCharacterSex: 'Male',
   exampleCharacterAge: 35,
   exampleCharacterBirthplace_cn: '旧金山，加利福尼亚州',

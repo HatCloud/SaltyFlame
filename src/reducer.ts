@@ -10,9 +10,10 @@ import {
   EffectType,
   CheckDifficulty,
   SkillKey,
-  CheckObjectDefaultValues, // Added for interest skills
-  CheckObjectKey, // Added for interest skills base value lookup
-} from './constant/enums' // Added SkillKey
+  CheckObjectDefaultValues,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
+} from './constant/enums'
 import { Character } from './interface/Character' // Import Character type
 import { parseDiceString } from './utils/utils' // Import parseDiceString
 import { occupationTemplates } from './data/occupations'
@@ -431,49 +432,57 @@ export const appReducer = (
 
       // Apply +20 to interest skills, capped at 75
       if (template.interestSkills) {
-        template.interestSkills.forEach((skillKey: CheckObjectKey) => {
-          // Added type for skillKey
-          const currentSkillValue = newSkills?.[skillKey as SkillKey]
-          let baseValue = 0
+        // Ensure skillKey is treated as SkillKey, which it should be from OccupationTemplate
+        ;(template.interestSkills as SkillKey[]).forEach(
+          (skillKey: SkillKey) => {
+            const currentSkillValue = newSkills?.[skillKey]
+            let baseValue = 0
 
-          if (typeof currentSkillValue === 'number') {
-            baseValue = currentSkillValue
-          } else {
-            const defaultSkillInfo = CheckObjectDefaultValues[skillKey]
-            if (typeof defaultSkillInfo === 'number') {
-              baseValue = defaultSkillInfo
-            } else if (typeof defaultSkillInfo === 'string') {
-              if (
-                defaultSkillInfo === 'DEX/2' &&
-                characterToUpdate.characteristics.DEX
-              ) {
-                baseValue = Math.floor(
-                  characterToUpdate.characteristics.DEX / 2,
-                )
-              } else if (
-                defaultSkillInfo === 'EDU' &&
-                characterToUpdate.characteristics.EDU
-              ) {
-                baseValue = characterToUpdate.characteristics.EDU
-              } else {
-                console.warn(
-                  `Unhandled string base for ${skillKey}: ${defaultSkillInfo}`,
-                )
-                baseValue = 0
-              }
+            if (typeof currentSkillValue === 'number') {
+              baseValue = currentSkillValue
             } else {
-              baseValue = 0 // Default to 0 if no base value found
+              // CheckObjectDefaultValues is indexed by CheckObjectKey, which SkillKey is a part of.
+              const defaultSkillInfo = CheckObjectDefaultValues[skillKey]
+              if (typeof defaultSkillInfo === 'number') {
+                baseValue = defaultSkillInfo
+              } else if (typeof defaultSkillInfo === 'string') {
+                if (
+                  defaultSkillInfo === 'DEX/2' &&
+                  characterToUpdate.characteristics[CoreCharacteristicEnum.DEX] // Use CoreCharacteristicEnum
+                ) {
+                  baseValue = Math.floor(
+                    characterToUpdate.characteristics[
+                      CoreCharacteristicEnum.DEX
+                    ] / 2,
+                  )
+                } else if (
+                  defaultSkillInfo === 'EDU' &&
+                  characterToUpdate.characteristics[CoreCharacteristicEnum.EDU] // Use CoreCharacteristicEnum
+                ) {
+                  baseValue =
+                    characterToUpdate.characteristics[
+                      CoreCharacteristicEnum.EDU
+                    ]
+                } else {
+                  console.warn(
+                    `Unhandled string base for ${skillKey}: ${defaultSkillInfo}`,
+                  )
+                  baseValue = 0
+                }
+              } else {
+                baseValue = 0 // Default to 0 if no base value found
+              }
             }
-          }
-          newSkills[skillKey as SkillKey] = Math.min(baseValue + 20, 75)
-        })
+            newSkills[skillKey] = Math.min(baseValue + 20, 75) // skillKey is already SkillKey
+          },
+        )
       }
 
       // Generate random credit rating
       const [minCr, maxCr] = template.creditRatingRange
       const randomCreditRating =
         Math.floor(Math.random() * (maxCr - minCr + 1)) + minCr
-      newSkills[CheckObjectKey.CREDIT_RATING] = randomCreditRating
+      newSkills[SkillEnum.CREDIT_RATING] = randomCreditRating // Changed to SkillEnum
 
       // Update characterData with example prefill data and other occupation data
       const updatedCharacterData: Character = {

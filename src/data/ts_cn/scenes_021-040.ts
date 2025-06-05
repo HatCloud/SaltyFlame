@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   ConditionType,
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_021_040: SceneData = {
@@ -108,7 +110,7 @@ export const scenes_021_040: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.NATURAL_WORLD,
+            subObject: SkillEnum.NATURAL_WORLD,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '35',
@@ -131,8 +133,8 @@ export const scenes_021_040: SceneData = {
         goto: '42',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          targetObject: CheckObjectKey.DEX,
-          comparisonObject: CheckObjectKey.SIZ,
+          targetObject: CoreCharacteristicEnum.DEX,
+          comparisonObject: CoreCharacteristicEnum.SIZ,
           comparisonOperator: 'gt',
         },
       },
@@ -141,14 +143,14 @@ export const scenes_021_040: SceneData = {
         text: '前进（如果体型 >= 敏捷，进行敏捷检定）',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          targetObject: CheckObjectKey.SIZ,
-          comparisonObject: CheckObjectKey.DEX,
+          targetObject: CoreCharacteristicEnum.SIZ,
+          comparisonObject: CoreCharacteristicEnum.DEX,
           comparisonOperator: 'gte',
         },
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.DEX,
+            subObject: CoreCharacteristicEnum.DEX,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '42',
@@ -169,7 +171,7 @@ export const scenes_021_040: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.SPOT_HIDDEN, // Corrected
+            target: SkillEnum.SPOT_HIDDEN,
           },
         ],
       },
@@ -186,7 +188,7 @@ export const scenes_021_040: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.CHARM,
+            subObject: SkillEnum.CHARM,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '39',
@@ -226,7 +228,7 @@ export const scenes_021_040: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.RIDE,
+            subObject: SkillEnum.RIDE,
             difficulty: CheckDifficulty.NORMAL,
             // bonusDice: true, // TODO: Implement bonus/penalty dice in executeCheckLogic
           },
@@ -250,7 +252,7 @@ export const scenes_021_040: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.NATURAL_WORLD, // Corrected
+            target: SkillEnum.NATURAL_WORLD,
           },
         ],
       },
@@ -267,7 +269,7 @@ export const scenes_021_040: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.CLIMB,
+            subObject: SkillEnum.CLIMB,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '48',
@@ -300,7 +302,7 @@ export const scenes_021_040: SceneData = {
         text: '继续',
         goto: '63',
         effects: [
-          { type: EffectType.MARK_SKILL_SUCCESS, target: CheckObjectKey.CHARM }, // Corrected
+          { type: EffectType.MARK_SKILL_SUCCESS, target: SkillEnum.CHARM },
         ],
       },
     ],

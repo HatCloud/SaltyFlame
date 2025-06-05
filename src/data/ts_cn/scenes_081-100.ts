@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  RollEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   // ConditionType, // Removed as not used in current scenes 81-100
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_081_100: SceneData = {
@@ -30,7 +32,7 @@ export const scenes_081_100: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '95',
@@ -58,7 +60,7 @@ export const scenes_081_100: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.LUCK,
+            subObject: RollEnum.LUCK,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '91',
@@ -89,7 +91,7 @@ export const scenes_081_100: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '181',
@@ -117,7 +119,7 @@ export const scenes_081_100: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL, // Assuming re-roll is normal difficulty
           },
           onSuccessSceneId: '95',
@@ -200,7 +202,7 @@ export const scenes_081_100: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.PSYCHOLOGY,
+            subObject: SkillEnum.PSYCHOLOGY,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '106',
@@ -224,7 +226,7 @@ export const scenes_081_100: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.FIRST_AID,
+            subObject: SkillEnum.FIRST_AID,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '79', // Both lead to 79
@@ -235,7 +237,7 @@ export const scenes_081_100: SceneData = {
             { type: EffectType.CHANGE_HP, value: '+1' },
             {
               type: EffectType.MARK_SKILL_SUCCESS,
-              target: CheckObjectKey.FIRST_AID,
+              target: SkillEnum.FIRST_AID,
             },
           ],
         },
@@ -268,7 +270,7 @@ export const scenes_081_100: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.CREDIT_RATING,
+            subObject: SkillEnum.CREDIT_RATING,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '111',

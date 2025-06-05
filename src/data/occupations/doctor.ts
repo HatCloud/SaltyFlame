@@ -1,4 +1,4 @@
-import { CheckObjectKey } from '../../constant/enums'
+import { SkillEnum } from '../../constant/enums' // Changed CheckObjectKey to SkillEnum
 import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const doctorTemplate: OccupationTemplate = {
@@ -11,32 +11,32 @@ export const doctorTemplate: OccupationTemplate = {
   creditRatingRange: [30, 80], // 根据CoC核心规则书，医生信用评级范围较广
 
   occupationalSkills: [
-    CheckObjectKey.FIRST_AID,
-    CheckObjectKey.MEDICINE,
-    CheckObjectKey.PSYCHOLOGY, // 医生需要理解病人心理
-    CheckObjectKey.SCIENCE_BOTANY, // 假设包含药理学或相关生物科学知识
-    CheckObjectKey.OTHER_LANGUAGE_LATIN, // 拉丁文在医学领域常用
-    CheckObjectKey.PERSUADE, // 安抚病人，解释病情
-    CheckObjectKey.SPOT_HIDDEN, // 观察细微症状
-    CheckObjectKey.OWN_LANGUAGE,
+    SkillEnum.FIRST_AID,
+    SkillEnum.MEDICINE,
+    SkillEnum.PSYCHOLOGY, // 医生需要理解病人心理
+    SkillEnum.SCIENCE_BOTANY, // 假设包含药理学或相关生物科学知识
+    SkillEnum.OTHER_LANGUAGE_LATIN, // 拉丁文在医学领域常用
+    SkillEnum.PERSUADE, // 安抚病人，解释病情
+    SkillEnum.SPOT_HIDDEN, // 观察细微症状
+    SkillEnum.OWN_LANGUAGE,
   ],
 
   occupationalSkillTargets: {
-    [CheckObjectKey.FIRST_AID]: 70,
-    [CheckObjectKey.MEDICINE]: 60,
-    [CheckObjectKey.PSYCHOLOGY]: 60,
-    [CheckObjectKey.SCIENCE_BOTANY]: 50, // 调整为植物学，更符合年代和可能涉及的草药学
-    [CheckObjectKey.OTHER_LANGUAGE_LATIN]: 50,
-    [CheckObjectKey.PERSUADE]: 50,
-    [CheckObjectKey.SPOT_HIDDEN]: 40,
-    [CheckObjectKey.OWN_LANGUAGE]: 40,
+    [SkillEnum.FIRST_AID]: 70,
+    [SkillEnum.MEDICINE]: 60,
+    [SkillEnum.PSYCHOLOGY]: 60,
+    [SkillEnum.SCIENCE_BOTANY]: 50, // 调整为植物学，更符合年代和可能涉及的草药学
+    [SkillEnum.OTHER_LANGUAGE_LATIN]: 50,
+    [SkillEnum.PERSUADE]: 50,
+    [SkillEnum.SPOT_HIDDEN]: 40,
+    [SkillEnum.OWN_LANGUAGE]: 40,
   },
 
   interestSkills: [
-    CheckObjectKey.LIBRARY_USE, //查阅医学文献
-    CheckObjectKey.DRIVE_AUTO, // 出诊或应对紧急情况
-    CheckObjectKey.CHARM, // 建立病人信任
-    CheckObjectKey.INTIMIDATE, // 有时需要强硬态度处理不合作的病人或家属
+    SkillEnum.LIBRARY_USE, //查阅医学文献
+    SkillEnum.DRIVE_AUTO, // 出诊或应对紧急情况
+    SkillEnum.CHARM, // 建立病人信任
+    SkillEnum.INTIMIDATE, // 有时需要强硬态度处理不合作的病人或家属
   ],
 
   background_cn: {
@@ -52,7 +52,7 @@ export const doctorTemplate: OccupationTemplate = {
       '一本磨损严重的解剖学图谱，扉页有导师的赠言；或是一个银质的柳叶刀，据说是祖传的。',
     traits:
       '冷静、理性，富有同情心但从不感情用事。在压力下能保持清晰的判断力。',
-    keyConnection: 'significantPeople',
+    keyConnection: '重要之人',
     injuriesScars: '右手虎口处有一道因早年操作不慎被手术刀划伤的细小疤痕。',
     phobiasManias:
       '对血液有超乎常人的冷静（甚至可以说是麻木）；对无法治愈的疾病有一种职业性的挫败感和恐惧。',
@@ -70,7 +70,7 @@ export const doctorTemplate: OccupationTemplate = {
       'A well-worn anatomical atlas with a dedication from their mentor on the flyleaf; or a silver lancet, said to be an heirloom.',
     traits:
       'Calm, rational, compassionate but never sentimental. Maintains clear judgment under pressure.',
-    keyConnection: 'significantPeople',
+    keyConnection: 'Significant People',
     injuriesScars:
       'A small, fine scar on the web of their right hand, from an accidental scalpel cut during an early procedure.',
     phobiasManias:

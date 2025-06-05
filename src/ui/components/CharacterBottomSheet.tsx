@@ -58,19 +58,18 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
         <View style={styles.mainStatsRow}>
           <View style={styles.leftColumn}>
             <Text style={styles.statLabel}>
-              {displayValue(characterData.name)}
+              {displayValue(characterData.occupation)}
             </Text>
             <Text
-              style={[styles.nameText, styles.occupationText]} // Added style
-              numberOfLines={1}
+              style={[styles.contentText, styles.nameText]} // Added style
             >
-              {displayValue(characterData.occupation)}
+              {displayValue(characterData.name)}
             </Text>
           </View>
 
           <View style={styles.centerColumn}>
             <Text style={styles.statLabel}>{t('stats.hp')}</Text>
-            <Text style={[styles.statText, styles.hpText]}>
+            <Text style={[styles.contentText, styles.hpText]}>
               {' '}
               {/* Added style */}
               {displayValue(characterData.hitPoints?.current)}/
@@ -80,7 +79,7 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
 
           <View style={styles.rightColumn}>
             <Text style={styles.statLabel}>{t('stats.san')}</Text>
-            <Text style={[styles.statText, styles.sanText]}>
+            <Text style={[styles.contentText, styles.sanText]}>
               {' '}
               {/* Added style */}
               {displayValue(characterData.sanity?.current)}/
@@ -195,14 +194,17 @@ const styles = StyleSheet.create({
     color: palette.Grey,
     marginBottom: 4,
   },
-  nameText: {
-    fontSize: 16,
-    color: palette.White,
+  contentText: {
     fontWeight: '600',
+    height: 30,
+    lineHeight: 30,
+    textAlign: 'center',
   },
-  occupationText: {
+  nameText: {
     // Style for occupation
     color: '#a0a5ad',
+    textAlign: 'center',
+    fontSize: 14,
   },
   statLabel: {
     fontSize: 16,
@@ -210,19 +212,18 @@ const styles = StyleSheet.create({
     marginBottom: padding.Mini,
     fontFamily: typeface.Weight.Bold,
     letterSpacing: 2,
-  },
-  statText: {
-    fontSize: 20,
-    // color: palette.Gold, // Base color can be set here if Gold is default
-    fontWeight: '600',
+    textTransform: 'uppercase',
+    textAlign: 'center',
   },
   hpText: {
     // Style for HP
     color: '#cc702d',
+    fontSize: 20,
   },
   sanText: {
     // Style for Sanity
     color: '#82c6d7',
+    fontSize: 20,
   },
   attributesContainer: {
     borderTopWidth: 1,

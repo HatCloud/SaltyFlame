@@ -19,7 +19,10 @@ import { RootStackParamList } from '../../interface/navigation' // Added import
 import { useAppReducer } from '../../hook'
 import generateCharacter from '../../utils/generateCharacter'
 import { Character } from '../../interface/Character'
-import { CoreCharacteristicKey, CheckObjectKey } from '../../constant/enums'
+import {
+  CoreCharacteristicKey,
+  CoreCharacteristicEnum,
+} from '../../constant/enums' // Removed CheckObjectKey, Added CoreCharacteristicEnum
 import { typeface } from '../../theme/typeface'
 import palette from '../../theme/palette'
 import DraggableListItem from '../components/DraggableListItem'
@@ -46,14 +49,14 @@ const AttributeAllocationScreen: React.FC = () => {
   // Memoize characteristicKeys as it's a dependency for the hook
   const characteristicKeys = useMemo(
     (): CoreCharacteristicKey[] => [
-      CheckObjectKey.STR as CoreCharacteristicKey,
-      CheckObjectKey.CON as CoreCharacteristicKey,
-      CheckObjectKey.DEX as CoreCharacteristicKey,
-      CheckObjectKey.APP as CoreCharacteristicKey,
-      CheckObjectKey.POW as CoreCharacteristicKey,
-      CheckObjectKey.SIZ as CoreCharacteristicKey,
-      CheckObjectKey.INT as CoreCharacteristicKey,
-      CheckObjectKey.EDU as CoreCharacteristicKey,
+      CoreCharacteristicEnum.STR,
+      CoreCharacteristicEnum.CON,
+      CoreCharacteristicEnum.DEX,
+      CoreCharacteristicEnum.APP,
+      CoreCharacteristicEnum.POW,
+      CoreCharacteristicEnum.SIZ,
+      CoreCharacteristicEnum.INT,
+      CoreCharacteristicEnum.EDU,
     ],
     [],
   )

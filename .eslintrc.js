@@ -50,7 +50,7 @@ module.exports = {
     ],
 
     // React JSX 中强制使用单引号：建议保留 false（默认双引号更兼容）
-    quotes: ['error', 'single'],
+    // quotes: ['error', 'single'], // Let Prettier handle quotes
     semi: ['error', 'never'],
   },
 }

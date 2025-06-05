@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
   EffectType,
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
   CheckDifficulty,
   // ConditionType, // Will be added if used by scenes 41-60
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_041_060: SceneData = {
@@ -42,7 +44,7 @@ export const scenes_041_060: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.STR,
+            subObject: CoreCharacteristicEnum.STR,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '53',
@@ -81,7 +83,7 @@ export const scenes_041_060: SceneData = {
         text: '继续',
         goto: '61',
         effects: [
-          { type: EffectType.MARK_SKILL_SUCCESS, target: CheckObjectKey.CLIMB },
+          { type: EffectType.MARK_SKILL_SUCCESS, target: SkillEnum.CLIMB },
         ],
       },
     ],
@@ -115,7 +117,7 @@ export const scenes_041_060: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.CON,
+            subObject: CoreCharacteristicEnum.CON,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '64',
@@ -144,7 +146,7 @@ export const scenes_041_060: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.DODGE,
+            subObject: SkillEnum.DODGE,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '109',
@@ -216,7 +218,7 @@ export const scenes_041_060: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '69',
@@ -264,7 +266,7 @@ export const scenes_041_060: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.ARCHAEOLOGY,
+            subObject: SkillEnum.ARCHAEOLOGY,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '66',

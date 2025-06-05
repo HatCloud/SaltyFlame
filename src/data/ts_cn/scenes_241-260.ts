@@ -1,9 +1,9 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
-  // ConditionType, // Removed as not used
 } from '../../constant/enums'
 
 export const scenes_241_260: SceneData = {
@@ -19,7 +19,7 @@ export const scenes_241_260: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.FIGHTING_BRAWL,
+            target: SkillEnum.FIGHTING_BRAWL,
           },
         ],
       },
@@ -63,7 +63,7 @@ export const scenes_241_260: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.POW, // Sanity
+            subObject: CoreCharacteristicEnum.POW, // Sanity
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '252',
@@ -89,8 +89,9 @@ export const scenes_241_260: SceneData = {
   '249': {
     id: '249',
     story:
-      '你没有按通常的方式讲述自己的专业，而是兜了个圈子，只说自己帮助警察解决过各种各样的问题。一想到你得到了布莱克伍德侦探事务所的职位，你的心跳就会稍稍加速。你已经受够了婚姻不忠和银行职员受贿之类的调查；听上去布莱克伍德事务所恰好可以提供机会，让你积累起和真正的坏人斗争的经验。\n西拉斯眯起了眼睛，但什么话也没说。\n你的「信用评级」技能是20%。\n你的本职技能是：「艺术/手艺（摄影）」，「乔装」，「法律」，「图书馆使用」，「心理学」，「侦查」，还有「魅惑」、「话术」、「恐吓」、「说服」四项中其中一项。你还可以选择除了「克苏鲁神话」以外的其他任意一项技能作为学术专长或个人专长。\n将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
-    options: [{ type: 'goto', text: '分配技能并继续', goto: '128' }],
+      '你没有按通常的方式讲述自己的专业，而是兜了个圈子，只说自己帮助警察解决过各种各样的问题。一想到你得到了布莱克伍德侦探事务所的职位，你的心跳就会稍稍加速。你已经受够了婚姻不忠和银行职员受贿之类的调查；听上去布莱克伍德事务所恰好可以提供机会，让你积累起和真正的坏人斗争的经验。\n西拉斯眯起了眼睛，但什么话也没说。',
+    info: '你的「信用评级」技能是20%。\n你的本职技能是：「艺术/手艺（摄影）」，「乔装」，「法律」，「图书馆使用」，「心理学」，「侦查」，还有「魅惑」、「话术」、「恐吓」、「说服」四项中其中一项。你还可以选择除了「克苏鲁神话」以外的其他任意一项技能作为学术专长或个人专长。\n将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
+    options: [{ type: 'goto', text: '继续', goto: '128' }],
   },
   '250': {
     id: '250',
@@ -103,7 +104,7 @@ export const scenes_241_260: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.POW, // Sanity
+            subObject: CoreCharacteristicEnum.POW, // Sanity
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '256',
@@ -216,7 +217,7 @@ export const scenes_241_260: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.INTIMIDATE,
+            subObject: SkillEnum.INTIMIDATE,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '19',

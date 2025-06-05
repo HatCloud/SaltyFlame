@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   ConditionType,
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_001_020: SceneData = {
@@ -99,7 +101,7 @@ export const scenes_001_020: SceneData = {
         goto: '23',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          targetObject: CheckObjectKey.SIZ,
+          targetObject: CoreCharacteristicEnum.SIZ,
           comparisonObject: 50,
           comparisonOperator: 'lte',
         },
@@ -110,7 +112,7 @@ export const scenes_001_020: SceneData = {
         goto: '38',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          targetObject: CheckObjectKey.SIZ,
+          targetObject: CoreCharacteristicEnum.SIZ,
           comparisonObject: 50,
           comparisonOperator: 'gt',
         },
@@ -151,7 +153,7 @@ export const scenes_001_020: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.DODGE, // Corrected from skillKey
+            target: SkillEnum.DODGE,
           },
         ],
       },
@@ -210,7 +212,7 @@ export const scenes_001_020: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '30',
@@ -240,10 +242,10 @@ export const scenes_001_020: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.INTIMIDATE,
+            target: SkillEnum.INTIMIDATE,
           },
         ],
-      }, // Assuming the skill mark applies regardless of which option is chosen next from this point
+      },
       {
         type: 'goto',
         text: '彻夜不眠',
@@ -251,7 +253,7 @@ export const scenes_001_020: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.INTIMIDATE,
+            target: SkillEnum.INTIMIDATE,
           },
         ],
       },

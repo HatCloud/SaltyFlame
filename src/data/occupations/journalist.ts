@@ -1,4 +1,4 @@
-import { CheckObjectKey } from '../../constant/enums'
+import { SkillEnum } from '../../constant/enums' // Changed CheckObjectKey to SkillEnum
 import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const journalistTemplate: OccupationTemplate = {
@@ -11,32 +11,32 @@ export const journalistTemplate: OccupationTemplate = {
   creditRatingRange: [9, 40], // 根据CoC核心规则书，记者信用评级通常不高
 
   occupationalSkills: [
-    CheckObjectKey.FAST_TALK,
-    CheckObjectKey.PERSUADE,
-    CheckObjectKey.PSYCHOLOGY, // 理解采访对象
-    CheckObjectKey.HISTORY, // 提供报道背景
-    CheckObjectKey.LIBRARY_USE, // 查资料
-    CheckObjectKey.OWN_LANGUAGE, // 写作
-    CheckObjectKey.SPOT_HIDDEN, // 发现线索
-    CheckObjectKey.ART_CRAFT_PHOTOGRAPHY, // 摄影取证
+    SkillEnum.FAST_TALK,
+    SkillEnum.PERSUADE,
+    SkillEnum.PSYCHOLOGY, // 理解采访对象
+    SkillEnum.HISTORY, // 提供报道背景
+    SkillEnum.LIBRARY_USE, // 查资料
+    SkillEnum.OWN_LANGUAGE, // 写作
+    SkillEnum.SPOT_HIDDEN, // 发现线索
+    SkillEnum.ART_CRAFT_PHOTOGRAPHY, // 摄影取证
   ],
 
   occupationalSkillTargets: {
-    [CheckObjectKey.FAST_TALK]: 70,
-    [CheckObjectKey.PERSUADE]: 60,
-    [CheckObjectKey.PSYCHOLOGY]: 60,
-    [CheckObjectKey.HISTORY]: 50,
-    [CheckObjectKey.LIBRARY_USE]: 50,
-    [CheckObjectKey.OWN_LANGUAGE]: 50,
-    [CheckObjectKey.SPOT_HIDDEN]: 40,
-    [CheckObjectKey.ART_CRAFT_PHOTOGRAPHY]: 40,
+    [SkillEnum.FAST_TALK]: 70,
+    [SkillEnum.PERSUADE]: 60,
+    [SkillEnum.PSYCHOLOGY]: 60,
+    [SkillEnum.HISTORY]: 50,
+    [SkillEnum.LIBRARY_USE]: 50,
+    [SkillEnum.OWN_LANGUAGE]: 50,
+    [SkillEnum.SPOT_HIDDEN]: 40,
+    [SkillEnum.ART_CRAFT_PHOTOGRAPHY]: 40,
   },
 
   interestSkills: [
-    CheckObjectKey.DRIVE_AUTO, // 快速赶往新闻现场
-    CheckObjectKey.STEALTH, // 秘密调查
-    CheckObjectKey.CHARM, // 获取信息
-    CheckObjectKey.INTIMIDATE, // 必要时的强硬手段
+    SkillEnum.DRIVE_AUTO, // 快速赶往新闻现场
+    SkillEnum.STEALTH, // 秘密调查
+    SkillEnum.CHARM, // 获取信息
+    SkillEnum.INTIMIDATE, // 必要时的强硬手段
   ],
 
   background_cn: {
@@ -52,7 +52,7 @@ export const journalistTemplate: OccupationTemplate = {
       '一台小巧但坚固的便携式打字机，陪伴多年；或是一张在某个重大事件现场拍摄的、意义非凡的底片。',
     traits:
       '好奇心极强，行动迅速，有时为了新闻不惜冒一些风险。社交能力强，但也容易得罪人。',
-    keyConnection: 'significantPeople',
+    keyConnection: '重要之人',
     injuriesScars:
       '额角有一块不明显的疤痕，是在一次追踪报道黑帮活动时被不明人士推搡撞到的。',
     phobiasManias:
@@ -71,7 +71,7 @@ export const journalistTemplate: OccupationTemplate = {
       'A small but sturdy portable typewriter, a companion for many years; or a significant negative from a major event scene.',
     traits:
       'Extremely curious, acts quickly, sometimes takes risks for a story. Strong social skills, but also easily offends people.',
-    keyConnection: 'significantPeople',
+    keyConnection: 'Significant People',
     injuriesScars:
       'An inconspicuous scar on the temple, from being pushed and hitting something during a pursuit while reporting on gang activities.',
     phobiasManias:
@@ -79,8 +79,8 @@ export const journalistTemplate: OccupationTemplate = {
   },
 
   // Example character pre-fill data
-  exampleCharacterName_cn: '托马斯·“汤姆”·莱利',
-  exampleCharacterName_en: 'Thomas "Tom" Riley',
+  exampleCharacterName_cn: '托马斯·莱利',
+  exampleCharacterName_en: 'Thomas Riley',
   exampleCharacterSex: 'Male',
   exampleCharacterAge: 27,
   exampleCharacterBirthplace_cn: '芝加哥，伊利诺伊州',

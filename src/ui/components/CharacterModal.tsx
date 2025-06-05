@@ -11,7 +11,11 @@ import {
 import { useAppReducer } from '../../hook'
 import { useI18n } from '../../i18n/useI18n'
 import { Weapon } from '../../interface/Character'
-import { CheckObjectKey, CheckObjectNames } from '../../constant/enums'
+import {
+  CheckObjectKey,
+  CheckObjectNames,
+  SkillEnum,
+} from '../../constant/enums'
 import { groupSkills, SkillCategory } from '../../utils/skillUtils'
 import palette from '../../theme/palette'
 import { padding } from '../../theme/padding'
@@ -93,6 +97,41 @@ const CharacterModal: React.FC = () => {
                 value={characterData.residence}
               />
 
+              {/* Background Info */}
+              {characterData.background && (
+                <>
+                  <SectionTitle title={t('charModal.backgroundTitle')} />
+                  {Object.entries(characterData.background).map(
+                    ([key, value]) => {
+                      if (
+                        value === null ||
+                        value === undefined ||
+                        String(value).trim() === ''
+                      )
+                        return null
+
+                      const i18nKey = `charModal.background.${key}`
+                      const labelText = t(i18nKey, {
+                        defaultValue: key
+                          .replace(/([A-Z])/g, ' $1')
+                          .replace(/^./, str => str.toUpperCase()),
+                      }) // Fallback to formatted key
+
+                      return (
+                        <View key={key} style={styles.backgroundItemContainer}>
+                          <Text style={styles.backgroundLabel}>
+                            {labelText}:
+                          </Text>
+                          <Text style={styles.backgroundValue}>
+                            {String(value)}
+                          </Text>
+                        </View>
+                      )
+                    },
+                  )}
+                </>
+              )}
+
               {/* Status */}
               <SectionTitle title={t('charModal.status')} />
               <InfoRow
@@ -153,7 +192,7 @@ const CharacterModal: React.FC = () => {
               />
               <InfoRow
                 label={t('charModal.dodgeValue')}
-                value={characterData.skills?.[CheckObjectKey.DODGE]}
+                value={characterData.skills?.[SkillEnum.DODGE]}
               />
 
               {/* Skills */}
@@ -295,6 +334,22 @@ const styles = StyleSheet.create({
     color: palette.White,
     fontFamily: typeface.Weight.Medium,
     textAlign: 'right',
+    flexShrink: 1, // Allow value text to shrink if label is long
+  },
+  backgroundItemContainer: {
+    marginBottom: padding.Small,
+  },
+  backgroundLabel: {
+    fontSize: 16,
+    color: palette.Grey,
+    fontFamily: typeface.Weight.Medium, // Changed from SemiBold
+    marginBottom: padding.Mini, // Changed from Tiny
+  },
+  backgroundValue: {
+    fontSize: 15,
+    color: palette.White,
+    fontFamily: typeface.Weight.Regular,
+    textAlign: 'left',
   },
   statusWarning: {
     fontSize: 14,

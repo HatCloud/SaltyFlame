@@ -94,11 +94,12 @@
     - 添加了新的 `background_en` 字段，并为其所有子属性填充了英文翻译内容。
     - 移除了 `skillPointsFormula` 字段。
     - （这些文件之前已更新过，添加了示例角色预设字段并填充了数据）。
-  - `src/ui/components/CharacterModal.tsx`: （此项修正已在先前步骤完成）修正了一个TypeScript错误，将对 `characterData.personalData.dodge` 的访问更改为从 `characterData.skills[CheckObjectKey.DODGE]` 获取闪避值。
+  - `src/ui/components/CharacterModal.tsx`: 修正了一个TypeScript错误（访问 `personalData.dodge`），之后进一步修改以新的布局（标签居上，内容居左下方）显示角色的详细背景信息，并修正了相关的样式问题。
   - `src/reducer.ts`: 进一步更新了 `APPLY_CHOSEN_OCCUPATION` action 的处理逻辑：
     - 根据当前语言从职业模板的示例预设数据中，为 `characterData` 的 `name`, `sex`, `age`, `birthplace`, `residence` 字段赋值（如果模板中有提供）。
     - 根据职业模板的 `creditRatingRange` 为角色随机生成一个信用评级值，并更新到 `characterData.skills.CREDIT_RATING`。
-    - 保留了根据语言选择 `background_cn` 或 `background_en` 的逻辑。
+    - 保留了根据语言选择 `background_cn` 或 `template.background_en` 的逻辑。
+  - `src/i18n/resources.ts`: 为角色背景信息的各个字段（如描述、思想信念等）添加了对应的中英文i18n翻译键。
 
 ## 未完成功能 (来自 projectbrief.md)
 
@@ -174,4 +175,5 @@
   - 根据用户请求，为所有职业模板 (`src/data/occupations/*.ts`) 添加了示例角色预设信息。
   - 进一步根据用户请求，调整了 `OccupationTemplate.ts` 接口及所有职业模板文件（双语背景、移除skillPointsFormula）。
   - 再次根据用户反馈，更新了 `reducer.ts` 中的 `APPLY_CHOSEN_OCCUPATION` 逻辑，以从模板的预设信息中填充角色姓名、性别、年龄、出生地、住所，并随机生成信用评级。
+  - 再次根据用户反馈，调整了 `CharacterModal.tsx` 中背景信息的显示布局，并添加/更新了相应的i18n键。
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。

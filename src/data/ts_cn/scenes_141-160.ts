@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   // ConditionType, // Removed as not used in scenes 141-160
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_141_160: SceneData = {
@@ -18,7 +20,7 @@ export const scenes_141_160: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.POW, // Or SANITY if that's the intent
+            subObject: CoreCharacteristicEnum.POW, // Or SANITY if that's the intent
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '63',
@@ -70,7 +72,7 @@ export const scenes_141_160: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.DRIVE_AUTO,
+            subObject: SkillEnum.DRIVE_AUTO,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '174',
@@ -85,7 +87,7 @@ export const scenes_141_160: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.PSYCHOLOGY,
+            subObject: SkillEnum.PSYCHOLOGY,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '162',
@@ -116,7 +118,7 @@ export const scenes_141_160: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.DISGUISE,
+            target: SkillEnum.DISGUISE,
           },
         ],
       },
@@ -174,7 +176,7 @@ export const scenes_141_160: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.STEALTH,
+            subObject: SkillEnum.STEALTH,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '211',
@@ -246,7 +248,7 @@ export const scenes_141_160: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.STEALTH,
+            subObject: SkillEnum.STEALTH,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '7',
@@ -256,7 +258,7 @@ export const scenes_141_160: SceneData = {
           onSuccessEffects: [
             {
               type: EffectType.MARK_SKILL_SUCCESS,
-              target: CheckObjectKey.STEALTH,
+              target: SkillEnum.STEALTH,
             },
           ],
         },

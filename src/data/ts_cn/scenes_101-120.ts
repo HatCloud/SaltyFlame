@@ -1,9 +1,12 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  RollEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   // ConditionType, // Removed as not used in scenes 101-120
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_101_120: SceneData = {
@@ -17,8 +20,9 @@ export const scenes_101_120: SceneData = {
     // This scene was already present
     id: '102',
     story:
-      '你说道，自己刚刚在亲戚的远方朋友强烈推荐下，得到了“阿卡姆珍本舆图行”的助理职位。收到录用通知函的时候的那份兴奋，只要想一想那些必须来店一游的文物，你就能回忆起来三分。你心里一阵痒痒；你恨不得马上就开始工作。\n“书，哈？”西拉斯没有再继续对话。你感觉他不像是喜欢读书的人。\n你的「信用评级」技能是20%。\n你的本职技能是：「估价」，「艺术/手艺」（选择一个专业领域），「历史」，「图书馆使用」，「外语」（选择一种），「侦查」，还有「魅惑」、「话术」、「恐吓」、「说服」四项中其中一项。你还可以选择除了「克苏鲁神话」以外的其他任意一项技能作为个人专长。将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。\n然后前往128。',
-    options: [{ type: 'goto', text: '分配技能并继续', goto: '128' }],
+      '你说道，自己刚刚在亲戚的远方朋友强烈推荐下，得到了“阿卡姆珍本舆图行”的助理职位。收到录用通知函的时候的那份兴奋，只要想一想那些必须来店一游的文物，你就能回忆起来三分。你心里一阵痒痒；你恨不得马上就开始工作。\n“书，哈？”西拉斯没有再继续对话。你感觉他不像是喜欢读书的人。',
+    info: '你的「信用评级」技能是20%。\n你的本职技能是：「估价」，「艺术/手艺」（选择一个专业领域），「历史」，「图书馆使用」，「外语」（选择一种），「侦查」，还有「魅惑」、「话术」、「恐吓」、「说服」四项中其中一项。你还可以选择除了「克苏鲁神话」以外的其他任意一项技能作为个人专长。将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
+    options: [{ type: 'goto', text: '继续', goto: '128' }],
   },
   '103': {
     id: '103',
@@ -54,7 +58,7 @@ export const scenes_101_120: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.PSYCHOLOGY,
+            target: SkillEnum.PSYCHOLOGY,
           },
         ],
       },
@@ -99,7 +103,7 @@ export const scenes_101_120: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.STEALTH,
+            subObject: SkillEnum.STEALTH,
             difficulty: CheckDifficulty.EXTREME,
           },
           onSuccessSceneId: '143',
@@ -121,7 +125,7 @@ export const scenes_101_120: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '118',
@@ -145,7 +149,7 @@ export const scenes_101_120: SceneData = {
           { type: EffectType.CHANGE_SANITY, value: '+1' },
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.SPOT_HIDDEN,
+            target: SkillEnum.SPOT_HIDDEN,
           },
         ],
       },
@@ -174,7 +178,7 @@ export const scenes_101_120: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.LUCK,
+            subObject: RollEnum.LUCK,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '127',
@@ -195,7 +199,7 @@ export const scenes_101_120: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.LUCK,
+            subObject: RollEnum.LUCK,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '136',
@@ -217,7 +221,7 @@ export const scenes_101_120: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.APP,
+            subObject: CoreCharacteristicEnum.APP,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '10',
@@ -240,7 +244,7 @@ export const scenes_101_120: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.SPOT_HIDDEN,
+            target: SkillEnum.SPOT_HIDDEN,
           },
         ],
       },
@@ -257,7 +261,7 @@ export const scenes_101_120: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.FAST_TALK,
+            subObject: SkillEnum.FAST_TALK,
             difficulty: CheckDifficulty.EXTREME,
           },
           onSuccessSceneId: '132',

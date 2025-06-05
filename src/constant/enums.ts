@@ -1,5 +1,4 @@
-export enum CheckObjectKey {
-  // Characteristics 属性
+export enum CoreCharacteristicEnum {
   STR = 'STR', // 力量
   CON = 'CON', // 体质
   SIZ = 'SIZ', // 体型
@@ -8,13 +7,15 @@ export enum CheckObjectKey {
   INT = 'INT', // 智力
   POW = 'POW', // 意志
   EDU = 'EDU', // 教育
-  MOV = 'MOV', // 移动 (虽然规则书有，但此剧本似乎不直接检定MOV)
+}
 
-  // Rolls 检定
+export enum RollEnum {
   LUCK = 'LUCK', // 幸运
   SANITY = 'SANITY', // 理智
+  MOV = 'MOV', // 移动 (虽然规则书有，但此剧本似乎不直接检定MOV)
+}
 
-  // Skills 技能 (只列出剧本中明确提到或非常可能用到的)
+export enum SkillEnum {
   ACCOUNTING = 'ACCOUNTING', // 会计
   ANTHROPOLOGY = 'ANTHROPOLOGY', // 人类学
   APPRAISE = 'APPRAISE', // 估价
@@ -67,170 +68,115 @@ export enum CheckObjectKey {
   TRACK = 'TRACK', // 追踪
 }
 
+// Union type for all checkable object keys for backward compatibility and for CheckObjectNames/DefaultValues
+export type CheckObjectKey = CoreCharacteristicEnum | RollEnum | SkillEnum
+
 export const CheckObjectNames: Record<
   CheckObjectKey,
   { en: string; cn: string }
 > = {
-  [CheckObjectKey.STR]: { en: 'Strength', cn: '力量' },
-  [CheckObjectKey.CON]: { en: 'Constitution', cn: '体质' },
-  [CheckObjectKey.SIZ]: { en: 'Size', cn: '体型' },
-  [CheckObjectKey.DEX]: { en: 'Dexterity', cn: '敏捷' },
-  [CheckObjectKey.APP]: { en: 'Appearance', cn: '外貌' },
-  [CheckObjectKey.INT]: { en: 'Intelligence', cn: '智力' },
-  [CheckObjectKey.POW]: { en: 'Power', cn: '意志' },
-  [CheckObjectKey.EDU]: { en: 'Education', cn: '教育' },
-  [CheckObjectKey.MOV]: { en: 'Move', cn: '移动' },
-  [CheckObjectKey.LUCK]: { en: 'Luck', cn: '幸运' },
-  [CheckObjectKey.SANITY]: { en: 'Sanity', cn: '理智' },
-  [CheckObjectKey.ACCOUNTING]: { en: 'Accounting', cn: '会计' },
-  [CheckObjectKey.ANTHROPOLOGY]: { en: 'Anthropology', cn: '人类学' },
-  [CheckObjectKey.APPRAISE]: { en: 'Appraise', cn: '估价' },
-  [CheckObjectKey.APPEASE]: { en: 'Appease', cn: '取悦' },
-  [CheckObjectKey.ARCHAEOLOGY]: { en: 'Archaeology', cn: '考古学' },
-  [CheckObjectKey.ART_CRAFT]: { en: 'Art/Craft', cn: '艺术/手艺' },
-  [CheckObjectKey.ART_CRAFT_PHOTOGRAPHY]: {
+  // Core Characteristics
+  [CoreCharacteristicEnum.STR]: { en: 'Strength', cn: '力量' },
+  [CoreCharacteristicEnum.CON]: { en: 'Constitution', cn: '体质' },
+  [CoreCharacteristicEnum.SIZ]: { en: 'Size', cn: '体型' },
+  [CoreCharacteristicEnum.DEX]: { en: 'Dexterity', cn: '敏捷' },
+  [CoreCharacteristicEnum.APP]: { en: 'Appearance', cn: '外貌' },
+  [CoreCharacteristicEnum.INT]: { en: 'Intelligence', cn: '智力' },
+  [CoreCharacteristicEnum.POW]: { en: 'Power', cn: '意志' },
+  [CoreCharacteristicEnum.EDU]: { en: 'Education', cn: '教育' },
+
+  // Rolls
+  [RollEnum.LUCK]: { en: 'Luck', cn: '幸运' },
+  [RollEnum.SANITY]: { en: 'Sanity', cn: '理智' },
+  [RollEnum.MOV]: { en: 'Move', cn: '移动' },
+
+  // Skills
+  [SkillEnum.ACCOUNTING]: { en: 'Accounting', cn: '会计' },
+  [SkillEnum.ANTHROPOLOGY]: { en: 'Anthropology', cn: '人类学' },
+  [SkillEnum.APPRAISE]: { en: 'Appraise', cn: '估价' },
+  [SkillEnum.APPEASE]: { en: 'Appease', cn: '取悦' },
+  [SkillEnum.ARCHAEOLOGY]: { en: 'Archaeology', cn: '考古学' },
+  [SkillEnum.ART_CRAFT]: { en: 'Art/Craft', cn: '艺术/手艺' },
+  [SkillEnum.ART_CRAFT_PHOTOGRAPHY]: {
     en: 'Art/Craft (Photography)',
     cn: '艺术/手艺(摄影)',
   },
-  [CheckObjectKey.CHARM]: { en: 'Charm', cn: '魅惑' },
-  [CheckObjectKey.CLIMB]: { en: 'Climb', cn: '攀爬' },
-  [CheckObjectKey.CREDIT_RATING]: { en: 'Credit Rating', cn: '信用评级' },
-  [CheckObjectKey.CTHULHU_MYTHOS]: { en: 'Cthulhu Mythos', cn: '克苏鲁神话' },
-  [CheckObjectKey.DISGUISE]: { en: 'Disguise', cn: '乔装' },
-  [CheckObjectKey.DODGE]: { en: 'Dodge', cn: '闪避' },
-  [CheckObjectKey.DRIVE_AUTO]: { en: 'Drive Auto', cn: '汽车驾驶' },
-  [CheckObjectKey.ELECTRICAL_REPAIR]: {
+  [SkillEnum.CHARM]: { en: 'Charm', cn: '魅惑' },
+  [SkillEnum.CLIMB]: { en: 'Climb', cn: '攀爬' },
+  [SkillEnum.CREDIT_RATING]: { en: 'Credit Rating', cn: '信用评级' },
+  [SkillEnum.CTHULHU_MYTHOS]: { en: 'Cthulhu Mythos', cn: '克苏鲁神话' },
+  [SkillEnum.DISGUISE]: { en: 'Disguise', cn: '乔装' },
+  [SkillEnum.DODGE]: { en: 'Dodge', cn: '闪避' },
+  [SkillEnum.DRIVE_AUTO]: { en: 'Drive Auto', cn: '汽车驾驶' },
+  [SkillEnum.ELECTRICAL_REPAIR]: {
     en: 'Electrical Repair',
     cn: '电气维修',
   },
-  [CheckObjectKey.FAST_TALK]: { en: 'Fast Talk', cn: '话术' },
-  [CheckObjectKey.FIGHTING_BRAWL]: { en: 'Fighting (Brawl)', cn: '格斗(斗殴)' },
-  [CheckObjectKey.FIREARMS_HANDGUN]: {
+  [SkillEnum.FAST_TALK]: { en: 'Fast Talk', cn: '话术' },
+  [SkillEnum.FIGHTING_BRAWL]: { en: 'Fighting (Brawl)', cn: '格斗(斗殴)' },
+  [SkillEnum.FIREARMS_HANDGUN]: {
     en: 'Firearms (Handgun)',
     cn: '射击(手枪)',
   },
-  [CheckObjectKey.FIREARMS_RIFLE_SHOTGUN]: {
+  [SkillEnum.FIREARMS_RIFLE_SHOTGUN]: {
     en: 'Firearms (Rifle/Shotgun)',
     cn: '射击(步枪/霰弹枪)',
   },
-  [CheckObjectKey.FIRST_AID]: { en: 'First Aid', cn: '急救' },
-  [CheckObjectKey.HISTORY]: { en: 'History', cn: '历史' },
-  [CheckObjectKey.INTIMIDATE]: { en: 'Intimidate', cn: '恐吓' },
-  [CheckObjectKey.JUMP]: { en: 'Jump', cn: '跳跃' },
-  [CheckObjectKey.LAW]: { en: 'Law', cn: '法律' },
-  [CheckObjectKey.LIBRARY_USE]: { en: 'Library Use', cn: '图书馆使用' },
-  [CheckObjectKey.LISTEN]: { en: 'Listen', cn: '聆听' },
-  [CheckObjectKey.LOCKSMITH]: { en: 'Locksmith', cn: '锁匠' },
-  [CheckObjectKey.MANIPULATE]: { en: 'Manipulate', cn: '操纵' },
-  [CheckObjectKey.MECHANICAL_REPAIR]: {
+  [SkillEnum.FIRST_AID]: { en: 'First Aid', cn: '急救' },
+  [SkillEnum.HISTORY]: { en: 'History', cn: '历史' },
+  [SkillEnum.INTIMIDATE]: { en: 'Intimidate', cn: '恐吓' },
+  [SkillEnum.JUMP]: { en: 'Jump', cn: '跳跃' },
+  [SkillEnum.LAW]: { en: 'Law', cn: '法律' },
+  [SkillEnum.LIBRARY_USE]: { en: 'Library Use', cn: '图书馆使用' },
+  [SkillEnum.LISTEN]: { en: 'Listen', cn: '聆听' },
+  [SkillEnum.LOCKSMITH]: { en: 'Locksmith', cn: '锁匠' },
+  [SkillEnum.MANIPULATE]: { en: 'Manipulate', cn: '操纵' },
+  [SkillEnum.MECHANICAL_REPAIR]: {
     en: 'Mechanical Repair',
     cn: '机械维修',
   },
-  [CheckObjectKey.MEDICINE]: { en: 'Medicine', cn: '医学' },
-  [CheckObjectKey.NATURAL_WORLD]: { en: 'Natural World', cn: '博物学' },
-  [CheckObjectKey.NAVIGATE]: { en: 'Navigate', cn: '导航' },
-  [CheckObjectKey.OCCULT]: { en: 'Occult', cn: '神秘学' },
-  [CheckObjectKey.OPERATE_HEAVY_MACHINERY]: {
+  [SkillEnum.MEDICINE]: { en: 'Medicine', cn: '医学' },
+  [SkillEnum.NATURAL_WORLD]: { en: 'Natural World', cn: '博物学' },
+  [SkillEnum.NAVIGATE]: { en: 'Navigate', cn: '导航' },
+  [SkillEnum.OCCULT]: { en: 'Occult', cn: '神秘学' },
+  [SkillEnum.OPERATE_HEAVY_MACHINERY]: {
     en: 'Operate Heavy Machinery',
     cn: '操作重机',
   },
-  [CheckObjectKey.OTHER_LANGUAGE]: { en: 'Other Language', cn: '语言' },
-  [CheckObjectKey.OTHER_LANGUAGE_LATIN]: {
+  [SkillEnum.OTHER_LANGUAGE]: { en: 'Other Language', cn: '语言' },
+  [SkillEnum.OTHER_LANGUAGE_LATIN]: {
     en: 'Other Language (Latin)',
     cn: '其他语言（拉丁文）',
   },
-  [CheckObjectKey.OWN_LANGUAGE]: { en: 'Own Language', cn: '母语' },
-  [CheckObjectKey.PERSUADE]: { en: 'Persuade', cn: '说服' },
-  [CheckObjectKey.PSYCHOANALYSIS]: { en: 'Psychoanalysis', cn: '精神分析' },
-  [CheckObjectKey.PSYCHOLOGY]: { en: 'Psychology', cn: '心理学' },
-  [CheckObjectKey.RIDE]: { en: 'Ride', cn: '骑术' },
-  [CheckObjectKey.SCIENCE]: { en: 'Science', cn: '科学' },
-  [CheckObjectKey.SCIENCE_BOTANY]: {
+  [SkillEnum.OWN_LANGUAGE]: { en: 'Own Language', cn: '母语' },
+  [SkillEnum.PERSUADE]: { en: 'Persuade', cn: '说服' },
+  [SkillEnum.PSYCHOANALYSIS]: { en: 'Psychoanalysis', cn: '精神分析' },
+  [SkillEnum.PSYCHOLOGY]: { en: 'Psychology', cn: '心理学' },
+  [SkillEnum.RIDE]: { en: 'Ride', cn: '骑术' },
+  [SkillEnum.SCIENCE]: { en: 'Science', cn: '科学' },
+  [SkillEnum.SCIENCE_BOTANY]: {
     en: 'Science (Botany)',
     cn: '科学(植物学)',
   },
-  [CheckObjectKey.SLEIGHT_OF_HAND]: { en: 'Sleight of Hand', cn: '妙手' },
-  [CheckObjectKey.SPOT_HIDDEN]: { en: 'Spot Hidden', cn: '侦查' },
-  [CheckObjectKey.STEALTH]: { en: 'Stealth', cn: '潜行' },
-  [CheckObjectKey.SURVIVAL]: { en: 'Survival', cn: '生存' },
-  [CheckObjectKey.SWIM]: { en: 'Swim', cn: '游泳' },
-  [CheckObjectKey.THROW]: { en: 'Throw', cn: '投掷' },
-  [CheckObjectKey.TRACK]: { en: 'Track', cn: '追踪' },
-  // Note: This list is not exhaustive for all CoC skills, but covers those most likely in this scenario.
-  // Will add more as they appear in the PDF.
+  [SkillEnum.SLEIGHT_OF_HAND]: { en: 'Sleight of Hand', cn: '妙手' },
+  [SkillEnum.SPOT_HIDDEN]: { en: 'Spot Hidden', cn: '侦查' },
+  [SkillEnum.STEALTH]: { en: 'Stealth', cn: '潜行' },
+  [SkillEnum.SURVIVAL]: { en: 'Survival', cn: '生存' },
+  [SkillEnum.SWIM]: { en: 'Swim', cn: '游泳' },
+  [SkillEnum.THROW]: { en: 'Throw', cn: '投掷' },
+  [SkillEnum.TRACK]: { en: 'Track', cn: '追踪' },
 }
 
 // --- Type Aliases for specific categories of CheckObjectKey ---
 
 // Core characteristics directly from the character sheet
-export type CoreCharacteristicKey =
-  | CheckObjectKey.STR
-  | CheckObjectKey.CON
-  | CheckObjectKey.SIZ
-  | CheckObjectKey.DEX
-  | CheckObjectKey.APP
-  | CheckObjectKey.INT
-  | CheckObjectKey.POW
-  | CheckObjectKey.EDU
+export type CoreCharacteristicKey = keyof typeof CoreCharacteristicEnum
 
 // Rolls like Luck, Sanity, and potentially Move if treated as a rollable value
-export type RollKey =
-  | CheckObjectKey.LUCK
-  | CheckObjectKey.SANITY
-  | CheckObjectKey.MOV // MOV is sometimes a derived stat but can be "checked"
+export type RollKey = keyof typeof RollEnum
 
 // All skills available for checks
-export type SkillKey =
-  | CheckObjectKey.ACCOUNTING
-  | CheckObjectKey.ANTHROPOLOGY
-  | CheckObjectKey.APPRAISE
-  | CheckObjectKey.APPEASE
-  | CheckObjectKey.ARCHAEOLOGY
-  | CheckObjectKey.ART_CRAFT
-  | CheckObjectKey.ART_CRAFT_PHOTOGRAPHY
-  | CheckObjectKey.CHARM
-  | CheckObjectKey.CLIMB
-  | CheckObjectKey.CREDIT_RATING
-  | CheckObjectKey.CTHULHU_MYTHOS
-  | CheckObjectKey.DISGUISE
-  | CheckObjectKey.DODGE
-  | CheckObjectKey.DRIVE_AUTO
-  | CheckObjectKey.ELECTRICAL_REPAIR
-  | CheckObjectKey.FAST_TALK
-  | CheckObjectKey.FIGHTING_BRAWL
-  | CheckObjectKey.FIREARMS_HANDGUN
-  | CheckObjectKey.FIREARMS_RIFLE_SHOTGUN
-  | CheckObjectKey.FIRST_AID
-  | CheckObjectKey.HISTORY
-  | CheckObjectKey.INTIMIDATE
-  | CheckObjectKey.JUMP
-  | CheckObjectKey.LAW
-  | CheckObjectKey.LIBRARY_USE
-  | CheckObjectKey.LISTEN
-  | CheckObjectKey.LOCKSMITH
-  | CheckObjectKey.MANIPULATE
-  | CheckObjectKey.MECHANICAL_REPAIR
-  | CheckObjectKey.MEDICINE
-  | CheckObjectKey.NATURAL_WORLD
-  | CheckObjectKey.NAVIGATE
-  | CheckObjectKey.OCCULT
-  | CheckObjectKey.OPERATE_HEAVY_MACHINERY
-  | CheckObjectKey.OTHER_LANGUAGE
-  | CheckObjectKey.OTHER_LANGUAGE_LATIN
-  | CheckObjectKey.OWN_LANGUAGE
-  | CheckObjectKey.PERSUADE
-  | CheckObjectKey.PSYCHOANALYSIS
-  | CheckObjectKey.PSYCHOLOGY
-  | CheckObjectKey.RIDE
-  | CheckObjectKey.SCIENCE
-  | CheckObjectKey.SCIENCE_BOTANY
-  | CheckObjectKey.SLEIGHT_OF_HAND
-  | CheckObjectKey.SPOT_HIDDEN
-  | CheckObjectKey.STEALTH
-  | CheckObjectKey.SURVIVAL
-  | CheckObjectKey.SWIM
-  | CheckObjectKey.THROW
-  | CheckObjectKey.TRACK
+export type SkillKey = keyof typeof SkillEnum
 
 export enum EffectType {
   CHANGE_HP = 'CHANGE_HP',
@@ -262,72 +208,68 @@ export enum CheckDifficulty {
 export const CheckObjectDefaultValues: Partial<
   Record<CheckObjectKey, number | string>
 > = {
-  // Characteristics (not typically defaulted here but included for completeness if ever needed)
-  [CheckObjectKey.STR]: 0, // Defaulting to 0 as per standard character sheets, actual value from generation
-  [CheckObjectKey.CON]: 0,
-  [CheckObjectKey.SIZ]: 0,
-  [CheckObjectKey.DEX]: 0,
-  [CheckObjectKey.APP]: 0,
-  [CheckObjectKey.INT]: 0,
-  [CheckObjectKey.POW]: 0,
-  [CheckObjectKey.EDU]: 0,
-  [CheckObjectKey.MOV]: 0,
-  [CheckObjectKey.LUCK]: 0, // Luck is usually POW or rolled
-  [CheckObjectKey.SANITY]: 0, // Sanity is usually POW
+  // Characteristics
+  [CoreCharacteristicEnum.STR]: 0,
+  [CoreCharacteristicEnum.CON]: 0,
+  [CoreCharacteristicEnum.SIZ]: 0,
+  [CoreCharacteristicEnum.DEX]: 0,
+  [CoreCharacteristicEnum.APP]: 0,
+  [CoreCharacteristicEnum.INT]: 0,
+  [CoreCharacteristicEnum.POW]: 0,
+  [CoreCharacteristicEnum.EDU]: 0,
 
-  // Skills from the image
-  [CheckObjectKey.NATURAL_WORLD]: 10,
-  [CheckObjectKey.MANIPULATE]: 1,
-  [CheckObjectKey.OPERATE_HEAVY_MACHINERY]: 1,
-  [CheckObjectKey.NAVIGATE]: 10,
-  [CheckObjectKey.ELECTRICAL_REPAIR]: 10,
-  [CheckObjectKey.LAW]: 5,
-  [CheckObjectKey.FIGHTING_BRAWL]: 25,
-  [CheckObjectKey.APPRAISE]: 5,
-  [CheckObjectKey.FAST_TALK]: 5,
-  [CheckObjectKey.MECHANICAL_REPAIR]: 10,
-  [CheckObjectKey.FIRST_AID]: 30,
-  [CheckObjectKey.PSYCHOANALYSIS]: 1,
-  [CheckObjectKey.ARCHAEOLOGY]: 1,
-  [CheckObjectKey.SCIENCE]: 1, // General Science
-  [CheckObjectKey.CTHULHU_MYTHOS]: 0,
-  [CheckObjectKey.INTIMIDATE]: 15,
-  [CheckObjectKey.ACCOUNTING]: 5,
-  [CheckObjectKey.HISTORY]: 5,
-  [CheckObjectKey.LISTEN]: 20,
-  [CheckObjectKey.SLEIGHT_OF_HAND]: 10,
-  [CheckObjectKey.CLIMB]: 20,
-  [CheckObjectKey.RIDE]: 5,
-  [CheckObjectKey.DRIVE_AUTO]: 20,
-  [CheckObjectKey.STEALTH]: 20,
-  [CheckObjectKey.DISGUISE]: 5,
-  [CheckObjectKey.APPEASE]: 15,
-  [CheckObjectKey.ANTHROPOLOGY]: 1,
-  [CheckObjectKey.DODGE]: 'DEX/2', // Special value
-  [CheckObjectKey.FIREARMS_HANDGUN]: 20,
-  [CheckObjectKey.FIREARMS_RIFLE_SHOTGUN]: 25,
-  [CheckObjectKey.OCCULT]: 5,
-  [CheckObjectKey.SURVIVAL]: 10,
-  [CheckObjectKey.PERSUADE]: 10,
-  [CheckObjectKey.LOCKSMITH]: 1,
-  [CheckObjectKey.JUMP]: 20,
-  [CheckObjectKey.THROW]: 20,
-  [CheckObjectKey.LIBRARY_USE]: 20,
-  [CheckObjectKey.PSYCHOLOGY]: 10,
-  [CheckObjectKey.CREDIT_RATING]: 0,
-  [CheckObjectKey.MEDICINE]: 1,
-  [CheckObjectKey.ART_CRAFT]: 5, // General Art/Craft
-  [CheckObjectKey.SWIM]: 20,
-  [CheckObjectKey.OTHER_LANGUAGE]: 1, // General Other Language
-  [CheckObjectKey.OWN_LANGUAGE]: 'EDU', // Special value
-  [CheckObjectKey.SPOT_HIDDEN]: 25,
-  [CheckObjectKey.TRACK]: 10,
+  // Rolls
+  [RollEnum.LUCK]: 0, // Luck is usually POW or rolled
+  [RollEnum.SANITY]: 0, // Sanity is usually POW
+  [RollEnum.MOV]: 0,
 
-  // Skills that were in the enum but not explicitly in the image with a value,
-  // default them to a common base if applicable or leave them out if they are too specific
-  // For now, only adding those from the image.
-  // [CheckObjectKey.ART_CRAFT_PHOTOGRAPHY]: 5, // Example if we assume it's a specific Art/Craft
-  // [CheckObjectKey.SCIENCE_BOTANY]: 1, // Example if we assume it's a specific Science
-  // [CheckObjectKey.OTHER_LANGUAGE_LATIN]: 1, // Example if we assume it's a specific Language
-  // [CheckObjectKey.CHARM]: 15, // Charm is often 15% base in some rule sets
+  // Skills
+  [SkillEnum.NATURAL_WORLD]: 10,
+  [SkillEnum.MANIPULATE]: 1,
+  [SkillEnum.OPERATE_HEAVY_MACHINERY]: 1,
+  [SkillEnum.NAVIGATE]: 10,
+  [SkillEnum.ELECTRICAL_REPAIR]: 10,
+  [SkillEnum.LAW]: 5,
+  [SkillEnum.FIGHTING_BRAWL]: 25,
+  [SkillEnum.APPRAISE]: 5,
+  [SkillEnum.FAST_TALK]: 5,
+  [SkillEnum.MECHANICAL_REPAIR]: 10,
+  [SkillEnum.FIRST_AID]: 30,
+  [SkillEnum.PSYCHOANALYSIS]: 1,
+  [SkillEnum.ARCHAEOLOGY]: 1,
+  [SkillEnum.SCIENCE]: 1, // General Science
+  [SkillEnum.CTHULHU_MYTHOS]: 0,
+  [SkillEnum.INTIMIDATE]: 15,
+  [SkillEnum.ACCOUNTING]: 5,
+  [SkillEnum.HISTORY]: 5,
+  [SkillEnum.LISTEN]: 20,
+  [SkillEnum.SLEIGHT_OF_HAND]: 10,
+  [SkillEnum.CLIMB]: 20,
+  [SkillEnum.RIDE]: 5,
+  [SkillEnum.DRIVE_AUTO]: 20,
+  [SkillEnum.STEALTH]: 20,
+  [SkillEnum.DISGUISE]: 5,
+  [SkillEnum.APPEASE]: 15,
+  [SkillEnum.ANTHROPOLOGY]: 1,
+  [SkillEnum.DODGE]: 'DEX/2', // Special value
+  [SkillEnum.FIREARMS_HANDGUN]: 20,
+  [SkillEnum.FIREARMS_RIFLE_SHOTGUN]: 25,
+  [SkillEnum.OCCULT]: 5,
+  [SkillEnum.SURVIVAL]: 10,
+  [SkillEnum.PERSUADE]: 10,
+  [SkillEnum.LOCKSMITH]: 1,
+  [SkillEnum.JUMP]: 20,
+  [SkillEnum.THROW]: 20,
+  [SkillEnum.LIBRARY_USE]: 20,
+  [SkillEnum.PSYCHOLOGY]: 10,
+  [SkillEnum.CREDIT_RATING]: 0,
+  [SkillEnum.MEDICINE]: 1,
+  [SkillEnum.ART_CRAFT]: 5, // General Art/Craft
+  [SkillEnum.SWIM]: 20,
+  [SkillEnum.OTHER_LANGUAGE]: 1, // General Other Language
+  [SkillEnum.OWN_LANGUAGE]: 'EDU', // Special value
+  [SkillEnum.SPOT_HIDDEN]: 25,
+  [SkillEnum.TRACK]: 10,
+  // ART_CRAFT_PHOTOGRAPHY, SCIENCE_BOTANY, OTHER_LANGUAGE_LATIN, CHARM are not in the image with default values
+  // They will be handled by specific occupation templates or character choices if needed.
 }

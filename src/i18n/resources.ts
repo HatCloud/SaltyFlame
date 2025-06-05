@@ -81,6 +81,21 @@ export const translations = {
       markedSkills: '已标记技能',
       noMarkedSkills: '无已标记技能',
       close: '关闭',
+      backgroundTitle: '背景信息', // New Title
+      background: {
+        // New sub-object for background details
+        description: '形象描述',
+        ideologyBeliefs: '思想与信念',
+        significantPeople: '重要之人',
+        meaningfulLocations: '意义非凡之地',
+        treasuredPossessions: '宝贵之物',
+        traits: '特质',
+        keyConnection: '关键背景连接',
+        injuriesScars: '伤口与疤痕',
+        phobiasManias: '恐惧症与躁狂症',
+        mythosTomesSpellsArcaneObjects: '神话典籍/法术/奥秘物品',
+        encountersWithStrangeEntities: '第三类接触',
+      },
     },
   },
   en: {
@@ -165,6 +180,21 @@ export const translations = {
       markedSkills: 'Marked Skills',
       noMarkedSkills: 'No marked skills',
       close: 'Close',
+      backgroundTitle: 'Background Info', // New Title
+      background: {
+        // New sub-object for background details
+        description: 'Description',
+        ideologyBeliefs: 'Ideology & Beliefs',
+        significantPeople: 'Significant People',
+        meaningfulLocations: 'Meaningful Locations',
+        treasuredPossessions: 'Treasured Possessions',
+        traits: 'Traits',
+        keyConnection: 'Key Connection',
+        injuriesScars: 'Injuries & Scars',
+        phobiasManias: 'Phobias & Manias',
+        mythosTomesSpellsArcaneObjects: 'Mythos Tomes/Spells/Arcane Objects',
+        encountersWithStrangeEntities: 'Encounters with Strange Entities',
+      },
     },
   },
 } as const

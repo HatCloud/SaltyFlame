@@ -93,7 +93,10 @@
   - `src/reducer.ts`: 进一步更新了 `APPLY_CHOSEN_OCCUPATION` action 的处理逻辑：
     - 根据当前语言从职业模板的示例预设数据中，为 `characterData` 的 `name`, `sex`, `age`, `birthplace`, `residence` 字段赋值（如果模板中有提供）。
     - 根据职业模板的 `creditRatingRange` 为角色随机生成一个信用评级值，并更新到 `characterData.skills.CREDIT_RATING`。
-    - 保留了根据语言选择 `background_cn` 或 `background_en` 的逻辑。
+    - 保留了根据语言选择 `background_cn` 或 `template.background_en` 的逻辑。
+- **角色信息弹窗增强**:
+  - `src/ui/components/CharacterModal.tsx`: 修改了角色信息弹窗中背景信息的显示方式，使其标签居上，内容居左下方显示，以适应较长的文本。同时修正了因此引入的样式问题（将 `typeface.Weight.SemiBold` 改为 `Medium`，`padding.Tiny` 改为 `Mini`）。
+  - `src/i18n/resources.ts`: 为角色背景信息的各个字段（如描述、思想信念等）添加了对应的中英文i18n翻译键。
 
 ## 后续步骤
 

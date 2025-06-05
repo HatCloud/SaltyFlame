@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   // ConditionType, // Add if needed
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_221_240: SceneData = {
@@ -58,7 +60,7 @@ export const scenes_221_240: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.LOCKSMITH,
+            subObject: SkillEnum.LOCKSMITH,
             difficulty: CheckDifficulty.NORMAL, // TODO: Implement doubling skill value logic
           },
           onSuccessSceneId: '244',
@@ -68,7 +70,7 @@ export const scenes_221_240: SceneData = {
           onSuccessEffects: [
             {
               type: EffectType.MARK_SKILL_SUCCESS,
-              target: CheckObjectKey.LOCKSMITH,
+              target: SkillEnum.LOCKSMITH,
             },
           ],
         },
@@ -78,8 +80,9 @@ export const scenes_221_240: SceneData = {
   '226': {
     id: '226',
     story:
-      '你说道，你要到圣玛丽医院去担任实习医生。这是所顶尖的医院，会接触到各种各样的病人和病例；这使你不仅激动，还有一点点不安。不过，就像你的一位老教授说过的那样，“只有实践才能让人成为专家.”\n“医生，哈？人们总是需要这些家伙.”\n你莫非在西拉斯的声音中听出了不信任的语气？或者只是你多虑了？\n你的「信用评级」技能是30%。\n你的本职技能是：「急救」，「外语（拉丁文）」，「医学」，「心理学」，「科学（生物学）」，「科学（药学）」，你还可以选择除了「克苏鲁神话」以外的其他任意两项技能作为学术专长或个人专长。将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
-    options: [{ type: 'goto', text: '分配技能并继续', goto: '128' }],
+      '你说道，你要到圣玛丽医院去担任实习医生。这是所顶尖的医院，会接触到各种各样的病人和病例；这使你不仅激动，还有一点点不安。不过，就像你的一位老教授说过的那样，“只有实践才能让人成为专家.”\n“医生，哈？人们总是需要这些家伙.”\n你莫非在西拉斯的声音中听出了不信任的语气？或者只是你多虑了？',
+    info: '你的「信用评级」技能是30%。\n你的本职技能是：「急救」，「外语（拉丁文）」，「医学」，「心理学」，「科学（生物学）」，「科学（药学）」，你还可以选择除了「克苏鲁神话」以外的其他任意两项技能作为学术专长或个人专长。将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
+    options: [{ type: 'goto', text: '继续', goto: '128' }],
   },
   '227': {
     id: '227',
@@ -125,7 +128,7 @@ export const scenes_221_240: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.STR,
+            subObject: CoreCharacteristicEnum.STR,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '244',
@@ -205,8 +208,9 @@ export const scenes_221_240: SceneData = {
   '239': {
     id: '239',
     story:
-      '你说道，你的职业是记者，靠着在本地报纸上投送的几篇自由稿件获得了《阿卡姆公报》的稳定职位。远离了无趣味的社会专栏和异想天开的故事，绝对是令人欣慰的事！你晓得，《公报》从密斯卡托尼克大学研究员们的最新成果，到本地酒囊饭袋们做出的龌龊丑行，几乎无所不包。\n不管怎样，这都将是值得你为之全身心投入的工作。\n“写文的？给报纸？”西拉斯显得很困惑，就好像他认为那些故事都是自己凭空出现的一样。\n你的「信用评级」技能是20%。\n你的本职技能是：「艺术/手艺（摄影）」，「历史」，「图书馆使用」，「母语」，「心理学」，还有「魅惑」、「话术」、「恐吓」、「说服」四项中其中一项。你还可以选择除了「克苏鲁神话」以外的其他任意两项技能作为个人专长。\n将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
-    options: [{ type: 'goto', text: '分配技能并继续', goto: '128' }],
+      '你说道，你的职业是记者，靠着在本地报纸上投送的几篇自由稿件获得了《阿卡姆公报》的稳定职位。远离了无趣味的社会专栏和异想天开的故事，绝对是令人欣慰的事！你晓得，《公报》从密斯卡托尼克大学研究员们的最新成果，到本地酒囊饭袋们做出的龌龊丑行，几乎无所不包。\n不管怎样，这都将是值得你为之全身心投入的工作。\n“写文的？给报纸？”西拉斯显得很困惑，就好像他认为那些故事都是自己凭空出现的一样。',
+    info: '你的「信用评级」技能是20%。\n你的本职技能是：「艺术/手艺（摄影）」，「历史」，「图书馆使用」，「母语」，「心理学」，还有「魅惑」、「话术」、「恐吓」、「说服」四项中其中一项。你还可以选择除了「克苏鲁神话」以外的其他任意两项技能作为个人专长。\n将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
+    options: [{ type: 'goto', text: '继续', goto: '128' }],
   },
   '240': {
     id: '240',
@@ -220,7 +224,7 @@ export const scenes_221_240: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.LISTEN,
+            target: SkillEnum.LISTEN,
           },
         ],
       },

@@ -1,4 +1,4 @@
-import { CheckObjectKey } from '../../constant/enums'
+import { SkillEnum } from '../../constant/enums' // Changed CheckObjectKey to SkillEnum
 import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const professorTemplate: OccupationTemplate = {
@@ -11,32 +11,32 @@ export const professorTemplate: OccupationTemplate = {
   creditRatingRange: [20, 70], // 根据CoC核心规则书，教授信用评级
 
   occupationalSkills: [
-    CheckObjectKey.LIBRARY_USE,
-    CheckObjectKey.OWN_LANGUAGE,
-    CheckObjectKey.PERSUADE,
-    CheckObjectKey.PSYCHOLOGY, // 理解学生和同事
-    CheckObjectKey.HISTORY, // 多数教授涉猎历史或有相关背景
-    CheckObjectKey.ARCHAEOLOGY, // 某些领域的教授，如历史、人类学
-    CheckObjectKey.OTHER_LANGUAGE_LATIN, // 学术研究常用
-    CheckObjectKey.APPRAISE, // 可能需要鉴定学术相关物品
+    SkillEnum.LIBRARY_USE,
+    SkillEnum.OWN_LANGUAGE,
+    SkillEnum.PERSUADE,
+    SkillEnum.PSYCHOLOGY, // 理解学生和同事
+    SkillEnum.HISTORY, // 多数教授涉猎历史或有相关背景
+    SkillEnum.ARCHAEOLOGY, // 某些领域的教授，如历史、人类学
+    SkillEnum.OTHER_LANGUAGE_LATIN, // 学术研究常用
+    SkillEnum.APPRAISE, // 可能需要鉴定学术相关物品
   ],
 
   occupationalSkillTargets: {
-    [CheckObjectKey.LIBRARY_USE]: 70,
-    [CheckObjectKey.OWN_LANGUAGE]: 60,
-    [CheckObjectKey.PERSUADE]: 60,
-    [CheckObjectKey.PSYCHOLOGY]: 50,
-    [CheckObjectKey.HISTORY]: 50, // 假设为历史或相关人文教授
-    [CheckObjectKey.ARCHAEOLOGY]: 50, // 同上
-    [CheckObjectKey.OTHER_LANGUAGE_LATIN]: 40,
-    [CheckObjectKey.APPRAISE]: 40,
+    [SkillEnum.LIBRARY_USE]: 70,
+    [SkillEnum.OWN_LANGUAGE]: 60,
+    [SkillEnum.PERSUADE]: 60,
+    [SkillEnum.PSYCHOLOGY]: 50,
+    [SkillEnum.HISTORY]: 50, // 假设为历史或相关人文教授
+    [SkillEnum.ARCHAEOLOGY]: 50, // 同上
+    [SkillEnum.OTHER_LANGUAGE_LATIN]: 40,
+    [SkillEnum.APPRAISE]: 40,
   },
 
   interestSkills: [
-    CheckObjectKey.CHARM, // 课堂魅力或与同事社交
-    CheckObjectKey.SPOT_HIDDEN, // 研究中发现细节
-    CheckObjectKey.DRIVE_AUTO, // 通勤或外出调研
-    CheckObjectKey.NATURAL_WORLD, // 可能的业余爱好或研究方向
+    SkillEnum.CHARM, // 课堂魅力或与同事社交
+    SkillEnum.SPOT_HIDDEN, // 研究中发现细节
+    SkillEnum.DRIVE_AUTO, // 通勤或外出调研
+    SkillEnum.NATURAL_WORLD, // 可能的业余爱好或研究方向
   ],
 
   background_cn: {
@@ -52,7 +52,7 @@ export const professorTemplate: OccupationTemplate = {
       '一支陪伴多年的钢笔，用它写下了无数的讲稿和论文；或是一本罕见的学术专著，扉页有作者的亲笔签名。',
     traits:
       '博学、健谈，有时会不自觉地陷入学术探讨。对自己的研究领域充满热情，但对世俗事务可能有些迟钝。',
-    keyConnection: 'significantPeople',
+    keyConnection: '重要之人',
     injuriesScars: '鼻梁上有一道戴眼镜留下的永久压痕。',
     phobiasManias:
       '对学术剽窃行为有极度的憎恶；有在谈话中不自觉地纠正他人语法或事实错误的习惯。',
@@ -70,7 +70,7 @@ export const professorTemplate: OccupationTemplate = {
       "A fountain pen, a companion for many years, used to write countless lectures and papers; or a rare academic monograph with the author's autograph on the flyleaf.",
     traits:
       'Erudite, talkative, sometimes unconsciously delving into academic discussions. Passionate about their field of research, but may be somewhat oblivious to worldly affairs.',
-    keyConnection: 'significantPeople',
+    keyConnection: 'Significant People',
     injuriesScars:
       'A permanent indentation on the bridge of the nose from wearing glasses.',
     phobiasManias:
@@ -78,7 +78,7 @@ export const professorTemplate: OccupationTemplate = {
   },
 
   // Example character pre-fill data
-  exampleCharacterName_cn: '伊芙琳·海耶斯博士',
+  exampleCharacterName_cn: '伊芙琳·海耶斯',
   exampleCharacterName_en: 'Dr. Evelyn Hayes',
   exampleCharacterSex: 'Female',
   exampleCharacterAge: 36,

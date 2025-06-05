@@ -1,6 +1,8 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum,
+  SkillEnum,
+  RollEnum,
   EffectType,
   CheckDifficulty,
   // ConditionType, // Removed as not used
@@ -66,7 +68,7 @@ export const scenes_181_200: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '181',
@@ -88,7 +90,7 @@ export const scenes_181_200: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.DODGE,
+            subObject: SkillEnum.DODGE,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '195',
@@ -110,7 +112,7 @@ export const scenes_181_200: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.LUCK,
+            subObject: RollEnum.LUCK,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '204',
@@ -138,7 +140,7 @@ export const scenes_181_200: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.POW, // Sanity
+            subObject: CoreCharacteristicEnum.POW, // Sanity
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '199',
@@ -183,7 +185,7 @@ export const scenes_181_200: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.POW, // Sanity
+            subObject: CoreCharacteristicEnum.POW, // Sanity
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '210',

@@ -1,4 +1,4 @@
-import { CheckObjectKey } from '../../constant/enums'
+import { SkillEnum } from '../../constant/enums' // Changed CheckObjectKey to SkillEnum
 import { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 export const antiquarianTemplate: OccupationTemplate = {
@@ -11,32 +11,32 @@ export const antiquarianTemplate: OccupationTemplate = {
   creditRatingRange: [30, 70], // 根据CoC核心规则书，文物学家信用评级范围
 
   occupationalSkills: [
-    CheckObjectKey.APPRAISE,
-    CheckObjectKey.ARCHAEOLOGY,
-    CheckObjectKey.HISTORY,
-    CheckObjectKey.LIBRARY_USE,
-    CheckObjectKey.OTHER_LANGUAGE_LATIN, // 假设拉丁文是常见的学术语言
-    CheckObjectKey.SPOT_HIDDEN,
-    CheckObjectKey.PERSUADE,
-    CheckObjectKey.OWN_LANGUAGE, // 母语技能值通常基于EDU，但这里按预设分配
+    SkillEnum.APPRAISE,
+    SkillEnum.ARCHAEOLOGY,
+    SkillEnum.HISTORY,
+    SkillEnum.LIBRARY_USE,
+    SkillEnum.OTHER_LANGUAGE_LATIN, // 假设拉丁文是常见的学术语言
+    SkillEnum.SPOT_HIDDEN,
+    SkillEnum.PERSUADE,
+    SkillEnum.OWN_LANGUAGE, // 母语技能值通常基于EDU，但这里按预设分配
   ],
 
   occupationalSkillTargets: {
-    [CheckObjectKey.APPRAISE]: 70,
-    [CheckObjectKey.ARCHAEOLOGY]: 60,
-    [CheckObjectKey.HISTORY]: 60,
-    [CheckObjectKey.LIBRARY_USE]: 50,
-    [CheckObjectKey.OTHER_LANGUAGE_LATIN]: 50,
-    [CheckObjectKey.SPOT_HIDDEN]: 50,
-    [CheckObjectKey.PERSUADE]: 40,
-    [CheckObjectKey.OWN_LANGUAGE]: 40, // 如果EDU%更高，此预设值会覆盖，但上限75%
+    [SkillEnum.APPRAISE]: 70,
+    [SkillEnum.ARCHAEOLOGY]: 60,
+    [SkillEnum.HISTORY]: 60,
+    [SkillEnum.LIBRARY_USE]: 50,
+    [SkillEnum.OTHER_LANGUAGE_LATIN]: 50,
+    [SkillEnum.SPOT_HIDDEN]: 50,
+    [SkillEnum.PERSUADE]: 40,
+    [SkillEnum.OWN_LANGUAGE]: 40, // 如果EDU%更高，此预设值会覆盖，但上限75%
   },
 
   interestSkills: [
-    CheckObjectKey.CTHULHU_MYTHOS, // 文物学家很容易接触到神话知识
-    CheckObjectKey.ART_CRAFT_PHOTOGRAPHY, // 记录发现
-    CheckObjectKey.DRIVE_AUTO, // 前往偏远地区
-    CheckObjectKey.LISTEN, // 通用技能
+    SkillEnum.CTHULHU_MYTHOS, // 文物学家很容易接触到神话知识
+    SkillEnum.ART_CRAFT_PHOTOGRAPHY, // 记录发现
+    SkillEnum.DRIVE_AUTO, // 前往偏远地区
+    SkillEnum.LISTEN, // 通用技能
   ],
 
   background_cn: {
@@ -52,7 +52,7 @@ export const antiquarianTemplate: OccupationTemplate = {
       '一把刻有奇特符号的古老铜钥匙，据说是从某个被诅咒的遗迹中找到的，至今未找到对应的锁。',
     traits:
       '博学、细致，有时因过于专注而显得有些不近人情。对细节有近乎偏执的追求。',
-    keyConnection: 'significantPeople',
+    keyConnection: '重要之人',
     injuriesScars:
       '左手手背上有一道浅浅的疤痕，是在一次埃及古墓的非正式“考察”中被不明器物划伤的。',
     phobiasManias:
@@ -71,7 +71,7 @@ export const antiquarianTemplate: OccupationTemplate = {
       'An ancient bronze key inscribed with peculiar symbols, said to be found in a cursed ruin, for which no corresponding lock has yet been found.',
     traits:
       'Erudite, meticulous, sometimes appearing aloof due to intense focus. Has an almost obsessive pursuit of detail.',
-    keyConnection: 'significantPeople',
+    keyConnection: 'Significant People',
     injuriesScars:
       "A faint scar on the back of the left hand, from being scratched by an unknown artifact during an informal 'expedition' to an Egyptian tomb.",
     phobiasManias:

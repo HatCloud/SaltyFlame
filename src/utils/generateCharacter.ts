@@ -1,15 +1,32 @@
 import { Character } from '../interface/Character'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum,
+  RollEnum,
+  SkillEnum,
   CoreCharacteristicKey,
   SkillKey,
   CheckObjectDefaultValues,
+  CheckObjectKey, // Keep this for CheckObjectDefaultValues, but prefer specific enums elsewhere
 } from '../constant/enums'
 
 // Helper type for the input characteristics
 type InputCharacteristics = {
   [key in CoreCharacteristicKey]: number
 }
+
+// Define lists of keys for easier checking
+const coreCharacteristicKeyValues: CoreCharacteristicEnum[] = [
+  CoreCharacteristicEnum.STR,
+  CoreCharacteristicEnum.CON,
+  CoreCharacteristicEnum.SIZ,
+  CoreCharacteristicEnum.DEX,
+  CoreCharacteristicEnum.APP,
+  CoreCharacteristicEnum.INT,
+  CoreCharacteristicEnum.POW,
+  CoreCharacteristicEnum.EDU,
+]
+
+const rollKeyValues: RollEnum[] = [RollEnum.LUCK, RollEnum.SANITY, RollEnum.MOV]
 
 const generateCharacter = (
   initialCharacteristics: InputCharacteristics,
@@ -18,18 +35,19 @@ const generateCharacter = (
 
   // Calculate derived stats
   const hpMax = Math.ceil(
-    (characteristics[CheckObjectKey.CON] +
-      characteristics[CheckObjectKey.SIZ]) /
+    (characteristics[CoreCharacteristicEnum.CON] +
+      characteristics[CoreCharacteristicEnum.SIZ]) /
       10,
   )
-  const startingSanity = characteristics[CheckObjectKey.POW]
-  const mpMax = Math.floor(characteristics[CheckObjectKey.POW] / 5)
+  const startingSanity = characteristics[CoreCharacteristicEnum.POW]
+  const mpMax = Math.floor(characteristics[CoreCharacteristicEnum.POW] / 5)
 
   // Calculate Damage Bonus and Build
   let damageBonus = 0
   let build = 0
   const strPlusSiz =
-    characteristics[CheckObjectKey.STR] + characteristics[CheckObjectKey.SIZ]
+    characteristics[CoreCharacteristicEnum.STR] +
+    characteristics[CoreCharacteristicEnum.SIZ]
 
   if (strPlusSiz <= 64) {
     damageBonus = -2
@@ -65,47 +83,59 @@ const generateCharacter = (
   // Initialize skills based on default values
   const newSkills: Partial<Record<SkillKey, number>> = {}
 
-  // Iterate over all possible SkillKeys to ensure all skills are considered
-  for (const key in CheckObjectKey) {
-    if (Object.prototype.hasOwnProperty.call(CheckObjectKey, key)) {
-      const skillEnumKey = key as keyof typeof CheckObjectKey
-      const skillKey = CheckObjectKey[skillEnumKey] as SkillKey // Cast to SkillKey
+  // Iterate over the keys of CheckObjectDefaultValues to find skills
+  for (const key in CheckObjectDefaultValues) {
+    const currentKey = key as CheckObjectKey // Cast to CheckObjectKey (union type)
 
-      // Check if this key is actually a skill by seeing if it's in SkillKey type definition
-      // This is a bit of a workaround because we don't have a direct list of SkillKey values from the type
-      // A safer way would be to have an array of SkillKey values.
-      // For now, we assume any key in CheckObjectDefaultValues that isn't a CoreCharacteristicKey or RollKey is a skill.
+    // Check if this key is a skill (i.e., not a core characteristic or a roll key)
+    // We need to ensure currentKey is compared against the values of the enums
+    if (
+      !coreCharacteristicKeyValues.some(val => val === currentKey) &&
+      !rollKeyValues.some(val => val === currentKey)
+    ) {
+      // At this point, currentKey should be a SkillEnum member if logic is correct
+      // However, CheckObjectDefaultValues is indexed by CheckObjectKey (the union type)
+      // and SkillKey is a type alias for SkillEnum members.
+      // We need to ensure that currentKey is indeed a valid SkillKey before using it as such.
+      // A simple way is to check if it exists in SkillEnum.
+      // This check might be redundant if CheckObjectDefaultValues is perfectly structured,
+      // but adds safety.
+      let isSkill = false
+      for (const sk in SkillEnum) {
+        if (SkillEnum[sk as keyof typeof SkillEnum] === currentKey) {
+          isSkill = true
+          break
+        }
+      }
 
-      const defaultValue = CheckObjectDefaultValues[skillKey]
+      if (isSkill) {
+        const skillKey = currentKey as SkillKey // Safe to cast now
+        const defaultValue = CheckObjectDefaultValues[skillKey] // This should be valid
 
-      if (defaultValue !== undefined) {
-        if (typeof defaultValue === 'number') {
-          newSkills[skillKey] = defaultValue
-        } else if (typeof defaultValue === 'string') {
-          if (defaultValue === 'DEX/2') {
-            newSkills[skillKey] = Math.floor(
-              characteristics[CheckObjectKey.DEX] / 2,
-            )
-          } else if (defaultValue === 'EDU') {
-            newSkills[skillKey] = characteristics[CheckObjectKey.EDU]
-          } else {
-            // For other string-based defaults not yet handled (e.g. "STR+DEX"), default to 0 or a base
-            console.warn(
-              `Unhandled string default for skill ${skillKey}: ${defaultValue}`,
-            )
-            newSkills[skillKey] = 0 // Or some other fallback
+        if (defaultValue !== undefined) {
+          if (typeof defaultValue === 'number') {
+            newSkills[skillKey] = defaultValue
+          } else if (typeof defaultValue === 'string') {
+            if (defaultValue === 'DEX/2') {
+              newSkills[skillKey] = Math.floor(
+                characteristics[CoreCharacteristicEnum.DEX] / 2,
+              )
+            } else if (defaultValue === 'EDU') {
+              newSkills[skillKey] = characteristics[CoreCharacteristicEnum.EDU]
+            } else {
+              console.warn(
+                `Unhandled string default for skill ${skillKey}: ${defaultValue}`,
+              )
+              newSkills[skillKey] = 0 // Or some other fallback
+            }
           }
         }
-      } else {
-        // If a skill is not in CheckObjectDefaultValues, it might default to 0 or a very low base.
-        // For now, let's assume 0 if not specified.
-        // This part depends on how SkillKey is defined and if all its members are in CheckObjectDefaultValues
       }
     }
   }
   // Ensure specific skills like Cthulhu Mythos always start at 0 if not otherwise set
-  if (newSkills[CheckObjectKey.CTHULHU_MYTHOS] === undefined) {
-    newSkills[CheckObjectKey.CTHULHU_MYTHOS] = 0
+  if (newSkills[SkillEnum.CTHULHU_MYTHOS] === undefined) {
+    newSkills[SkillEnum.CTHULHU_MYTHOS] = 0
   }
 
   // Determine Movement Rate (MOV)
@@ -116,14 +146,17 @@ const generateCharacter = (
   // Humans with STR, DEX, or SIZ of 100+ or 10- may have MOV adjusted.
   let movementRate = 8 // Default MOV
   if (
-    characteristics[CheckObjectKey.DEX] < characteristics[CheckObjectKey.SIZ] &&
-    characteristics[CheckObjectKey.STR] < characteristics[CheckObjectKey.SIZ]
+    characteristics[CoreCharacteristicEnum.DEX] <
+      characteristics[CoreCharacteristicEnum.SIZ] &&
+    characteristics[CoreCharacteristicEnum.STR] <
+      characteristics[CoreCharacteristicEnum.SIZ]
   ) {
     movementRate = 7
   } else if (
-    characteristics[CheckObjectKey.STR] >=
-      characteristics[CheckObjectKey.SIZ] &&
-    characteristics[CheckObjectKey.DEX] >= characteristics[CheckObjectKey.SIZ]
+    characteristics[CoreCharacteristicEnum.STR] >=
+      characteristics[CoreCharacteristicEnum.SIZ] &&
+    characteristics[CoreCharacteristicEnum.DEX] >=
+      characteristics[CoreCharacteristicEnum.SIZ]
   ) {
     movementRate = 9
   }
@@ -144,7 +177,7 @@ const generateCharacter = (
     sanity: {
       starting: startingSanity,
       current: startingSanity,
-      max: 99 - (newSkills[CheckObjectKey.CTHULHU_MYTHOS] || 0), // Max sanity adjusted by Cthulhu Mythos
+      max: 99 - (newSkills[SkillEnum.CTHULHU_MYTHOS] || 0), // Max sanity adjusted by Cthulhu Mythos
       isIndefinitelyInsane: false,
       isTemporarilyInsane: false,
     },
@@ -152,7 +185,7 @@ const generateCharacter = (
       current: mpMax,
       max: mpMax,
     },
-    luck: characteristics[CheckObjectKey.POW], // Initial luck often based on POW or rolled (e.g. 3d6*5)
+    luck: characteristics[CoreCharacteristicEnum.POW], // Initial luck often based on POW or rolled (e.g. 3d6*5)
     // For simplicity, using POW as a placeholder.
     characteristics: characteristics,
     personalData: {

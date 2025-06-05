@@ -1,6 +1,7 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
   ConditionType,
@@ -25,7 +26,7 @@ export const scenes_161_180: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.PSYCHOLOGY,
+            target: SkillEnum.PSYCHOLOGY,
           },
         ],
       },
@@ -57,7 +58,7 @@ export const scenes_161_180: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.LIBRARY_USE,
+            subObject: SkillEnum.LIBRARY_USE,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '177',
@@ -129,7 +130,7 @@ export const scenes_161_180: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.POW, // Sanity check
+            subObject: CoreCharacteristicEnum.POW, // Sanity check
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: 'END',
@@ -176,7 +177,8 @@ export const scenes_161_180: SceneData = {
   '174': {
     id: '174',
     story:
-      '你听到的刺耳噪声当然可以表征引擎的故障，但这也可能和选错档位或者离合器故障有关。即使已经连续驾驶了一天，有经验的公交车司机也几乎不可能突然搞错这种事情。\n如果这是个诡计，为了让你花钱花时间在路上的商店买东西的话，西拉斯会因为你空荡的钱包而非常失望的。\n在你的调查员角色卡上「汽车驾驶」左边的小方框里打勾。如果你成功完成了本次冒险，你有机会通过这次和西拉斯的经历，学到一些东西。',
+      '你听到的刺耳噪声当然可以表征引擎的故障，但这也可能和选错档位或者离合器故障有关。即使已经连续驾驶了一天，有经验的公交车司机也几乎不可能突然搞错这种事情。\n如果这是个诡计，为了让你花钱花时间在路上的商店买东西的话，西拉斯会因为你空荡的钱包而非常失望的。',
+    info: '在你的调查员角色卡上「汽车驾驶」左边的小方框里打勾。如果你成功完成了本次冒险，你有机会通过这次和西拉斯的经历，学到一些东西。',
     options: [
       {
         type: 'goto',
@@ -185,7 +187,7 @@ export const scenes_161_180: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.DRIVE_AUTO,
+            target: SkillEnum.DRIVE_AUTO,
           },
         ],
       },
@@ -221,7 +223,7 @@ export const scenes_161_180: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.STR,
+            subObject: CoreCharacteristicEnum.STR,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '189',
@@ -244,7 +246,7 @@ export const scenes_161_180: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.LIBRARY_USE,
+            target: SkillEnum.LIBRARY_USE,
           },
         ],
       },
@@ -255,7 +257,7 @@ export const scenes_161_180: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.LIBRARY_USE,
+            target: SkillEnum.LIBRARY_USE,
           },
         ],
       },
@@ -266,7 +268,7 @@ export const scenes_161_180: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.LIBRARY_USE,
+            target: SkillEnum.LIBRARY_USE,
           },
         ],
       }, // Assuming skill mark applies regardless of choice here
@@ -283,7 +285,7 @@ export const scenes_161_180: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '112',
@@ -304,7 +306,7 @@ export const scenes_161_180: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.CON,
+            subObject: CoreCharacteristicEnum.CON,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '186',

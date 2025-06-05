@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   // ConditionType, // Removed as not used
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_121_140: SceneData = {
@@ -18,7 +20,7 @@ export const scenes_121_140: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.TRACK,
+            subObject: SkillEnum.TRACK,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '141',
@@ -58,7 +60,7 @@ export const scenes_121_140: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.DISGUISE,
+            subObject: SkillEnum.DISGUISE,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '146',
@@ -87,7 +89,8 @@ export const scenes_121_140: SceneData = {
   '128': {
     id: '128',
     story:
-      '你发现，西拉斯自从和拖拉机发生冲突之后，再没有停站。长途车沿着山坡盘曲上行。但是，当道路攀上了山顶，山下绝佳的美景一览无余地展现在你面前时，你的思绪被打断了。\n色彩斑斓的树叶，铺成了深秋的调色板；一条溪流从谷底蜿蜒流过，又将这调色板打破成两半。远方白山山脉在朦胧的云雾之中若隐若现。\n极目远眺，视野之中没有一座村庄，甚至连一座小木屋都见不到。你能看到鸟儿在树冠之上翱翔，还能勉强捕捉到两只白尾鹿在水边流连的身影。\n也许你搬家到大城市去是个错误。在这繁盛的大自然当中，你能不能独自生存下去呢？\n你在大多数技能上都有着基础的能力，分别列在调查员角色卡的各项技能名称后面的括号里。比如，你的「攀爬」技能基础是20%，「闪避」技能基础值等于你“敏捷”的一半。\n选择四项本职技能以外的技能（同样不可以选择「克苏鲁神话」）。这是你的个人兴趣技能。将这四项技能每项增加20点。\n这个时候你可以为每个技能计算半值和五分之一值，和你对属性的计算方法一致。记得舍去小数。如果你懒得计算，可以不去填，到必要时再计算。或者如果你使用交互PDF角色卡的话，你会发现它已经将所有计算都完成了！',
+      '你发现，西拉斯自从和拖拉机发生冲突之后，再没有停站。长途车沿着山坡盘曲上行。但是，当道路攀上了山顶，山下绝佳的美景一览无余地展现在你面前时，你的思绪被打断了。\n色彩斑斓的树叶，铺成了深秋的调色板；一条溪流从谷底蜿蜒流过，又将这调色板打破成两半。远方白山山脉在朦胧的云雾之中若隐若现。\n极目远眺，视野之中没有一座村庄，甚至连一座小木屋都见不到。你能看到鸟儿在树冠之上翱翔，还能勉强捕捉到两只白尾鹿在水边流连的身影。\n也许你搬家到大城市去是个错误。在这繁盛的大自然当中，你能不能独自生存下去呢？',
+    info: '你在大多数技能上都有着基础的能力，分别列在调查员角色卡的各项技能名称后面的括号里。比如，你的「攀爬」技能基础是20%，「闪避」技能基础值等于你“敏捷”的一半。\n选择四项本职技能以外的技能（同样不可以选择「克苏鲁神话」）。这是你的个人兴趣技能。将这四项技能每项增加20点。\n这个时候你可以为每个技能计算半值和五分之一值，和你对属性的计算方法一致。记得舍去小数。如果你懒得计算，可以不去填，到必要时再计算。或者如果你使用交互PDF角色卡的话，你会发现它已经将所有计算都完成了！',
     options: [{ type: 'goto', text: '继续', goto: '144' }],
   },
   '129': {
@@ -128,7 +131,7 @@ export const scenes_121_140: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SPOT_HIDDEN,
+            subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL,
             // TODO: Implement logic for bonus dice if player previously checked shelves.
             // bonusDice: true,
@@ -154,7 +157,7 @@ export const scenes_121_140: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.DEX,
+            subObject: CoreCharacteristicEnum.DEX,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '261',
@@ -211,7 +214,7 @@ export const scenes_121_140: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.CHARM,
+            subObject: SkillEnum.CHARM,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '145',
@@ -224,7 +227,7 @@ export const scenes_121_140: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.PERSUADE,
+            subObject: SkillEnum.PERSUADE,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '145',
@@ -237,7 +240,7 @@ export const scenes_121_140: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.FAST_TALK,
+            subObject: SkillEnum.FAST_TALK,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '145',

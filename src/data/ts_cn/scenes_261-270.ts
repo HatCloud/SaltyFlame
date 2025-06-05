@@ -1,9 +1,11 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CheckObjectKey,
+  CoreCharacteristicEnum, // Added
+  SkillEnum, // Added
   EffectType,
   CheckDifficulty,
   // ConditionType, // Add if needed
+  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_261_270: SceneData = {
@@ -53,7 +55,7 @@ export const scenes_261_270: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CheckObjectKey.POW, // Sanity
+            subObject: CoreCharacteristicEnum.POW, // Sanity
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '269',
@@ -67,8 +69,9 @@ export const scenes_261_270: SceneData = {
   '265': {
     id: '265',
     story:
-      '你解释说，你正要加入著名的密斯卡托尼克大学成为研究员。虽然这只是个初级职位，主要任务是教课和辅导，但这所学校久负盛名。谁又知道此后会发生什么呢？参与座谈会、客座演讲甚至加入遍布世界的探险行动？\n“哼.”西拉斯缩了缩鼻子。“我小时候就把书读够了。但我觉得对喜欢学习的人来说，还不错 。”\n你的「信用评级」技能是30%。\n你的本职技能是：「图书馆使用」，「外语」（选择一种），「母语」，「心理学」。你还可以选择除了「克苏鲁神话」以外的其他任意两项技能作为学术专长或个人专长。\n将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
-    options: [{ type: 'goto', text: '分配技能并继续', goto: '128' }],
+      '你解释说，你正要加入著名的密斯卡托尼克大学成为研究员。虽然这只是个初级职位，主要任务是教课和辅导，但这所学校久负盛名。谁又知道此后会发生什么呢？参与座谈会、客座演讲甚至加入遍布世界的探险行动？\n“哼.”西拉斯缩了缩鼻子。“我小时候就把书读够了。但我觉得对喜欢学习的人来说，还不错 。”',
+    info: '你的「信用评级」技能是30%。\n你的本职技能是：「图书馆使用」，「外语」（选择一种），「母语」，「心理学」。你还可以选择除了「克苏鲁神话」以外的其他任意两项技能作为学术专长或个人专长。\n将以下数值分配到各项本职技能当中，写到旁边的大方格里：70%，60%，60%，50%，50%，50%，40%，40%。分配时忽略调查员角色卡上已写出的初始值。',
+    options: [{ type: 'goto', text: '继续', goto: '128' }],
   },
   '266': {
     id: '266',
@@ -81,7 +84,7 @@ export const scenes_261_270: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: CheckObjectKey.SCIENCE_BOTANY,
+            subObject: SkillEnum.SCIENCE_BOTANY,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '76',
@@ -123,7 +126,7 @@ export const scenes_261_270: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.FIGHTING_BRAWL,
+            target: SkillEnum.FIGHTING_BRAWL,
           },
         ],
       },
@@ -134,10 +137,10 @@ export const scenes_261_270: SceneData = {
         effects: [
           {
             type: EffectType.MARK_SKILL_SUCCESS,
-            target: CheckObjectKey.FIGHTING_BRAWL,
+            target: SkillEnum.FIGHTING_BRAWL,
           },
         ],
-      }, // Assuming skill mark applies regardless of choice
+      },
     ],
   },
   '269': {
