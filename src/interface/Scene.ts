@@ -3,6 +3,7 @@ import {
   CheckDifficulty,
   ConditionType,
   EffectType,
+  CoreCharacteristicKey,
 } from '../constant/enums'
 import { Weapon } from '../interface/Character' // Import Weapon type
 
@@ -32,8 +33,8 @@ export interface Condition {
   gameFlag?: string // 需要检查的游戏标记
   expectedValue?: boolean // 游戏标记的期望值
   // Fields for characteristic comparison
-  characteristic?: CheckObjectKey // The characteristic to compare (e.g., SIZ, STR)
-  comparisonValue?: number // The value to compare against
+  targetObject?: CheckObjectKey // The characteristic to compare (e.g., SIZ, STR)
+  comparisonObject?: CheckObjectKey | number // The value to compare against
   comparisonOperator?: 'gt' | 'lt' | 'eq' | 'gte' | 'lte' // Comparison operator
 }
 

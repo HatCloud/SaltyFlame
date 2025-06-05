@@ -39,7 +39,6 @@ export const translations = {
       hasNotItem: '不能拥有物品：{{item}}',
       flagSet: '需要标记：{{flag}}',
       flagNotSet: '不能有标记：{{flag}}',
-      // CHARACTERISTIC_COMPARE is handled directly in StoryCard for now
     },
     roles: {
       privateInvestigator: '私家侦探',

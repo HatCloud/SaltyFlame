@@ -2,7 +2,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useCallback } from 'react'
 import { Character } from '../../interface/Character'
 import { Condition } from '../../interface/Scene'
-import { ConditionType, CheckObjectNames } from '../../constant/enums' // Corrected import for ConditionType, CheckObjectKey removed
+import {
+  ConditionType,
+  CheckObjectNames,
+  CoreCharacteristicKey,
+} from '../../constant/enums' // Corrected import for ConditionType, CheckObjectKey removed
 import type { LanguageCode } from '../../i18n/types'
 // Assuming gameFlags will be part of MyAppState, adjust import if necessary
 // import { MyAppState } from '../../interface/MyAppState';
@@ -17,7 +21,7 @@ import CheckOption from './CheckOption'
 import { useI18n } from '../../i18n/useI18n'
 import { useNavigation } from '@react-navigation/native' // Added
 import { StackNavigationProp } from '@react-navigation/stack' // Added
-import { RootStackParamList } from '../../App' // Added
+import { RootStackParamList } from '../../interface/navigation' // Updated import
 
 // LanguageCode import might be needed if `lang` from useI18n is used by getConditionDescription
 
@@ -56,14 +60,14 @@ const StoryCard: React.FC = React.memo(() => {
             : undefined
         case ConditionType.CHARACTERISTIC_COMPARE:
           if (
-            condition.characteristic &&
+            condition.targetObject &&
             condition.comparisonOperator &&
-            condition.comparisonValue !== undefined
+            condition.comparisonObject !== undefined
           ) {
             const charName =
-              (condition.characteristic &&
-                CheckObjectNames[condition.characteristic]?.[currentLang]) ||
-              condition.characteristic ||
+              (condition.targetObject &&
+                CheckObjectNames[condition.targetObject]?.[currentLang]) ||
+              condition.targetObject ||
               ''
             // Simple operator display, can be localized further if needed
             let displayOp = ''
@@ -88,7 +92,7 @@ const StoryCard: React.FC = React.memo(() => {
                 break
             }
 
-            return `${charName} ${displayOp} ${condition.comparisonValue}`
+            return `${charName} ${displayOp} ${condition.comparisonObject}`
           }
           return undefined
         default:
@@ -156,38 +160,55 @@ const StoryCard: React.FC = React.memo(() => {
           break
         case ConditionType.CHARACTERISTIC_COMPARE:
           if (
-            condition.characteristic &&
-            condition.comparisonValue !== undefined &&
+            condition.targetObject &&
+            condition.comparisonObject !== undefined &&
             condition.comparisonOperator &&
-            characterData.characteristics
+            characterData
           ) {
-            const inputCharacteristicKey = condition.characteristic
-            if (!inputCharacteristicKey) {
+            const characteristicKey = condition.targetObject
+            if (!characteristicKey) {
               met = false
               break
             }
-            const lowercaseCharKey =
-              inputCharacteristicKey.toLowerCase() as keyof Character['characteristics']
-            if (!(lowercaseCharKey in characterData.characteristics)) {
+            if (!(characteristicKey in characterData.characteristics)) {
               met = false
               break
             }
-            const charValue = characterData.characteristics[lowercaseCharKey]
+            const targetValue =
+              characterData.characteristics[
+                characteristicKey as CoreCharacteristicKey
+              ]
+
+            let comparisonValue: number | undefined
+            if (typeof condition.comparisonObject === 'number') {
+              comparisonValue = condition.comparisonObject
+            } else if (
+              condition.comparisonObject in characterData.characteristics
+            ) {
+              comparisonValue =
+                characterData.characteristics[
+                  condition.comparisonObject as CoreCharacteristicKey
+                ]
+            }
+            if (comparisonValue === undefined) {
+              met = false
+              break
+            }
             switch (condition.comparisonOperator) {
               case 'gt':
-                met = charValue > condition.comparisonValue
+                met = targetValue > comparisonValue
                 break
               case 'lt':
-                met = charValue < condition.comparisonValue
+                met = targetValue < comparisonValue
                 break
               case 'eq':
-                met = charValue === condition.comparisonValue
+                met = targetValue === comparisonValue
                 break
               case 'gte':
-                met = charValue >= condition.comparisonValue
+                met = targetValue >= comparisonValue
                 break
               case 'lte':
-                met = charValue <= condition.comparisonValue
+                met = targetValue <= comparisonValue
                 break
               default:
                 met = false

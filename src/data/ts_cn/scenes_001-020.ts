@@ -99,9 +99,9 @@ export const scenes_001_020: SceneData = {
         goto: '23',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          characteristic: CheckObjectKey.SIZ, // Corrected from subObject
-          comparisonValue: 40,
-          comparisonOperator: 'lt',
+          targetObject: CheckObjectKey.SIZ,
+          comparisonObject: 50,
+          comparisonOperator: 'lte',
         },
       },
       {
@@ -110,9 +110,9 @@ export const scenes_001_020: SceneData = {
         goto: '38',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          characteristic: CheckObjectKey.SIZ, // Corrected from subObject
-          comparisonValue: 40,
-          comparisonOperator: 'gte',
+          targetObject: CheckObjectKey.SIZ,
+          comparisonObject: 50,
+          comparisonOperator: 'gt',
         },
       },
     ],

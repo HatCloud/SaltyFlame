@@ -131,10 +131,9 @@ export const scenes_021_040: SceneData = {
         goto: '42',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          characteristic: CheckObjectKey.DEX,
-          // TODO: Implement characteristic-to-characteristic comparison (DEX > SIZ)
-          // comparisonValue: CheckObjectKey.SIZ, // This was incorrect
-          comparisonOperator: 'gt', // This operator implies comparison with a value, needs handling for char-to-char
+          targetObject: CheckObjectKey.DEX,
+          comparisonObject: CheckObjectKey.SIZ,
+          comparisonOperator: 'gt',
         },
       },
       {
@@ -142,10 +141,9 @@ export const scenes_021_040: SceneData = {
         text: '前进（如果体型 >= 敏捷，进行敏捷检定）',
         condition: {
           type: ConditionType.CHARACTERISTIC_COMPARE,
-          characteristic: CheckObjectKey.SIZ,
-          // TODO: Implement characteristic-to-characteristic comparison (SIZ >= DEX)
-          // comparisonValue: CheckObjectKey.DEX, // This was incorrect
-          comparisonOperator: 'gte', // This operator implies comparison with a value, needs handling for char-to-char
+          targetObject: CheckObjectKey.SIZ,
+          comparisonObject: CheckObjectKey.DEX,
+          comparisonOperator: 'gte',
         },
         check: {
           details: {
