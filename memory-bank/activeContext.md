@@ -107,6 +107,8 @@
   - `src/reducer.ts`: `PERFORM_INLINE_CHECK` 和 `RESOLVE_CHECK_OUTCOME` action 的处理逻辑已更新，以使用新的 `resultType`。
   - `src/i18n/resources.ts`: 为大成功和不同检定状态添加了新的翻译键 (如 `statusCriticalSuccess`)。
   - `src/ui/components/CheckResult.tsx`: 更新了UI逻辑，以根据 `resultType` 显示更具体的检定结果文案（例如，“大成功”、“大失败”）。
+- **Bug修复**:
+  - `src/ui/components/StoryCard.tsx`: 修正了 `checkCondition` 函数中 `ConditionType.FLAG_NOT_SET` 的逻辑错误。当 `condition.expectedValue` 未定义时，错误地将 `gameFlags` 对象赋给了 `met` 变量，现已更正为检查 `gameFlags` 中是否存在对应的 `condition.gameFlag` 键，并相应地设置 `met` 的布尔值。
 
 ## 后续步骤
 

@@ -6,6 +6,7 @@ import {
 } from '../constant/enums'
 import { Weapon } from '../interface/Character' // Import Weapon type
 import { OccupationKey } from '../data/occupations' // Import OccupationKey
+import { GameFlag } from '../constant/GameFlags'
 
 // 基础检定定义
 export interface Check {
@@ -21,7 +22,7 @@ export interface Effect {
   type: EffectType // 例如 EffectType.GAIN_ITEM, EffectType.LOSE_HP
   target?: string // 例如 物品名称, 或 'hp', 'san'
   value?: string | number // 例如 '1D3', 1, '克苏鲁的护符'
-  gameFlag?: string // 用于设置/取消游戏标记
+  gameFlag?: GameFlag // 用于设置/取消游戏标记
   flagValue?: boolean // 游戏标记的值
   item?: string | Weapon // For ADD_ITEM, REMOVE_ITEM: the item name or Weapon object
 }
@@ -30,8 +31,8 @@ export interface Effect {
 export interface Condition {
   type: ConditionType // 例如 ConditionType.HAS_ITEM, ConditionType.GAME_FLAG_SET
   item?: string // 需要检查的物品名称
-  gameFlag?: string // 需要检查的游戏标记
-  expectedValue?: boolean // 游戏标记的期望值
+  gameFlag?: GameFlag // 需要检查的游戏标记
+  expectedValue?: boolean | number | string // 游戏标记的期望值
   // Fields for characteristic comparison
   targetObject?: CheckObjectKey // The characteristic to compare (e.g., SIZ, STR)
   comparisonObject?: CheckObjectKey | number // The value to compare against
@@ -92,6 +93,7 @@ export interface Scene {
   story: string
   image?: string // 场景图片 (可选)
   options?: SceneInteractOption[] // 场景的所有交互都通过选项进行
+  effects?: Effect[]
   isEndScene?: boolean // 标记此场景是否为故事线结局
   info?: string // 场景的额外信息 (可选)
 }

@@ -7,6 +7,7 @@ import {
   // ConditionType, // Removed as not used in scenes 141-160
   // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_141_160: SceneData = {
   '141': {
@@ -53,9 +54,9 @@ export const scenes_141_160: SceneData = {
         goto: '79',
         effects: [
           {
-            type: EffectType.SET_FLAG,
-            gameFlag: 'FLAG_INCREASE_NATURAL_WORLD_2',
-            flagValue: true,
+            type: EffectType.CHANGE_SKILL,
+            target: SkillEnum.NATURAL_WORLD,
+            value: 2,
           },
         ],
       },

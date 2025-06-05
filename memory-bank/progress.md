@@ -186,3 +186,6 @@
     - `src/i18n/resources.ts`: 为检定结果状态（如“大成功”）添加了新的翻译键。
     - `src/ui/components/CheckResult.tsx`: UI更新，以根据 `resultType` 显示更具体的检定结果文案。
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。
+- **2025-06-06 (续)**:
+  - **Bug修复**: 修正了 `src/ui/components/StoryCard.tsx` 中 `checkCondition` 函数内 `ConditionType.FLAG_NOT_SET` 的逻辑。
+  - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。

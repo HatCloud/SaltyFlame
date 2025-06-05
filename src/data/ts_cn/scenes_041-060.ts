@@ -7,6 +7,7 @@ import {
   // ConditionType, // Will be added if used by scenes 41-60
   // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_041_060: SceneData = {
   '41': {
@@ -127,7 +128,7 @@ export const scenes_041_060: SceneData = {
           onFailureEffects: [
             {
               type: EffectType.SET_FLAG,
-              gameFlag: 'PENALTY_DICE_TODAY',
+              gameFlag: GameFlag.PENALTY_DICE_TODAY,
               flagValue: true,
             },
           ],

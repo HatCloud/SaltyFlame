@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react' // Added useEffect
 import { Character } from '../../interface/Character'
 import { Condition } from '../../interface/Scene'
 import {
@@ -22,21 +22,28 @@ import { useI18n } from '../../i18n/useI18n'
 import { useNavigation } from '@react-navigation/native' // Added
 import { StackNavigationProp } from '@react-navigation/stack' // Added
 import { RootStackParamList } from '../../interface/navigation' // Updated import
+import { GameFlagNames } from '../../constant/GameFlags'
 
-// LanguageCode import might be needed if `lang` from useI18n is used by getConditionDescription
-
-// Define navigation prop type for this screen
 type StoryCardNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'SceneScreen' // Assuming StoryCard is primarily used within SceneScreen context for navigation
+  'SceneScreen'
 >
 
 const StoryCard: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer()
-  const navigation = useNavigation<StoryCardNavigationProp>() // Added
+  const navigation = useNavigation<StoryCardNavigationProp>()
   const { t, lang } = useI18n() // lang might be needed for getConditionDescription
   const currentScene: Scene | undefined =
     state.sceneData?.[state.currentSceneKey]
+
+  // useEffect to handle scene effects when currentScene changes
+  useEffect(() => {
+    if (currentScene?.effects && currentScene.effects.length > 0) {
+      currentScene.effects.forEach(effect => {
+        dispatch({ type: 'APPLY_EFFECT', payload: effect })
+      })
+    }
+  }, [currentScene, dispatch]) // Rerun when currentScene or dispatch changes
 
   const getConditionDescription = useCallback(
     (condition: Condition): string | undefined => {
@@ -52,11 +59,15 @@ const StoryCard: React.FC = React.memo(() => {
             : undefined
         case ConditionType.FLAG_SET:
           return condition.gameFlag
-            ? t('condition.flagSet', { flag: condition.gameFlag })
+            ? t('condition.flagSet', {
+                flag: GameFlagNames[condition.gameFlag][lang],
+              })
             : undefined
         case ConditionType.FLAG_NOT_SET:
           return condition.gameFlag
-            ? t('condition.flagNotSet', { flag: condition.gameFlag })
+            ? t('condition.flagNotSet', {
+                flag: GameFlagNames[condition.gameFlag][lang],
+              })
             : undefined
         case ConditionType.CHARACTERISTIC_COMPARE:
           if (
@@ -107,7 +118,7 @@ const StoryCard: React.FC = React.memo(() => {
     (
       condition: Condition,
       characterData: Character | null,
-      gameFlags: Record<string, boolean> | undefined, // Assuming gameFlags on state
+      gameFlags: Record<string, boolean | number | string> | undefined, // Assuming gameFlags on state
     ): { met: boolean; description?: string } => {
       const description = getConditionDescription(condition)
       if (!characterData) return { met: false, description } // Cannot check conditions without character data
@@ -115,48 +126,53 @@ const StoryCard: React.FC = React.memo(() => {
       let met = false
       switch (condition.type) {
         case ConditionType.HAS_ITEM:
-          if (condition.item && gameFlags) {
-            met =
-              gameFlags[`item_${condition.item}`] ===
-              (condition.expectedValue !== undefined
-                ? condition.expectedValue
-                : true)
-          } else {
-            met = true // Placeholder
+          if (!condition.item) {
+            break
           }
+          met =
+            characterData.inventory.find(item => {
+              if (typeof item === 'string') {
+                item === condition.item
+              } else {
+                item.name === condition.item
+              }
+            }) !== undefined
           break
         case ConditionType.HAS_NOT_ITEM:
-          if (condition.item && gameFlags) {
-            met =
-              gameFlags[`item_${condition.item}`] ===
-              (condition.expectedValue !== undefined
-                ? !condition.expectedValue
-                : false)
-          } else {
-            met = true // Placeholder
+          if (!condition.item) {
+            break
           }
+          met =
+            characterData.inventory.find(item => {
+              if (typeof item === 'string') {
+                item === condition.item
+              } else {
+                item.name === condition.item
+              }
+            }) === undefined
           break
         case ConditionType.FLAG_SET:
-          if (condition.gameFlag && gameFlags) {
-            met =
-              gameFlags[condition.gameFlag] ===
-              (condition.expectedValue !== undefined
-                ? condition.expectedValue
-                : true)
-          } else {
-            met = true // Placeholder
+          if (!condition.gameFlag || !gameFlags) {
+            met = true
+            break
           }
+          if (condition.expectedValue === undefined) {
+            met = condition.gameFlag in gameFlags
+            break
+          }
+          met = gameFlags[condition.gameFlag] === condition.expectedValue
           break
         case ConditionType.FLAG_NOT_SET:
-          if (condition.gameFlag && gameFlags) {
-            met =
-              gameFlags[condition.gameFlag] ===
-              (condition.expectedValue !== undefined
-                ? !condition.expectedValue
-                : false)
-          } else {
-            met = true // Placeholder
+          if (!condition.gameFlag || !gameFlags) {
+            met = true
+            break
           }
+          if (condition.expectedValue === undefined) {
+            met = !(condition.gameFlag in gameFlags)
+            break
+          }
+          // 如果期望值已定义，则当 gameFlags 中该 flag 的值不等于期望值时条件满足
+          met = gameFlags[condition.gameFlag] !== condition.expectedValue
           break
         case ConditionType.CHARACTERISTIC_COMPARE:
           if (

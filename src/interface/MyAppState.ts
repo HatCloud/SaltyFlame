@@ -11,6 +11,7 @@ import { CheckOutcome } from '../constant/enums' // Added for detailed check res
 import { loadAllCnSceneData } from '../data/loadInitialSceneData' //场景数据加载逻辑
 import { Character } from './Character'
 import { OccupationKey } from '../data/occupations' // Import OccupationKey
+import { GameFlag, GameFlagVaule } from '../constant/GameFlags'
 
 // Define language type
 export type Language = 'cn' | 'en'
@@ -34,13 +35,13 @@ export interface CheckAttemptState {
 }
 
 export interface MyAppState {
-  currentSceneKey: string // Changed from SceneId to string
-  history: string[] // Changed from SceneId[] to string[]
+  currentSceneKey: string
+  history: string[]
   sceneData: SceneData
   characterData: Character | null
   language: Language
   currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check
-  gameFlags: Record<string, boolean> // Added for game flags
+  gameFlags: Record<GameFlag, GameFlagVaule>
   isCharacterModalVisible?: boolean
 }
 
@@ -51,7 +52,16 @@ export const initialState: MyAppState = {
   characterData: null, // Use FakerCharacter directly, it now includes inventory
   language: 'cn',
   currentCheckAttempt: null,
-  gameFlags: {}, // Initialize gameFlags
+  gameFlags: {
+    [GameFlag.LAST_NIGHT_SKILL_CHECK_SUCCESS]: false,
+    [GameFlag.PENALTY_DICE_TODAY]: false,
+    [GameFlag.FOUGHT_LAST_NIGHT]: false,
+    [GameFlag.LEARNED_ABOGASTR_CHANT]: false,
+    [GameFlag.IS_INJURED]: false,
+    [GameFlag.LEARNED_SPELL_COMMAND_FIRE_FROM_SKY]: false,
+    [GameFlag.LEARNED_SPELL_SUMMON_FIRE_FROM_SKY]: false,
+    [GameFlag.APPOINTMENT_WITH_ABOGAIST_9PM_CEMETERY]: false,
+  },
   isCharacterModalVisible: false,
 }
 

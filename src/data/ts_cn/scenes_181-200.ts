@@ -7,6 +7,7 @@ import {
   CheckDifficulty,
   // ConditionType, // Removed as not used
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_181_200: SceneData = {
   '181': {
@@ -214,7 +215,7 @@ export const scenes_181_200: SceneData = {
         effects: [
           {
             type: EffectType.SET_FLAG,
-            gameFlag: 'LEARNED_SPELL_SUMMON_FIRE_FROM_SKY',
+            gameFlag: GameFlag.LEARNED_SPELL_SUMMON_FIRE_FROM_SKY,
             flagValue: true,
           },
         ],

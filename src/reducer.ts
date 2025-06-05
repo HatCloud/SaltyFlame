@@ -134,6 +134,43 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
       )
       break
     }
+    case EffectType.CHANGE_SKILL: {
+      if (effect.target === undefined || effect.value === undefined) {
+        console.warn('CHANGE_SKILL effect missing target or value.')
+        break
+      }
+      const skillKey = effect.target as SkillKey // Type assertion
+      const currentSkillValue = newCharacterData.skills[skillKey]
+
+      if (currentSkillValue === undefined) {
+        // If a skill is not present, we cannot change it.
+        // This maintains consistency with the original logic of breaking if skill is undefined.
+        console.warn(
+          `Skill ${skillKey} not found on character. Cannot apply change.`,
+        )
+        break
+      }
+
+      let skillChange = 0
+      if (typeof effect.value === 'number') {
+        skillChange = effect.value
+      } else if (typeof effect.value === 'string') {
+        skillChange = parseDiceString(effect.value)
+      } else {
+        console.warn(
+          `Invalid value type for CHANGE_SKILL: ${typeof effect.value}`,
+        )
+        break
+      }
+
+      const newSkillValue = currentSkillValue + skillChange
+      newCharacterData.skills[skillKey] = newSkillValue
+
+      console.log(
+        `Applied Skill Change to ${skillKey}: ${skillChange} (from ${effect.value}), New Value: ${newSkillValue}`,
+      )
+      break
+    }
     case EffectType.SET_FLAG:
       if (effect.gameFlag) {
         newGameFlags[effect.gameFlag] =

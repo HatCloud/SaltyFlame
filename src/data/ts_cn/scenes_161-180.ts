@@ -6,6 +6,7 @@ import {
   CheckDifficulty,
   ConditionType,
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags' // GameFlag is already imported by user
 
 export const scenes_161_180: SceneData = {
   '161': {
@@ -72,19 +73,19 @@ export const scenes_161_180: SceneData = {
   '166': {
     id: '166',
     story:
-      '梅的家里好像没有自来水，但有一个陶坛子，里面积了一些水。你在盥洗室梳洗一番，走进屋子里。梅又做了一顿丰盛的早餐，让你安心享用。\n差不多七点半的时候，你付了钱，打点好行李，准备继续上路。你向梅告别，她祝愿你在阿卡姆工作顺利。\n如果你昨晚曾在技能检定中成功过，并想进一步勘查后果，前往 178。\n否则，前往 192。',
+      '梅的家里好像没有自来水，但有一个陶坛子，里面积了一些水。你在盥洗室梳洗一番，走进屋子里。梅又做了一顿丰盛的早餐，让你安心享用。\n差不多七点半的时候，你付了钱，打点好行李，准备继续上路。你向梅告别，她祝愿你在阿卡姆工作顺利。',
     options: [
       {
         type: 'goto',
-        text: '（如果昨晚技能检定成功并想勘查）',
+        text: '进一步勘查后果',
         goto: '178',
         condition: {
           type: ConditionType.FLAG_SET,
-          gameFlag: 'LAST_NIGHT_SKILL_CHECK_SUCCESS_AND_INVESTIGATE', // Corrected
+          gameFlag: GameFlag.LAST_NIGHT_SKILL_CHECK_SUCCESS,
           expectedValue: true,
         },
       },
-      { type: 'goto', text: '（否则）', goto: '192' },
+      { type: 'goto', text: '上路', goto: '192' },
     ],
   },
   '167': {
@@ -109,7 +110,18 @@ export const scenes_161_180: SceneData = {
     story:
       '阿博加斯特带着你穿过大道，躲过一座座房子。金属建筑物耸立在道路尽头。他说：“灯塔现在很安静，但它明天就会复活.”\n他领你到了村学校后面的壁凹里，往后扫视一圈，然后坐了下来。你挨着这个伤疤满脸的人，还是感觉不舒服。他抬起一只变形的眼皮。\n“你的时间不多了。听懂我的话。以前我是中转者，也是解密者。但后来文特斯这个蠢材用他的花言巧语改变了一切。来烬头村的东西才不理睬什么语言。那些白痴认为这是人祭仪式！”他向草地上吐了口痰。“这是控制的仪式。他们只懂得咒语，但他们不懂得自己召唤的是什么力量.”\n他抽了抽鼻子，坐了回去。“他们不懂！你没有时间问这问那。我来告诉你，在一切都要结束的时候，怎样让它终结。你可以把这山丘还给大地，送回四十年前造访过这里的死亡。我自己已经试过了。但......”他垂下头，“我已经没有那种集中力了。咒语很简单；我可以教给你。但你使用时必须有清晰的头脑，我已经失去它很久了.”',
     options: [
-      { type: 'goto', text: '学习奇怪的咒语', goto: '175' },
+      {
+        type: 'goto',
+        text: '学习奇怪的咒语',
+        goto: '175',
+        effects: [
+          {
+            type: EffectType.SET_FLAG,
+            gameFlag: GameFlag.LEARNED_ABOGASTR_CHANT,
+            flagValue: false,
+          },
+        ],
+      },
       { type: 'goto', text: '已经受够阿博加斯特了', goto: '182' },
     ],
   },
@@ -123,6 +135,13 @@ export const scenes_161_180: SceneData = {
     id: '171',
     story:
       '你花了一个星期才学懂德בי的诗作。他的诗作表述了宇宙核心的东西：振荡的、吞噬一切的质量，撕裂着宇宙的每一根纤维。它的信使，时而称作无面者，时而称作伏行的混沌，所触之处皆堕入混乱。他的文字风格独特：并非生动的联想，而是无望的揭示。\n学习诗集的时候，你还注意到诗篇之间潜藏的联系，令你开始心绪不宁。进行一次“理智”检定。如果你成功了，失去1点理智值。如果你失败了，失去1D4点理智值。你可以增加4点「克苏鲁神话」技能。你将再也难以轻松入眠。\n【剧终】',
+    effects: [
+      {
+        type: EffectType.CHANGE_SKILL,
+        target: SkillEnum.CTHULHU_MYTHOS,
+        value: 4,
+      },
+    ],
     options: [
       {
         type: 'check',
@@ -137,22 +156,8 @@ export const scenes_161_180: SceneData = {
           onFailureSceneId: 'END',
           successText: '理智检定成功',
           failureText: '理智检定失败',
-          onSuccessEffects: [
-            { type: EffectType.CHANGE_SANITY, value: '-1' },
-            {
-              type: EffectType.SET_FLAG,
-              gameFlag: 'FLAG_INCREASE_CTHULHU_MYTHOS_4', // Corrected
-              flagValue: true,
-            },
-          ],
-          onFailureEffects: [
-            { type: EffectType.CHANGE_SANITY, value: '-1D4' },
-            {
-              type: EffectType.SET_FLAG,
-              gameFlag: 'FLAG_INCREASE_CTHULHU_MYTHOS_4', // Corrected
-              flagValue: true,
-            },
-          ],
+          onSuccessEffects: [{ type: EffectType.CHANGE_SANITY, value: '-1' }],
+          onFailureEffects: [{ type: EffectType.CHANGE_SANITY, value: '-1D4' }],
         },
       },
     ],
@@ -205,7 +210,7 @@ export const scenes_161_180: SceneData = {
         effects: [
           {
             type: EffectType.SET_FLAG,
-            gameFlag: 'LEARNED_ABOGASTR_CHANT',
+            gameFlag: GameFlag.LEARNED_ABOGASTR_CHANT,
             flagValue: true,
           },
         ],
@@ -324,8 +329,16 @@ export const scenes_161_180: SceneData = {
     options: [
       { type: 'goto', text: '到外面眺望星空', goto: '131' },
       { type: 'goto', text: '试着和露丝说说话', goto: '138' },
-      // TODO: Option for "如果你之前和人有约，现在是时候赴约了。" - needs a flag like 'HAS_APPOINTMENT'
-      // { type: 'goto', text: '赴约', goto: 'SCENE_ID_FOR_APPOINTMENT', condition: { type: ConditionType.FLAG_SET, gameFlag: 'HAS_APPOINTMENT', expectedValue: true } },
+      {
+        type: 'goto',
+        text: '如果你之前和人有约，现在是时候赴约了。',
+        goto: '200',
+        condition: {
+          type: ConditionType.FLAG_SET,
+          gameFlag: GameFlag.APPOINTMENT_WITH_ABOGAIST_9PM_CEMETERY,
+          expectedValue: true,
+        },
+      },
     ],
   },
 }

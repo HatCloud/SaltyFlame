@@ -6,6 +6,7 @@ import {
   CheckDifficulty,
   ConditionType, // Re-added
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_201_220: SceneData = {
   '201': {
@@ -18,7 +19,7 @@ export const scenes_201_220: SceneData = {
         text: '（如果受伤）尝试「急救」检定',
         condition: {
           type: ConditionType.FLAG_SET,
-          gameFlag: 'IS_INJURED',
+          gameFlag: GameFlag.IS_INJURED,
           expectedValue: true,
         }, // Placeholder condition
         effects: [
@@ -72,7 +73,7 @@ export const scenes_201_220: SceneData = {
         effects: [
           {
             type: EffectType.SET_FLAG,
-            gameFlag: 'LEARNED_SPELL_COMMAND_FIRE_FROM_SKY',
+            gameFlag: GameFlag.LEARNED_SPELL_COMMAND_FIRE_FROM_SKY,
             flagValue: true,
           },
         ],

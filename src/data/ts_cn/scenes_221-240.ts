@@ -7,6 +7,7 @@ import {
   // ConditionType, // Add if needed
   // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_221_240: SceneData = {
   '221': {
@@ -191,9 +192,9 @@ export const scenes_221_240: SceneData = {
         goto: '259',
         effects: [
           {
-            type: EffectType.SET_FLAG,
-            gameFlag: 'FLAG_INCREASE_CTHULHU_MYTHOS_2',
-            flagValue: true,
+            type: EffectType.CHANGE_SKILL,
+            target: SkillEnum.CTHULHU_MYTHOS,
+            value: 2,
           },
         ],
       },

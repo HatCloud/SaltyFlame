@@ -7,6 +7,7 @@ import {
   ConditionType, // Re-adding as scene 78 might use it
   // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 // import { antiquarianTemplate } from '../occupations/antiquarian' // No longer needed directly
 import { OccupationKey } from '../occupations' // Import OccupationKey
 
@@ -43,7 +44,7 @@ export const scenes_061_080: SceneData = {
         goto: '70',
         condition: {
           type: ConditionType.FLAG_SET,
-          gameFlag: 'FOUGHT_LAST_NIGHT', // Corrected
+          gameFlag: GameFlag.FOUGHT_LAST_NIGHT,
           expectedValue: true,
         },
       },

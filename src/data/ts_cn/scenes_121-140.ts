@@ -7,6 +7,7 @@ import {
   // ConditionType, // Removed as not used
   // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_121_140: SceneData = {
   '121': {
@@ -24,6 +25,13 @@ export const scenes_121_140: SceneData = {
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '141',
+          onSuccessEffects: [
+            {
+              type: EffectType.SET_FLAG,
+              gameFlag: GameFlag.LAST_NIGHT_SKILL_CHECK_SUCCESS,
+              flagValue: true,
+            },
+          ],
           onFailureSceneId: '130',
           successText: '进行「追踪」检定（成功）',
           failureText: '进行「追踪」检定（失败）',
@@ -188,10 +196,9 @@ export const scenes_121_140: SceneData = {
         goto: '79',
         effects: [
           {
-            type: EffectType.SET_FLAG, // This should ideally be a direct skill increase effect
-            gameFlag: 'FLAG_INCREASE_NATURAL_WORLD_1',
-            flagValue: true,
-            // Or: { type: EffectType.INCREASE_SKILL, target: CheckObjectKey.NATURAL_WORLD, value: 1 }
+            type: EffectType.CHANGE_SKILL,
+            target: SkillEnum.NATURAL_WORLD,
+            value: 1,
           },
         ],
       },

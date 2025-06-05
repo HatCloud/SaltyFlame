@@ -7,6 +7,7 @@ import {
   ConditionType,
   // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_021_040: SceneData = {
   '21': {
@@ -86,7 +87,7 @@ export const scenes_021_040: SceneData = {
         effects: [
           {
             type: EffectType.SET_FLAG,
-            gameFlag: 'PENALTY_DICE_TODAY', // Corrected from flagName
+            gameFlag: GameFlag.PENALTY_DICE_TODAY,
             flagValue: true,
           },
         ],
@@ -192,6 +193,13 @@ export const scenes_021_040: SceneData = {
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '39',
+          onSuccessEffects: [
+            {
+              type: EffectType.SET_FLAG,
+              gameFlag: GameFlag.LAST_NIGHT_SKILL_CHECK_SUCCESS,
+              flagValue: true,
+            },
+          ],
           onFailureSceneId: '51',
           successText: '进行「魅惑」检定（成功）',
           failureText: '进行「魅惑」检定（失败）',
@@ -315,10 +323,10 @@ export const scenes_021_040: SceneData = {
       {
         type: 'goto',
         text: '尝试奇怪的咒语',
-        goto: '???' /* TODO: Link to spell casting scene */,
+        goto: '50',
         condition: {
           type: ConditionType.FLAG_SET, // Assuming FLAG_SET is a valid ConditionType
-          gameFlag: 'LEARNED_STRANGE_CHANT', // Corrected from flagName
+          gameFlag: GameFlag.LEARNED_ABOGASTR_CHANT,
           expectedValue: true,
         },
       },

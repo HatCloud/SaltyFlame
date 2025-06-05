@@ -181,6 +181,7 @@ export type SkillKey = keyof typeof SkillEnum
 export enum EffectType {
   CHANGE_HP = 'CHANGE_HP',
   CHANGE_SANITY = 'CHANGE_SANITY',
+  CHANGE_SKILL = 'CHANGE_SKILL',
   ADD_ITEM = 'ADD_ITEM',
   REMOVE_ITEM = 'REMOVE_ITEM',
   SET_FLAG = 'SET_FLAG', // 设置一个游戏状态标记

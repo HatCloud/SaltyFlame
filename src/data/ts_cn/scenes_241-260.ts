@@ -5,6 +5,7 @@ import {
   EffectType,
   CheckDifficulty,
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_241_260: SceneData = {
   '241': {
@@ -190,7 +191,8 @@ export const scenes_241_260: SceneData = {
   '259': {
     id: '259',
     story:
-      '阿博加斯特在阴影中停顿了一下：“你有以前那些人没有过的东西。也许你能挺过去。如果你想知道更多，今天晚上再来找我。九点钟，在另一边的坟地.”他举起一根枯瘦的手指。“不要被人跟踪了，不然我就不去。这段时间可不是最后决战的时候.”\n阿博加斯特又用袖子抹了抹鼻子。“走吧。他们一直监视着我。还有，陌生人？别想着逃走。你成功不了的.”\n你退回阳光下。阳光刺目，你十分地动摇。\n你发现了一个秘密。今天晚些时候，会有文字提示你去继续之前的约定。到那时，如果你想再和阿博加斯特见面，在你所在的条目号上加20，前往对应的条目。',
+      '阿博加斯特在阴影中停顿了一下：“你有以前那些人没有过的东西。也许你能挺过去。如果你想知道更多，今天晚上再来找我。九点钟，在另一边的坟地.”他举起一根枯瘦的手指。“不要被人跟踪了，不然我就不去。这段时间可不是最后决战的时候.”\n阿博加斯特又用袖子抹了抹鼻子。“走吧。他们一直监视着我。还有，陌生人？别想着逃走。你成功不了的.”\n你退回阳光下。阳光刺目，你十分地动摇。',
+    info: '你发现了一个秘密。今天晚些时候，会有文字提示你去继续之前的约定。到那时，如果你想再和阿博加斯特见面，在你所在的条目号上加20，前往对应的条目。',
     options: [
       {
         type: 'goto',
@@ -199,7 +201,7 @@ export const scenes_241_260: SceneData = {
         effects: [
           {
             type: EffectType.SET_FLAG,
-            gameFlag: 'APPOINTMENT_WITH_ABOGAIST_9PM_CEMETERY',
+            gameFlag: GameFlag.APPOINTMENT_WITH_ABOGAIST_9PM_CEMETERY,
             flagValue: true,
           },
         ],
