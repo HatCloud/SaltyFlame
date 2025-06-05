@@ -39,7 +39,7 @@ export const antiquarianTemplate: OccupationTemplate = {
     CheckObjectKey.LISTEN, // 通用技能
   ],
 
-  background: {
+  background_cn: {
     description:
       '一位戴着夹鼻眼镜，衣着略显不合时宜但整洁的学者，身上总带着一股旧书和灰尘的味道。眼神中透露出对古老事物的好奇与审慎。',
     ideologyBeliefs:
@@ -58,6 +58,34 @@ export const antiquarianTemplate: OccupationTemplate = {
     phobiasManias:
       '对特定的古代符号组合有莫名的不安感（轻微符号恐惧症）；有收集特定时期地图的癖好。',
   },
+  background_en: {
+    description:
+      'A scholar wearing pince-nez glasses and slightly old-fashioned but neat attire, always carrying a scent of old books and dust. Their eyes reveal curiosity and prudence towards ancient things.',
+    ideologyBeliefs:
+      "Firmly believes that 'history is past politics, and politics is present history.' Has a strong interest in all 'minor details' overlooked by mainstream history, believing truth often lies within them.",
+    significantPeople:
+      'A reclusive private collector who occasionally commissions the appraisal of antiquities from dubious sources; this person seems to know some undisclosed secrets.',
+    meaningfulLocations:
+      "An old bookstore named 'Dusty Tomes' on the city's outskirts, run by a taciturn old man; or a forgotten ancient battlefield.",
+    treasuredPossessions:
+      'An ancient bronze key inscribed with peculiar symbols, said to be found in a cursed ruin, for which no corresponding lock has yet been found.',
+    traits:
+      'Erudite, meticulous, sometimes appearing aloof due to intense focus. Has an almost obsessive pursuit of detail.',
+    keyConnection: 'significantPeople',
+    injuriesScars:
+      "A faint scar on the back of the left hand, from being scratched by an unknown artifact during an informal 'expedition' to an Egyptian tomb.",
+    phobiasManias:
+      'An inexplicable unease towards specific combinations of ancient symbols (mild symbolophobia); a habit of collecting maps from particular periods.',
+  },
 
-  skillPointsFormula: 'EDU x 4 (传统规则参考)',
+  // Example character pre-fill data
+  exampleCharacterName_cn: '阿瑟·彭德尔顿',
+  exampleCharacterName_en: 'Arthur Pendelton',
+  exampleCharacterSex: 'Male',
+  exampleCharacterAge: 32,
+  exampleCharacterBirthplace_cn: '波士顿，马萨诸塞州',
+  exampleCharacterBirthplace_en: 'Boston, Massachusetts',
+  exampleCharacterResidence_cn: '坎布里奇，马萨诸塞州',
+  exampleCharacterResidence_en: 'Cambridge, Massachusetts',
+  // skillPointsFormula field removed
 }

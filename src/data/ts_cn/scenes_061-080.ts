@@ -5,6 +5,8 @@ import {
   CheckDifficulty,
   ConditionType, // Re-adding as scene 78 might use it
 } from '../../constant/enums'
+// import { antiquarianTemplate } from '../occupations/antiquarian' // No longer needed directly
+import { OccupationKey } from '../occupations' // Import OccupationKey
 
 export const scenes_061_080: SceneData = {
   '61': {
@@ -156,11 +158,36 @@ export const scenes_061_080: SceneData = {
     story:
       '你的行程重新开始了。司机转弯时变得更加小心。他转过头看了你好几次。\n“刚才对不住，”他说，“那货比猪还蠢。我叫西拉斯。你的名字是？”\n刚才的事件里，西拉斯和农民的责任至少要对半分。但是，当他开车带你穿过这前不着村、后不着店的地方时，和他对抗可能并不明智。\n为你的角色起一个名字，把它记在自己的调查员角色卡上。你还可以加上你的年龄；对本冒险来说，你的角色年龄应当在23到36岁之间。\n长途车开上了一条窄一些的路，这条路迂回上升，穿过树林。西拉斯的话变得多了起来。\n“去阿卡姆吗，哈？都没听说过这地方。就去过一次波士顿。不喜欢。人太多，太闹腾。你家在那里吗？有特别的人等你吗？”\n下午的时间在缓慢地流逝。你觉得向西拉斯透露自己的新生活也没有什么坏处。\n“工作哈？你干哪行？”\n从以下选项中选择你角色的职业：',
     options: [
-      { type: 'goto', text: '文物学家', goto: '102' },
-      { type: 'goto', text: '医生', goto: '226' },
-      { type: 'goto', text: '记者', goto: '239' },
-      { type: 'goto', text: '私家侦探', goto: '249' },
-      { type: 'goto', text: '教授', goto: '265' },
+      {
+        type: 'goto',
+        text: '文物学家',
+        goto: '102',
+        applyOccupation: 'antiquarian' as OccupationKey,
+      },
+      {
+        type: 'goto',
+        text: '医生',
+        goto: '226',
+        applyOccupation: 'doctor' as OccupationKey,
+      },
+      {
+        type: 'goto',
+        text: '记者',
+        goto: '239',
+        applyOccupation: 'journalist' as OccupationKey,
+      },
+      {
+        type: 'goto',
+        text: '私家侦探',
+        goto: '249',
+        applyOccupation: 'privateInvestigator' as OccupationKey,
+      },
+      {
+        type: 'goto',
+        text: '教授',
+        goto: '265',
+        applyOccupation: 'professor' as OccupationKey,
+      },
     ],
   },
   '72': {

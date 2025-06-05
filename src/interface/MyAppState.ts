@@ -9,6 +9,7 @@ import {
 } from './Scene'
 import { loadAllCnSceneData } from '../data/loadInitialSceneData' //场景数据加载逻辑
 import { Character } from './Character'
+import { OccupationKey } from '../data/occupations' // Import OccupationKey
 
 // Define language type
 export type Language = 'cn' | 'en'
@@ -112,6 +113,12 @@ interface HydrateStateAction {
   payload: Partial<MyAppState> // Persisted state might be partial
 }
 
+// Action for applying a chosen occupation
+interface ApplyChosenOccupationAction {
+  type: 'APPLY_CHOSEN_OCCUPATION'
+  payload: OccupationKey
+}
+
 // AppAction is a union of all possible actions
 export type AppAction =
   | ChangeSceneAction
@@ -124,3 +131,4 @@ export type AppAction =
   | ToggleCharacterModalAction
   | StoreCharacterAction // Added
   | HydrateStateAction // Added
+  | ApplyChosenOccupationAction

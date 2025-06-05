@@ -232,17 +232,33 @@ const StoryCard: React.FC = React.memo(() => {
     (option: SceneInteractOption, disabled?: boolean) => {
       if (disabled) return // Do nothing if the option is disabled
 
+      // Apply general effects first, if any, for all option types that support them
+      // This ensures effects run before specific action dispatches like checks or navigation.
+      // However, for 'goto' options, applyOccupation should ideally happen before scene change.
+      // Let's refine the order.
+
       if (option.type === 'check') {
+        // For check options, effects are usually part of the checkPayload or applied pre-check.
+        // The current PERFORM_INLINE_CHECK in reducer handles originalOption.effects.
         dispatch({
           type: 'PERFORM_INLINE_CHECK',
           payload: { checkPayload: option.check, originalOption: option },
         })
       } else if (option.type === 'goto') {
+        // Handle applyOccupation first if present
+        if (option.applyOccupation) {
+          dispatch({
+            type: 'APPLY_CHOSEN_OCCUPATION',
+            payload: option.applyOccupation,
+          })
+        }
+        // Then apply other effects
         if (option.effects && option.effects.length > 0) {
           option.effects.forEach(effect =>
             dispatch({ type: 'APPLY_EFFECT', payload: effect }),
           )
         }
+        // Finally, change scene
         dispatch({
           type: 'CHANGE_SCENE',
           payload: option.goto,

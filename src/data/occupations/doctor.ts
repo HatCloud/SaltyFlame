@@ -39,7 +39,7 @@ export const doctorTemplate: OccupationTemplate = {
     CheckObjectKey.INTIMIDATE, // 有时需要强硬态度处理不合作的病人或家属
   ],
 
-  background: {
+  background_cn: {
     description:
       '一位穿着熨烫平整的白大褂（或在1920年代可能是深色西装），神情专注而略带疲惫的医生。手指修长，适合进行精细操作。',
     ideologyBeliefs:
@@ -57,6 +57,34 @@ export const doctorTemplate: OccupationTemplate = {
     phobiasManias:
       '对血液有超乎常人的冷静（甚至可以说是麻木）；对无法治愈的疾病有一种职业性的挫败感和恐惧。',
   },
+  background_en: {
+    description:
+      'A doctor in a neatly pressed white coat (or perhaps a dark suit in the 1920s), with a focused and slightly weary expression. Long fingers, suitable for delicate procedures.',
+    ideologyBeliefs:
+      "Firmly believes that science can overcome all ailments, but privately is perplexed and curious about certain 'conditions' inexplicable by modern medicine. Life is paramount.",
+    significantPeople:
+      "A mentor from medical school, now the dean of a renowned hospital, who occasionally refers tricky 'special' cases.",
+    meaningfulLocations:
+      "Their clinic's operating room or laboratory, filled with the scent of disinfectant; or the city's only 24-hour pharmacy.",
+    treasuredPossessions:
+      'A well-worn anatomical atlas with a dedication from their mentor on the flyleaf; or a silver lancet, said to be an heirloom.',
+    traits:
+      'Calm, rational, compassionate but never sentimental. Maintains clear judgment under pressure.',
+    keyConnection: 'significantPeople',
+    injuriesScars:
+      'A small, fine scar on the web of their right hand, from an accidental scalpel cut during an early procedure.',
+    phobiasManias:
+      'An unusually calm (perhaps even numb) demeanor towards blood; a professional frustration and fear of incurable diseases.',
+  },
 
-  skillPointsFormula: 'EDU x 2 + POW x 2 (传统规则参考，医生更侧重教育和意志)',
+  // Example character pre-fill data
+  exampleCharacterName_cn: '埃莉诺·安斯沃思',
+  exampleCharacterName_en: 'Eleanor Ainsworth',
+  exampleCharacterSex: 'Female',
+  exampleCharacterAge: 29,
+  exampleCharacterBirthplace_cn: '费城，宾夕法尼亚州',
+  exampleCharacterBirthplace_en: 'Philadelphia, Pennsylvania',
+  exampleCharacterResidence_cn: '纽约市，纽约州',
+  exampleCharacterResidence_en: 'New York City, New York',
+  // skillPointsFormula field removed
 }

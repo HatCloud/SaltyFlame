@@ -39,7 +39,7 @@ export const professorTemplate: OccupationTemplate = {
     CheckObjectKey.NATURAL_WORLD, // 可能的业余爱好或研究方向
   ],
 
-  background: {
+  background_cn: {
     description:
       '一位穿着合身的粗花呢西装，头发可能有些凌乱但眼神睿智的教授。身上带着淡淡的书卷气，说话条理清晰，偶尔会引用经典。',
     ideologyBeliefs:
@@ -57,6 +57,34 @@ export const professorTemplate: OccupationTemplate = {
     phobiasManias:
       '对学术剽窃行为有极度的憎恶；有在谈话中不自觉地纠正他人语法或事实错误的习惯。',
   },
+  background_en: {
+    description:
+      'A professor in a well-fitting tweed suit, perhaps with slightly messy hair but wise eyes. Carries a faint scent of books and speaks articulately, occasionally quoting classics.',
+    ideologyBeliefs:
+      "'Knowledge is the only torch to illuminate darkness.' Deeply regrets ignorance and superstition, firmly believing reason and logic can explain all things (though recent events have begun to shake this conviction).",
+    significantPeople:
+      'A respected old dean at the university, a mentor on their academic path; or a former student who has achieved success in an unexpected field and brought a troublesome commission.',
+    meaningfulLocations:
+      'The dusty rare book room of the university library; or their own office, piled high with books and research materials, overlooking the tranquil campus.',
+    treasuredPossessions:
+      "A fountain pen, a companion for many years, used to write countless lectures and papers; or a rare academic monograph with the author's autograph on the flyleaf.",
+    traits:
+      'Erudite, talkative, sometimes unconsciously delving into academic discussions. Passionate about their field of research, but may be somewhat oblivious to worldly affairs.',
+    keyConnection: 'significantPeople',
+    injuriesScars:
+      'A permanent indentation on the bridge of the nose from wearing glasses.',
+    phobiasManias:
+      "An extreme aversion to academic plagiarism; a habit of unconsciously correcting others' grammar or factual errors in conversation.",
+  },
 
-  skillPointsFormula: 'EDU x 4 (传统规则参考，教授的核心是教育)',
+  // Example character pre-fill data
+  exampleCharacterName_cn: '伊芙琳·海耶斯博士',
+  exampleCharacterName_en: 'Dr. Evelyn Hayes',
+  exampleCharacterSex: 'Female',
+  exampleCharacterAge: 36,
+  exampleCharacterBirthplace_cn: '纽黑文，康涅狄格州',
+  exampleCharacterBirthplace_en: 'New Haven, Connecticut',
+  exampleCharacterResidence_cn: '阿卡姆，马萨诸塞州',
+  exampleCharacterResidence_en: 'Arkham, Massachusetts',
+  // skillPointsFormula field removed
 }

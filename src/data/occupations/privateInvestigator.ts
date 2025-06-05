@@ -39,7 +39,7 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
     CheckObjectKey.DISGUISE, // 伪装身份
   ],
 
-  background: {
+  background_cn: {
     description:
       '一位穿着风衣，帽檐压得很低，眼神锐利如鹰的侦探。身上可能带着淡淡的烟草味和一丝挥之不去的神秘感。',
     ideologyBeliefs:
@@ -56,7 +56,34 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
     phobiasManias:
       '对被人跟踪或监视有高度警觉（职业病）；有反复检查门窗是否锁好的习惯。',
   },
+  background_en: {
+    description:
+      "A detective in a trench coat, hat brim pulled low, with eyes as sharp as an eagle's. Might carry a faint scent of tobacco and an indelible air of mystery.",
+    ideologyBeliefs:
+      "'There's a truth behind everything, if you're willing to look for it.' Has a natural intuition for lies and deceit, believing justice sometimes requires unconventional methods.",
+    significantPeople:
+      'An old friend on the police force who sometimes provides case leads off the record; or a former client who now serves as an important informant.',
+    meaningfulLocations:
+      'Their dimly lit, slightly messy office, walls covered with case-related photos and notes; or the back alley of a city bar frequented by shady characters.',
+    treasuredPossessions:
+      'A small revolver (perhaps never actually used, more for deterrence); or a black notebook detailing every case handled.',
+    traits:
+      'Observant, cautious, and resourceful. Accustomed to thinking independently and not trusting anyone easily.',
+    keyConnection: 'significantPeople',
+    injuriesScars:
+      'A barely visible old scar on the chin, from a pursuit of a suspect.',
+    phobiasManias:
+      'Highly alert to being followed or watched (an occupational hazard); a habit of repeatedly checking if doors and windows are locked.',
+  },
 
-  skillPointsFormula:
-    'EDU x 2 + (DEX x 2 or STR x 2) (传统规则参考，侦探依赖教育，以及敏捷或力量)',
+  // Example character pre-fill data
+  exampleCharacterName_cn: '塞缪尔·“萨姆”·斯佩德',
+  exampleCharacterName_en: 'Samuel "Sam" Spade',
+  exampleCharacterSex: 'Male',
+  exampleCharacterAge: 35,
+  exampleCharacterBirthplace_cn: '旧金山，加利福尼亚州',
+  exampleCharacterBirthplace_en: 'San Francisco, California',
+  exampleCharacterResidence_cn: '旧金山，加利福尼亚州',
+  exampleCharacterResidence_en: 'San Francisco, California',
+  // skillPointsFormula field removed
 }

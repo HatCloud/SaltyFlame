@@ -159,8 +159,6 @@ const generateCharacter = (
       damageBonus: damageBonus,
       build: build,
       movementRate: movementRate,
-      occupationSkills: {}, // No longer handled here
-      personalInterests: {}, // No longer handled here
     },
     skills: newSkills,
     inventory: [],

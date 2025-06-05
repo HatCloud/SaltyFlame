@@ -153,7 +153,7 @@ const CharacterModal: React.FC = () => {
               />
               <InfoRow
                 label={t('charModal.dodgeValue')}
-                value={characterData.personalData.dodge}
+                value={characterData.skills?.[CheckObjectKey.DODGE]}
               />
 
               {/* Skills */}

@@ -6,9 +6,16 @@ import {
   initialState as defaultInitialState, // Rename to avoid conflict
 } from './interface/MyAppState'
 import { Effect, Check } from './interface/Scene'
-import { EffectType, CheckDifficulty, SkillKey } from './constant/enums' // Added SkillKey
+import {
+  EffectType,
+  CheckDifficulty,
+  SkillKey,
+  CheckObjectDefaultValues, // Added for interest skills
+  CheckObjectKey, // Added for interest skills base value lookup
+} from './constant/enums' // Added SkillKey
 import { Character } from './interface/Character' // Import Character type
 import { parseDiceString } from './utils/utils' // Import parseDiceString
+import { occupationTemplates } from './data/occupations'
 
 // --- AsyncStorage Keys ---
 const PERSISTED_STATE_KEY = 'SaltyFlameAppState'
@@ -398,6 +405,114 @@ export const appReducer = (
       }
       saveStateToStorage(newState) // characterData is persisted
       return newState
+
+    case 'APPLY_CHOSEN_OCCUPATION': {
+      const occupationKey = action.payload
+      const template = occupationTemplates[occupationKey]
+
+      if (!template) {
+        console.warn(`Occupation template not found for key: ${occupationKey}`)
+        return newState // No change if template not found
+      }
+
+      const characterToUpdate = newState.characterData
+      if (!characterToUpdate) {
+        // If characterData is null, an occupation cannot be applied.
+        // This implies character creation should happen before occupation selection,
+        // or STORE_CHARACTER should have been dispatched.
+        console.warn(
+          'APPLY_CHOSEN_OCCUPATION: characterData is null. Cannot apply occupation.',
+        )
+        return newState // No change
+      }
+
+      // Prepare the updated skills
+      const newSkills = { ...(characterToUpdate.skills || {}) }
+
+      // Apply +20 to interest skills, capped at 75
+      if (template.interestSkills) {
+        template.interestSkills.forEach((skillKey: CheckObjectKey) => {
+          // Added type for skillKey
+          const currentSkillValue = newSkills?.[skillKey as SkillKey]
+          let baseValue = 0
+
+          if (typeof currentSkillValue === 'number') {
+            baseValue = currentSkillValue
+          } else {
+            const defaultSkillInfo = CheckObjectDefaultValues[skillKey]
+            if (typeof defaultSkillInfo === 'number') {
+              baseValue = defaultSkillInfo
+            } else if (typeof defaultSkillInfo === 'string') {
+              if (
+                defaultSkillInfo === 'DEX/2' &&
+                characterToUpdate.characteristics.DEX
+              ) {
+                baseValue = Math.floor(
+                  characterToUpdate.characteristics.DEX / 2,
+                )
+              } else if (
+                defaultSkillInfo === 'EDU' &&
+                characterToUpdate.characteristics.EDU
+              ) {
+                baseValue = characterToUpdate.characteristics.EDU
+              } else {
+                console.warn(
+                  `Unhandled string base for ${skillKey}: ${defaultSkillInfo}`,
+                )
+                baseValue = 0
+              }
+            } else {
+              baseValue = 0 // Default to 0 if no base value found
+            }
+          }
+          newSkills[skillKey as SkillKey] = Math.min(baseValue + 20, 75)
+        })
+      }
+
+      // Generate random credit rating
+      const [minCr, maxCr] = template.creditRatingRange
+      const randomCreditRating =
+        Math.floor(Math.random() * (maxCr - minCr + 1)) + minCr
+      newSkills[CheckObjectKey.CREDIT_RATING] = randomCreditRating
+
+      // Update characterData with example prefill data and other occupation data
+      const updatedCharacterData: Character = {
+        ...characterToUpdate,
+        name:
+          newState.language === 'cn'
+            ? template.exampleCharacterName_cn || characterToUpdate.name
+            : template.exampleCharacterName_en || characterToUpdate.name,
+        sex: template.exampleCharacterSex || characterToUpdate.sex,
+        age: template.exampleCharacterAge || characterToUpdate.age,
+        birthplace:
+          newState.language === 'cn'
+            ? template.exampleCharacterBirthplace_cn ||
+              characterToUpdate.birthplace
+            : template.exampleCharacterBirthplace_en ||
+              characterToUpdate.birthplace,
+        residence:
+          newState.language === 'cn'
+            ? template.exampleCharacterResidence_cn ||
+              characterToUpdate.residence
+            : template.exampleCharacterResidence_en ||
+              characterToUpdate.residence,
+        occupation:
+          newState.language === 'cn' ? template.name_cn : template.name_en,
+        background:
+          newState.language === 'cn'
+            ? template.background_cn
+            : template.background_en,
+        skills: newSkills,
+        // Note: occupationKey, occupationName, occupationalSkillKeys are not part of Character interface per user constraint
+      }
+
+      newState = {
+        ...newState,
+        characterData: updatedCharacterData,
+      }
+      saveStateToStorage(newState)
+      return newState
+    }
 
     default:
       return newState

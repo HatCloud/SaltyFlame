@@ -69,6 +69,36 @@
   - 添加了 `HYDRATE_STATE` action 用于在应用启动时加载持久化状态。
   - 修改了 `src/interface/MyAppState.ts`，定义了 `HydrateStateAction`。
   - 修改了 `src/App.tsx`，在应用启动时从 AsyncStorage 加载状态并 dispatch `HYDRATE_STATE`。
+- [x] **职业选择功能初步实现**:
+  - **接口更新**:
+    - `src/interface/Character.ts`: 用户指示保持现有字段。职业信息将存储在现有的 `occupation: string` 和 `background: CharacterBackground` (object type) 字段中。
+    - `src/interface/Scene.ts`: 为 `GotoDrivenOption` 添加了 `applyOccupation?: OccupationKey` 字段。
+    - `src/data/occupations/index.ts`: 明确导出了 `OccupationKey` 类型，并修正了 `BackgroundTemplate` 的重导出路径。
+    - `src/interface/MyAppState.ts`: 定义了 `ApplyChosenOccupationAction` action 类型。
+  - **场景数据更新**:
+    - `src/data/ts_cn/scenes_061-080.ts`: 更新了场景 71 中的职业选择选项，添加了 `applyOccupation` 字段。
+  - **状态管理与逻辑实现**:
+    - `src/reducer.ts`: 根据用户反馈，更新了 `APPLY_CHOSEN_OCCUPATION` action 的处理逻辑：
+      - 仅更新 `characterData` 中已存在的 `occupation` (string) 和 `background` (CharacterBackground object) 字段。
+      - 为职业模板中定义的 `interestSkills`（兴趣技能）实现逻辑：在其当前值或基础值（来自 `CheckObjectDefaultValues`，并处理如DEX/2, EDU等派生情况）的基础上增加20点，结果上限为75。此更新会修改 `characterData.skills`。
+      - 移除了未使用的 `generateCharacter` 导入，并修正了 `skillKey` 的类型。
+      - (注意：模块导入路径 `../data/occupations` 仍然报告 "Cannot find module" 错误，这可能是环境问题，因为路径和导出本身是正确的。)
+    - `src/ui/components/StoryCard.tsx`: 修改了选项处理逻辑，以 dispatch `APPLY_CHOSEN_OCCUPATION` action。
+- [x] **为职业模板添加示例角色预设信息并调整背景字段**:
+  - `src/interface/OccupationTemplate.ts`:
+    - 为 `OccupationTemplate` 接口添加了新的可选字段，用于存储示例角色的姓名（中英文）、性别、年龄、出生地（中英文）和居住地（中英文）。
+    - 将原 `background` 字段重命名为 `background_cn`，并添加了新的 `background_en: CharacterBackground` 字段。
+    - 移除了 `skillPointsFormula` 字段。
+  - `src/data/occupations/*.ts`: 更新了所有职业模板文件 (`antiquarian.ts`, `doctor.ts`, `journalist.ts`, `privateInvestigator.ts`, `professor.ts`)：
+    - 将原 `background` 字段重命名为 `background_cn`。
+    - 添加了新的 `background_en` 字段，并为其所有子属性填充了英文翻译内容。
+    - 移除了 `skillPointsFormula` 字段。
+    - （这些文件之前已更新过，添加了示例角色预设字段并填充了数据）。
+  - `src/ui/components/CharacterModal.tsx`: （此项修正已在先前步骤完成）修正了一个TypeScript错误，将对 `characterData.personalData.dodge` 的访问更改为从 `characterData.skills[CheckObjectKey.DODGE]` 获取闪避值。
+  - `src/reducer.ts`: 进一步更新了 `APPLY_CHOSEN_OCCUPATION` action 的处理逻辑：
+    - 根据当前语言从职业模板的示例预设数据中，为 `characterData` 的 `name`, `sex`, `age`, `birthplace`, `residence` 字段赋值（如果模板中有提供）。
+    - 根据职业模板的 `creditRatingRange` 为角色随机生成一个信用评级值，并更新到 `characterData.skills.CREDIT_RATING`。
+    - 保留了根据语言选择 `background_cn` 或 `background_en` 的逻辑。
 
 ## 未完成功能 (来自 projectbrief.md)
 
@@ -139,3 +169,9 @@
     - 更新了 `MyAppState.ts` 以包含 `HydrateStateAction`。
     - 更新了 `App.tsx` 以在应用启动时从 AsyncStorage 加载并应用持久化的状态。
     - 更新了 Memory Bank (`techContext.md`, `systemPatterns.md`, `activeContext.md`, `progress.md`) 以记录此项变更。
+- **2025-06-05 (续)**:
+  - 初步实现了职业选择功能。后续迭代中，根据用户反馈调整了 `reducer.ts` 中 `APPLY_CHOSEN_OCCUPATION` 的逻辑。
+  - 根据用户请求，为所有职业模板 (`src/data/occupations/*.ts`) 添加了示例角色预设信息。
+  - 进一步根据用户请求，调整了 `OccupationTemplate.ts` 接口及所有职业模板文件（双语背景、移除skillPointsFormula）。
+  - 再次根据用户反馈，更新了 `reducer.ts` 中的 `APPLY_CHOSEN_OCCUPATION` 逻辑，以从模板的预设信息中填充角色姓名、性别、年龄、出生地、住所，并随机生成信用评级。
+  - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。

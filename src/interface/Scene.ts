@@ -3,9 +3,9 @@ import {
   CheckDifficulty,
   ConditionType,
   EffectType,
-  CoreCharacteristicKey,
 } from '../constant/enums'
 import { Weapon } from '../interface/Character' // Import Weapon type
+import { OccupationKey } from '../data/occupations' // Import OccupationKey
 
 // 基础检定定义
 export interface Check {
@@ -65,7 +65,8 @@ interface GotoDrivenOption {
   type: 'goto' // 用于类型守卫的辨别字段
   condition?: Condition
   goto: string
-  effects?: Effect[] // 点击选项后、跳转前应用的效果 (可选)
+  effects?: Effect[] // 点击选项后、跳转前应用的效果
+  applyOccupation?: OccupationKey // Apply a specific occupation
 }
 
 // 选项：点击后触发自定义导航

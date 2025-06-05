@@ -31,8 +31,8 @@ export const allOccupationTemplates: OccupationTemplate[] = [
 ]
 
 // Re-exporting types for easier access from other modules
-export type {
-  OccupationTemplate,
-  OccupationBackgroundTemplate,
-} from '../../interface/OccupationTemplate'
+export type { OccupationTemplate } from '../../interface/OccupationTemplate'
+export type { CharacterBackground as OccupationBackgroundTemplate } from '../../interface/Character' // Corrected import path
 export { CheckObjectKey } // Re-exporting enums if they are part of the public API of this module
+
+export type OccupationKey = keyof typeof occupationTemplates
