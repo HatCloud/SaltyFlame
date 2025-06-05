@@ -13,9 +13,11 @@ import {
   CheckObjectDefaultValues,
   CoreCharacteristicEnum, // Added
   SkillEnum, // Added
+  CheckOutcome, // Added for critical success/failure
 } from './constant/enums'
 import { Character } from './interface/Character' // Import Character type
-import { parseDiceString } from './utils/utils' // Import parseDiceString
+import { parseDiceString, rollDice } from './utils/utils' // Import parseDiceString
+import { getCheckValue } from './utils/skillUtils' // Corrected import path
 import { occupationTemplates } from './data/occupations'
 
 // --- AsyncStorage Keys ---
@@ -48,15 +50,13 @@ const saveStateToStorage = async (state: MyAppState) => {
   }
 }
 
-const rollD100 = (): number => Math.floor(Math.random() * 100) + 1
-
 // Simplified result for now, can be expanded later if criticals have distinct general logic
 function executeCheckLogic(
   state: MyAppState,
   check: Check,
-): { rollValue: number; isSuccess: boolean } {
-  const characterValue = 50 // Placeholder for actual character skill/characteristic
-  const roll = rollD100()
+): { rollValue: number; resultType: CheckOutcome } {
+  const characterValue = getCheckValue(state.characterData, check.subObject)
+  const roll = rollDice(100)
   let targetValue = characterValue
 
   switch (check.difficulty) {
@@ -66,17 +66,30 @@ function executeCheckLogic(
     case CheckDifficulty.EXTREME:
       targetValue = Math.floor(characterValue / 5)
       break
-    // case CheckDifficulty.NORMAL: // Default is normal
-    default:
+    default: // CheckDifficulty.NORMAL
       break
   }
 
-  // Basic success/failure. Criticals could be handled by specific effect text or later logic.
-  const isSuccess = roll <= targetValue
-  // TODO: Consider if critical success/failure (e.g. roll 1 or 100) should modify isSuccess
-  // or be handled via specific text/effects from CheckPayload.
-  // For now, a roll of 1 is success, 100 is failure if targetValue is typical.
-  return { rollValue: roll, isSuccess }
+  const baseSuccess = roll <= targetValue
+
+  // Determine result type based on CoC 7e rules
+  let resultType: CheckOutcome
+  if (roll === 1) {
+    resultType = CheckOutcome.CRITICAL_SUCCESS
+  } else if (roll <= 5 && baseSuccess) {
+    // Rolls 2-5 are critical if also a normal success
+    resultType = CheckOutcome.CRITICAL_SUCCESS
+  } else if (roll === 100) {
+    resultType = CheckOutcome.FUMBLE
+  } else if (roll >= 96 && characterValue < 50) {
+    // Rolls 96-99 are fumbles if skill < 50
+    resultType = CheckOutcome.FUMBLE
+  } else if (baseSuccess) {
+    resultType = CheckOutcome.SUCCESS
+  } else {
+    resultType = CheckOutcome.FAILURE
+  }
+  return { rollValue: roll, resultType }
 }
 
 function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
@@ -327,7 +340,7 @@ export const appReducer = (
         saveStateToStorage(tempState)
       }
 
-      const { rollValue, isSuccess } = executeCheckLogic(
+      const { rollValue, resultType } = executeCheckLogic(
         tempState,
         checkPayload.details,
       )
@@ -335,7 +348,7 @@ export const appReducer = (
       tempState.currentCheckAttempt = {
         checkDefinition: checkPayload.details,
         rollValue,
-        isSuccess,
+        resultType, // Store resultType instead of isSuccess
         successMessage: checkPayload.successText,
         failureMessage: checkPayload.failureText,
         nextSceneIdOnSuccess: checkPayload.onSuccessSceneId,
@@ -356,7 +369,7 @@ export const appReducer = (
       }
 
       const {
-        isSuccess,
+        resultType, // Use resultType
         nextSceneIdOnSuccess,
         nextSceneIdOnFailure,
         effectsToApplyOnSuccess,
@@ -366,7 +379,12 @@ export const appReducer = (
       let effectsToApply: Effect[] | undefined
       let nextSceneId: string
 
-      if (isSuccess) {
+      // Determine outcome based on resultType
+      const wasSuccess =
+        resultType === CheckOutcome.SUCCESS ||
+        resultType === CheckOutcome.CRITICAL_SUCCESS
+
+      if (wasSuccess) {
         effectsToApply = effectsToApplyOnSuccess
         nextSceneId = nextSceneIdOnSuccess
       } else {

@@ -10,7 +10,7 @@ import CharacterModal from './CharacterModal'
 
 const CharacterBottomSheet: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer() // Added dispatch
-  const { characterData, isCharacterModalVisible } = state
+  const { characterData } = state
   const insets = useSafeAreaInsets()
   const { t } = useI18n()
   // setShowCharacteristics was unused, showCharacteristics is used to toggle display
@@ -19,11 +19,6 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
   const handlePress = () => {
     dispatch({ type: 'TOGGLE_CHARACTER_MODAL' })
   }
-
-  console.log(
-    'CharacterBottomSheet rendered isCharacterModalVisible:',
-    isCharacterModalVisible,
-  )
 
   if (!characterData) {
     return null

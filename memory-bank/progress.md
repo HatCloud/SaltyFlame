@@ -177,3 +177,12 @@
   - 再次根据用户反馈，更新了 `reducer.ts` 中的 `APPLY_CHOSEN_OCCUPATION` 逻辑，以从模板的预设信息中填充角色姓名、性别、年龄、出生地、住所，并随机生成信用评级。
   - 再次根据用户反馈，调整了 `CharacterModal.tsx` 中背景信息的显示布局，并添加/更新了相应的i18n键。
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。
+- **2025-06-06**:
+  - **检定逻辑正式化与大成功/大失败实现**:
+    - `src/reducer.ts` 中的 `executeCheckLogic` 函数已更新，以包含基于《克苏鲁的呼唤》第七版规则的大成功和大失败判断逻辑，并返回 `resultType: CheckOutcome`。
+    - `src/constant/enums.ts`: 添加了 `CheckOutcome` 枚举。
+    - `src/interface/MyAppState.ts`: `CheckAttemptState` 接口更新，使用 `resultType` 代替 `isSuccess`。
+    - `src/reducer.ts`: `PERFORM_INLINE_CHECK` 和 `RESOLVE_CHECK_OUTCOME` action 处理更新，以适配 `resultType`。
+    - `src/i18n/resources.ts`: 为检定结果状态（如“大成功”）添加了新的翻译键。
+    - `src/ui/components/CheckResult.tsx`: UI更新，以根据 `resultType` 显示更具体的检定结果文案。
+  - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。

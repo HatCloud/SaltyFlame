@@ -26,10 +26,11 @@ export const translations = {
       rollValue: '掷骰点数',
       success: '成功',
       failure: '失败',
-      criticalSuccess: '极限成功',
+      criticalSuccess: '极限成功', // This is a general term, might be different from status
+      statusCriticalSuccess: '大成功', // Specific status display
       hardSuccess: '困难成功',
       extremeSuccess: '极限成功',
-      fumble: '大失败',
+      fumble: '大失败', // Can be used as status for fumble
       continue: '继续',
       yourValueIs: '你的 {{skillName}} 为 {{value}}',
     },
@@ -125,10 +126,11 @@ export const translations = {
       rollValue: 'Roll Value',
       success: 'Success',
       failure: 'Failure',
-      criticalSuccess: 'Critical Success',
+      criticalSuccess: 'Critical Success', // General term
+      statusCriticalSuccess: 'Critical Success', // Specific status display
       hardSuccess: 'Hard Success',
       extremeSuccess: 'Extreme Success',
-      fumble: 'Fumble',
+      fumble: 'Fumble', // Can be used as status for fumble
       continue: 'CONTINUE',
       yourValueIs: 'Your {{skillName}} is {{value}}',
     },

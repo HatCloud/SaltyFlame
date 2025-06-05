@@ -3,7 +3,11 @@ import React from 'react'
 import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
 import { CheckAttemptState } from '../../interface/MyAppState'
-import { CheckObjectNames, CheckObjectKey } from '../../constant/enums' // Import CheckObjectKey
+import {
+  CheckObjectNames,
+  CheckObjectKey,
+  CheckOutcome,
+} from '../../constant/enums' // Import CheckObjectKey and CheckOutcome
 import { useI18n } from '../../i18n/useI18n'
 import OptionButton from './OptionButton'
 import { useAppReducer } from '../../hook' // Import useAppReducer
@@ -31,20 +35,44 @@ const CheckResult: React.FC<CheckResultProps> = ({
     const objectKeyToUse: CheckObjectKey =
       checkAttempt.checkDefinition.subObject
     const charValue = getCheckValue(state.characterData, objectKeyToUse)
-    // checkName is already localized name of the skill/characteristic
     characterValueText = t('check.yourValueIs', {
       skillName: checkName,
       value: charValue,
     })
   }
 
+  let resultStatusText = ''
+  let mainMessageText = ''
+
+  if (checkAttempt.resultType) {
+    switch (checkAttempt.resultType) {
+      case CheckOutcome.CRITICAL_SUCCESS:
+        resultStatusText = t('check.statusCriticalSuccess')
+        mainMessageText =
+          checkAttempt.successMessage || t('check.statusCriticalSuccess') // Fallback if specific message not provided
+        break
+      case CheckOutcome.SUCCESS:
+        resultStatusText = t('check.success')
+        mainMessageText = checkAttempt.successMessage || t('check.success')
+        break
+      case CheckOutcome.FAILURE:
+        resultStatusText = t('check.failure')
+        mainMessageText = checkAttempt.failureMessage || t('check.failure')
+        break
+      case CheckOutcome.FUMBLE:
+        resultStatusText = t('check.fumble')
+        mainMessageText = checkAttempt.failureMessage || t('check.fumble') // Fumble uses failure message or generic fumble
+        break
+      default:
+        resultStatusText = t('check.failure') // Should not happen
+        mainMessageText = checkAttempt.failureMessage || t('check.failure')
+    }
+  }
+
   return (
     <View style={styles.checkResultContainer}>
-      {checkAttempt.isSuccess && checkAttempt.successMessage && (
-        <Text style={styles.checkInfoText}>{checkAttempt.successMessage}</Text>
-      )}
-      {!checkAttempt.isSuccess && checkAttempt.failureMessage && (
-        <Text style={styles.checkInfoText}>{checkAttempt.failureMessage}</Text>
+      {mainMessageText && (
+        <Text style={styles.checkInfoText}>{mainMessageText}</Text>
       )}
       <Text style={styles.descriptionText}>
         {characterValueText ? characterValueText : ''} {t('check.rollValue')}:{' '}
@@ -55,7 +83,7 @@ const CheckResult: React.FC<CheckResultProps> = ({
           ? `${checkAttempt.checkDefinition.difficulty}, `
           : ' '}
         {t('check.result')}
-        {checkAttempt.isSuccess ? t('check.success') : t('check.failure')}
+        {resultStatusText}
       </Text>
 
       <OptionButton

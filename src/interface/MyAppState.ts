@@ -7,6 +7,7 @@ import {
   Check,
   CheckPayload, // Added new CheckPayload
 } from './Scene'
+import { CheckOutcome } from '../constant/enums' // Added for detailed check results
 import { loadAllCnSceneData } from '../data/loadInitialSceneData' //场景数据加载逻辑
 import { Character } from './Character'
 import { OccupationKey } from '../data/occupations' // Import OccupationKey
@@ -18,9 +19,8 @@ export type Language = 'cn' | 'en'
 export interface CheckAttemptState {
   checkDefinition: Check // The check being performed (from CheckPayload.details)
   rollValue?: number // The D100 roll result
-  isSuccess?: boolean // Simplified result: true for success, false for failure
-  // For more granular results like critical success/failure, add a new field:
-  // detailedResult?: 'criticalSuccess' | 'success' | 'failure' | 'criticalFailure';
+  resultType?: CheckOutcome // Detailed result of the check
+  // isSuccess?: boolean // This can be derived from resultType if needed
 
   // Information to display and use post-check, derived from CheckPayload
   successMessage?: string

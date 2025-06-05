@@ -97,11 +97,22 @@
 - **角色信息弹窗增强**:
   - `src/ui/components/CharacterModal.tsx`: 修改了角色信息弹窗中背景信息的显示方式，使其标签居上，内容居左下方显示，以适应较长的文本。同时修正了因此引入的样式问题（将 `typeface.Weight.SemiBold` 改为 `Medium`，`padding.Tiny` 改为 `Mini`）。
   - `src/i18n/resources.ts`: 为角色背景信息的各个字段（如描述、思想信念等）添加了对应的中英文i18n翻译键。
+- **检定逻辑正式化与大成功/大失败实现**:
+  - `src/reducer.ts` 中的 `executeCheckLogic` 函数已更新：
+    - 使用从 `./utils/skillUtils` 导入的 `getCheckValue` 函数获取角色真实的技能或属性值。
+    - 使用从 `./utils/utils` 导入的 `rollDice(100)` 进行投骰。
+    - **新增**: 实现了《克苏鲁的呼唤》第七版规则中的大成功 (Critical Success) 和大失败 (Fumble) 判断逻辑。函数现在返回 `resultType: CheckOutcome`。
+  - `src/constant/enums.ts`: 添加了 `CheckOutcome` 枚举 (`CRITICAL_SUCCESS`, `SUCCESS`, `FAILURE`, `FUMBLE`)。
+  - `src/interface/MyAppState.ts`: 更新了 `CheckAttemptState` 接口，将 `isSuccess?: boolean` 替换为 `resultType?: CheckOutcome`。
+  - `src/reducer.ts`: `PERFORM_INLINE_CHECK` 和 `RESOLVE_CHECK_OUTCOME` action 的处理逻辑已更新，以使用新的 `resultType`。
+  - `src/i18n/resources.ts`: 为大成功和不同检定状态添加了新的翻译键 (如 `statusCriticalSuccess`)。
+  - `src/ui/components/CheckResult.tsx`: 更新了UI逻辑，以根据 `resultType` 显示更具体的检定结果文案（例如，“大成功”、“大失败”）。
 
 ## 后续步骤
 
 1.  **完善核心游戏逻辑**:
-    - 在 `src/reducer.ts` 中，完整实现 `executeCheckLogic`（包括从 `characterData` 获取真实的技能/属性值、处理奖励/惩罚骰）和 `applySingleEffect`（包括解析如 "1D3" 的字符串值、处理所有 `EffectType`，管理物品和游戏标记）。**更新**: `applySingleEffect` 已更新以处理 `SET_FLAG` 和 `CLEAR_FLAG` 效果，修改 `state.gameFlags`。
+    - `src/reducer.ts` 中的 `executeCheckLogic` 已包含大成功/大失败的基础逻辑。后续可考虑奖励/惩罚骰的实现。
+    - `applySingleEffect` 已更新以处理 `SET_FLAG` 和 `CLEAR_FLAG` 效果，修改 `state.gameFlags`。后续需完整实现解析如 "1D3" 的字符串值、处理所有 `EffectType`，管理物品和游戏标记。
     - 在 `StoryCard.tsx` 中，实现选项的条件显示逻辑 (`option.condition`)。**已完成并改进**:
       - `StoryCard.tsx` 现在会根据 `option.condition` 来决定是否显示选项。
       - 如果选项有条件且条件满足，会在选项文本前显示条件的描述（例如“体型判定：大于40”）。

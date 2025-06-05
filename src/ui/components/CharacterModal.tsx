@@ -44,11 +44,6 @@ const CharacterModal: React.FC = () => {
   const { t, lang } = useI18n()
   const { characterData, isCharacterModalVisible } = state
 
-  console.log(
-    'CharacterModal rendered isCharacterModalVisible:',
-    isCharacterModalVisible,
-  )
-
   if (!characterData) {
     return null
   }

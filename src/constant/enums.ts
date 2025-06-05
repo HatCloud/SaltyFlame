@@ -204,6 +204,13 @@ export enum CheckDifficulty {
   EXTREME = 'extreme',
 }
 
+export enum CheckOutcome {
+  CRITICAL_SUCCESS = 'criticalSuccess',
+  SUCCESS = 'success',
+  FAILURE = 'failure',
+  FUMBLE = 'fumble',
+}
+
 // Default values for investigator skills based on the provided image
 export const CheckObjectDefaultValues: Partial<
   Record<CheckObjectKey, number | string>
