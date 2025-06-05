@@ -9,7 +9,6 @@ import {
 } from './Scene'
 import { loadAllCnSceneData } from '../data/loadInitialSceneData' //场景数据加载逻辑
 import { Character } from './Character'
-import FakerCharacter from '../utils/generateCharacter' // Re-import for testing
 
 // Define language type
 export type Language = 'cn' | 'en'

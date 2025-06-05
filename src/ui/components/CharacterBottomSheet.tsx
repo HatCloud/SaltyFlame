@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import palette from '../../theme/palette'
 import { padding } from '../../theme/padding'
@@ -96,25 +96,25 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.str')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.str)}
+                  {displayValue(characteristics.STR)}
                 </Text>
               </Text>
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.con')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.con)}
+                  {displayValue(characteristics.CON)}
                 </Text>
               </Text>
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.siz')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.siz)}
+                  {displayValue(characteristics.SIZ)}
                 </Text>
               </Text>
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.dex')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.dex)}
+                  {displayValue(characteristics.DEX)}
                 </Text>
               </Text>
             </View>
@@ -123,25 +123,25 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.app')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.app)}
+                  {displayValue(characteristics.APP)}
                 </Text>
               </Text>
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.edu')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.edu)}
+                  {displayValue(characteristics.EDU)}
                 </Text>
               </Text>
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.int')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.int)}
+                  {displayValue(characteristics.INT)}
                 </Text>
               </Text>
               <Text style={styles.attributeItem}>
                 <Text style={styles.attributeLabel}>{t('stats.pow')} </Text>
                 <Text style={styles.attributeValue}>
-                  {displayValue(characteristics.pow)}
+                  {displayValue(characteristics.POW)}
                 </Text>
               </Text>
             </View>

@@ -1,20 +1,7 @@
-import { Dice } from '../interface/Dice' // Corrected import path
-
-/**
- * 投掷 count 次 dice 面的骰子
- */
-export const rollDice = (count: number, dice: Dice): number => {
-  let result = 0
-  for (let i = 0; i < count; i++) {
-    result += Math.floor(Math.random() * dice) + 1
-  }
-  return result
-}
-
 /**
  * 投掷一个指定面数的骰子
  */
-export const rollDie = (sides: number): number =>
+export const rollDice = (sides: number): number =>
   Math.floor(Math.random() * sides) + 1
 
 /**
@@ -44,7 +31,7 @@ export function parseDiceString(diceString: string): number {
 
     let totalRoll = 0
     for (let i = 0; i < numDice; i++) {
-      totalRoll += rollDie(numSides)
+      totalRoll += rollDice(numSides)
     }
     return totalRoll + modifier
   }

@@ -1,3 +1,11 @@
+import { Character } from '../interface/Character'
+import {
+  CheckObjectKey,
+  CheckObjectDefaultValues,
+  CoreCharacteristicKey,
+  SkillKey,
+} from '../constant/enums'
+
 // Defines categories for skills to group them in the UI.
 // The enum values are used as i18n keys for category names.
 export enum SkillCategory {
@@ -15,72 +23,71 @@ export enum SkillCategory {
 // These keys should match how skills are stored in characterData.skills.
 export const skillToCategoryMap: Record<string, SkillCategory> = {
   // From CheckObjectKey in enums.ts
-  APPRAISE: SkillCategory.Knowledge,
-  ARCHAEOLOGY: SkillCategory.Knowledge,
-  ART_CRAFT_PHOTOGRAPHY: SkillCategory.ArtCraft,
-  CHARM: SkillCategory.Communication,
-  CLIMB: SkillCategory.Manipulation,
-  CREDIT_RATING: SkillCategory.Communication,
-  CTHULHU_MYTHOS: SkillCategory.Mythos,
-  DISGUISE: SkillCategory.ArtCraft,
-  DODGE: SkillCategory.Combat,
-  DRIVE_AUTO: SkillCategory.Manipulation,
-  FAST_TALK: SkillCategory.Communication,
-  FIGHTING_BRAWL: SkillCategory.Combat,
-  FIRST_AID: SkillCategory.Manipulation,
-  HISTORY: SkillCategory.Knowledge,
-  INTIMIDATE: SkillCategory.Communication,
-  LIBRARY_USE: SkillCategory.Knowledge,
-  LISTEN: SkillCategory.Perception,
-  LOCKSMITH: SkillCategory.Manipulation,
-  MEDICINE: SkillCategory.Knowledge,
-  NATURAL_WORLD: SkillCategory.Knowledge,
-  PERSUADE: SkillCategory.Communication,
-  PSYCHOLOGY: SkillCategory.Communication,
-  RIDE: SkillCategory.Manipulation,
-  SCIENCE_BOTANY: SkillCategory.Knowledge,
-  SPOT_HIDDEN: SkillCategory.Perception,
-  STEALTH: SkillCategory.Manipulation,
-  TRACK: SkillCategory.Perception,
-  OTHER_LANGUAGE_LATIN: SkillCategory.Knowledge,
-  OWN_LANGUAGE: SkillCategory.Knowledge,
-
-  // Additional common CoC skills (ensure keys are consistent if added to CheckObjectKey)
-  // If these are not in CheckObjectKey, they might need to be added there for consistency
-  // or ensure character generation/data uses these exact string keys.
-  FIREARMS_HANDGUN: SkillCategory.Combat, // Example: if 'Handgun' skill exists
-  FIREARMS_RIFLE_SHOTGUN: SkillCategory.Combat, // Example: if 'Rifle/Shotgun' skill exists
-  MECHANICAL_REPAIR: SkillCategory.Manipulation,
-  ELECTRICAL_REPAIR: SkillCategory.Manipulation,
-  SLEIGHT_OF_HAND: SkillCategory.Manipulation,
-  SWIM: SkillCategory.Manipulation,
-  THROW: SkillCategory.Manipulation,
-  ACCOUNTING: SkillCategory.Knowledge,
-  ANTHROPOLOGY: SkillCategory.Knowledge,
-  LAW: SkillCategory.Knowledge,
-  PHARMACY: SkillCategory.Knowledge,
-  SCIENCE_ASTRONOMY: SkillCategory.Knowledge,
-  SCIENCE_CHEMISTRY: SkillCategory.Knowledge,
-  SCIENCE_GEOLOGY: SkillCategory.Knowledge,
-  SCIENCE_PHYSICS: SkillCategory.Knowledge,
-  ART_CRAFT_ACTING: SkillCategory.ArtCraft,
-  ART_CRAFT_PAINTING: SkillCategory.ArtCraft,
-  JUMP: SkillCategory.Manipulation, // Common physical skill
-  // Add other skills as they appear in the game or occupation templates,
-  // using their English-based keys.
+  [CheckObjectKey.APPRAISE]: SkillCategory.Knowledge,
+  [CheckObjectKey.ARCHAEOLOGY]: SkillCategory.Knowledge,
+  [CheckObjectKey.ART_CRAFT_PHOTOGRAPHY]: SkillCategory.ArtCraft,
+  [CheckObjectKey.CHARM]: SkillCategory.Communication,
+  [CheckObjectKey.CLIMB]: SkillCategory.Manipulation,
+  [CheckObjectKey.CREDIT_RATING]: SkillCategory.Communication,
+  [CheckObjectKey.CTHULHU_MYTHOS]: SkillCategory.Mythos,
+  [CheckObjectKey.DISGUISE]: SkillCategory.ArtCraft,
+  [CheckObjectKey.DODGE]: SkillCategory.Combat,
+  [CheckObjectKey.DRIVE_AUTO]: SkillCategory.Manipulation,
+  [CheckObjectKey.FAST_TALK]: SkillCategory.Communication,
+  [CheckObjectKey.FIGHTING_BRAWL]: SkillCategory.Combat,
+  [CheckObjectKey.FIRST_AID]: SkillCategory.Manipulation,
+  [CheckObjectKey.HISTORY]: SkillCategory.Knowledge,
+  [CheckObjectKey.INTIMIDATE]: SkillCategory.Communication,
+  [CheckObjectKey.LIBRARY_USE]: SkillCategory.Knowledge,
+  [CheckObjectKey.LISTEN]: SkillCategory.Perception,
+  [CheckObjectKey.LOCKSMITH]: SkillCategory.Manipulation,
+  [CheckObjectKey.MEDICINE]: SkillCategory.Knowledge,
+  [CheckObjectKey.NATURAL_WORLD]: SkillCategory.Knowledge,
+  [CheckObjectKey.PERSUADE]: SkillCategory.Communication,
+  [CheckObjectKey.PSYCHOLOGY]: SkillCategory.Communication,
+  [CheckObjectKey.RIDE]: SkillCategory.Manipulation,
+  [CheckObjectKey.SCIENCE_BOTANY]: SkillCategory.Knowledge,
+  [CheckObjectKey.SPOT_HIDDEN]: SkillCategory.Perception,
+  [CheckObjectKey.STEALTH]: SkillCategory.Manipulation,
+  [CheckObjectKey.TRACK]: SkillCategory.Perception,
+  [CheckObjectKey.OTHER_LANGUAGE_LATIN]: SkillCategory.Knowledge,
+  [CheckObjectKey.OWN_LANGUAGE]: SkillCategory.Knowledge,
+  [CheckObjectKey.FIREARMS_HANDGUN]: SkillCategory.Combat,
+  [CheckObjectKey.FIREARMS_RIFLE_SHOTGUN]: SkillCategory.Combat,
+  [CheckObjectKey.MECHANICAL_REPAIR]: SkillCategory.Manipulation,
+  [CheckObjectKey.ELECTRICAL_REPAIR]: SkillCategory.Manipulation,
+  [CheckObjectKey.SLEIGHT_OF_HAND]: SkillCategory.Manipulation,
+  [CheckObjectKey.SWIM]: SkillCategory.Manipulation,
+  [CheckObjectKey.THROW]: SkillCategory.Manipulation,
+  [CheckObjectKey.ACCOUNTING]: SkillCategory.Knowledge,
+  [CheckObjectKey.ANTHROPOLOGY]: SkillCategory.Knowledge,
+  [CheckObjectKey.LAW]: SkillCategory.Knowledge,
+  // [CheckObjectKey.PHARMACY]: SkillCategory.Knowledge, // PHARMACY is not in CheckObjectKey yet
+  // [CheckObjectKey.SCIENCE_ASTRONOMY]: SkillCategory.Knowledge, // Not in CheckObjectKey
+  // [CheckObjectKey.SCIENCE_CHEMISTRY]: SkillCategory.Knowledge, // Not in CheckObjectKey
+  // [CheckObjectKey.SCIENCE_GEOLOGY]: SkillCategory.Knowledge, // Not in CheckObjectKey
+  // [CheckObjectKey.SCIENCE_PHYSICS]: SkillCategory.Knowledge, // Not in CheckObjectKey
+  // [CheckObjectKey.ART_CRAFT_ACTING]: SkillCategory.ArtCraft, // Not in CheckObjectKey
+  // [CheckObjectKey.ART_CRAFT_PAINTING]: SkillCategory.ArtCraft, // Not in CheckObjectKey
+  [CheckObjectKey.JUMP]: SkillCategory.Manipulation,
+  [CheckObjectKey.APPEASE]: SkillCategory.Communication,
+  [CheckObjectKey.ART_CRAFT]: SkillCategory.ArtCraft,
+  [CheckObjectKey.MANIPULATE]: SkillCategory.Manipulation,
+  [CheckObjectKey.NAVIGATE]: SkillCategory.Manipulation,
+  [CheckObjectKey.OCCULT]: SkillCategory.Mythos,
+  [CheckObjectKey.OPERATE_HEAVY_MACHINERY]: SkillCategory.Manipulation,
+  [CheckObjectKey.OTHER_LANGUAGE]: SkillCategory.Knowledge,
+  [CheckObjectKey.PSYCHOANALYSIS]: SkillCategory.Communication,
+  [CheckObjectKey.SCIENCE]: SkillCategory.Knowledge,
+  [CheckObjectKey.SURVIVAL]: SkillCategory.Perception,
 }
-
-import { Character } from '../interface/Character'
-import { CheckObjectKey } from '../constant/enums'
 
 // Helper function to group skills by category.
 // Skills in the input `skills` object are expected to have keys that match
 // those in `skillToCategoryMap` (i.e., CheckObjectKey string values).
 export const groupSkills = (
-  skills: Record<string, number>,
+  skills: Partial<Record<SkillKey, number>>, // Updated to use SkillKey
 ): Partial<Record<SkillCategory, Record<string, number>>> => {
-  // Initialize all categories to ensure they exist in the grouped object,
-  // even if they end up empty (they will be filtered later).
   const grouped: Record<SkillCategory, Record<string, number>> = {
     [SkillCategory.Combat]: {},
     [SkillCategory.Communication]: {},
@@ -94,17 +101,18 @@ export const groupSkills = (
 
   for (const skillKey in skills) {
     if (Object.prototype.hasOwnProperty.call(skills, skillKey)) {
-      const category = skillToCategoryMap[skillKey] || SkillCategory.Other
-      // grouped[category] will always exist due to pre-initialization
-      grouped[category][skillKey] = skills[skillKey]
+      const typedSkillKey = skillKey as SkillKey
+      const category = skillToCategoryMap[typedSkillKey] || SkillCategory.Other
+      const skillValue = skills[typedSkillKey]
+      if (skillValue !== undefined) {
+        grouped[category][typedSkillKey] = skillValue
+      }
     }
   }
 
-  // Filter out categories that have no skills.
   const finalGrouped: Partial<Record<SkillCategory, Record<string, number>>> =
     {}
   for (const categoryKey in grouped) {
-    // Iterate over enum string values to ensure type safety
     const catEnumKey = categoryKey as SkillCategory
     if (
       Object.prototype.hasOwnProperty.call(grouped, catEnumKey) &&
@@ -121,49 +129,66 @@ export const groupSkills = (
  * Retrieves the value of a specific characteristic or skill for a character.
  * @param character The character object.
  * @param objectKey The key of the characteristic or skill to retrieve.
- * @returns The value of the characteristic or skill, or 0 if not found.
+ * @returns The value of the characteristic or skill, or 0 if not found or character is null.
  */
 export const getCheckValue = (
-  character: Character,
+  character: Character | null | undefined,
   objectKey: CheckObjectKey,
 ): number => {
-  // Handle LUCK and SANITY separately as they are special cases
-  if (objectKey === CheckObjectKey.LUCK) {
-    return character.luck
-  }
-  if (objectKey === CheckObjectKey.SANITY) {
-    return character.sanity.current
+  if (!character) {
+    // Attempt to get a default value if character is not present
+    const defaultVal = CheckObjectDefaultValues[objectKey]
+    if (typeof defaultVal === 'number') return defaultVal
+    // For string defaults like 'DEX/2' when no character, it's ambiguous. Return 0 or a base.
+    // This scenario (no character but needing a derived default) should ideally be avoided.
+    return 0
   }
 
-  // Handle standard characteristics (STR, CON, etc.)
-  // These are stored with lowercase keys in character.characteristics
-  const characteristicKeyLC =
-    objectKey.toLowerCase() as keyof Character['characteristics']
-  if (characteristicKeyLC in character.characteristics) {
-    // Check if the lowercase key is a valid characteristic key
-    const validCharacteristicKeys: (keyof Character['characteristics'])[] = [
-      'str',
-      'con',
-      'dex',
-      'app',
-      'edu',
-      'pow',
-      'siz',
-      'int',
-    ]
-    if (validCharacteristicKeys.includes(characteristicKeyLC)) {
-      return character.characteristics[characteristicKeyLC]
+  // Check if it's a CoreCharacteristicKey
+  if (objectKey in character.characteristics) {
+    return character.characteristics[objectKey as CoreCharacteristicKey]
+  }
+
+  // Check if it's a special RollKey
+  switch (objectKey) {
+    case CheckObjectKey.LUCK:
+      return character.luck
+    case CheckObjectKey.SANITY:
+      return character.sanity.current
+    case CheckObjectKey.MOV:
+      return character.personalData.movementRate
+  }
+
+  // Check if it's a SkillKey
+  // The `objectKey as SkillKey` cast is safe here if the previous checks didn't match.
+  // However, to be absolutely sure, one might create a helper `isSkillKey(key): key is SkillKey`.
+  const skillValue = character.skills[objectKey as SkillKey]
+  if (skillValue !== undefined) {
+    return skillValue
+  }
+
+  // If not found in character's skills, try default values for skills
+  const defaultValue = CheckObjectDefaultValues[objectKey]
+  if (defaultValue !== undefined) {
+    if (typeof defaultValue === 'number') {
+      return defaultValue
+    }
+    if (typeof defaultValue === 'string') {
+      if (defaultValue === 'DEX/2') {
+        return Math.floor(character.characteristics[CheckObjectKey.DEX] / 2)
+      }
+      if (defaultValue === 'EDU') {
+        return character.characteristics[CheckObjectKey.EDU]
+      }
+      console.warn(
+        `[getCheckValue] Unhandled string default for ${objectKey}: ${defaultValue}`,
+      )
+      return 0 // Fallback for unhandled string defaults
     }
   }
 
-  // Handle skills (stored with uppercase keys, matching CheckObjectKey values)
-  if (objectKey in character.skills) {
-    return character.skills[objectKey] // No need for `as keyof typeof character.skills` if keys are strings
-  }
-
-  // If the key is not found, log a warning and return a default value
   console.warn(
-    `[getCheckValue] CheckObjectKey "${objectKey}" (lc: "${characteristicKeyLC}") not found in character. Returning 0.`,
+    `[getCheckValue] CheckObjectKey "${objectKey}" not found in character or defaults. Returning 0.`,
   )
   return 0
 }

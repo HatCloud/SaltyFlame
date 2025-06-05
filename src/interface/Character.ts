@@ -1,4 +1,5 @@
 import { Dice } from './Dice'
+import { CoreCharacteristicKey, SkillKey } from '../constant/enums'
 
 /**
  * character in call of cthulhu
@@ -17,43 +18,42 @@ export interface Character {
     isMajorWound: boolean // 重伤昏迷
   }
   sanity: {
-    starting: number
+    starting: number // Initial Sanity = POW
     current: number
-    max: number
+    max: number // Max Sanity = 99 - Cthulhu Mythos skill
     isIndefinitelyInsane: boolean // 永久性疯狂
     isTemporarilyInsane: boolean // 暂时性疯狂
   }
   magicPoints: {
     current: number
-    max: number
+    max: number // Max MP = POW / 5
   }
-  luck: number
+  luck: number // Initial Luck = 3D6 * 5 or 2D6+6 * 5
+  // Core characteristics
   characteristics: {
-    str: number
-    con: number
-    dex: number
-    app: number
-    edu: number
-    pow: number
-    siz: number
-    int: number
+    [key in CoreCharacteristicKey]: number
   }
+  // Derived statistics from characteristics
   personalData: {
-    damageBonus: number // 伤害加值
-    build: number // 体格
-    dodge: number // 闪避
+    damageBonus: number // 伤害加值 (Calculated from STR + SIZ)
+    build: number // 体格 (Calculated from STR + SIZ)
+    // Dodge is a skill, its base value is DEX/2, should be in skills.
+    // If this 'dodge' is meant to be the final calculated value after points are spent,
+    // it might be redundant if skills object holds the final skill values.
+    // For now, keeping it as is, but flagging for review.
+    // dodge: number // 闪避
+    movementRate: number // MOV, calculated or set
     occupationSkills: {
-      [name: string]: number
+      [name: string]: number // These are points to be distributed, not final skill values
     }
     personalInterests: {
-      [name: string]: number
+      [name: string]: number // These are points to be distributed, not final skill values
     }
   }
-  skills: {
-    [name: string]: number
-  }
+  // Final skill values after points allocation
+  skills: Partial<Record<SkillKey, number>> // Using Partial as not all skills might have points or be known
   inventory: (string | Weapon)[] // Inventory can hold item names or Weapon objects
-  markedSkills: string[] // Tracks skills successfully used
+  markedSkills: SkillKey[] // Tracks skills successfully used, using SkillKey for type safety
 }
 
 /**
