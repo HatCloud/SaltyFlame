@@ -41,6 +41,7 @@ export interface MyAppState {
   currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check
   gameFlags: Record<string, boolean> // Added for game flags
   isCharacterModalVisible?: boolean
+  temporaryCharacter?: Character // For storing character data from attribute allocation
 }
 
 export const initialState: MyAppState = {
@@ -51,6 +52,7 @@ export const initialState: MyAppState = {
   language: 'cn',
   currentCheckAttempt: null,
   gameFlags: {}, // Initialize gameFlags
+  temporaryCharacter: undefined, // Initialize temporaryCharacter
   isCharacterModalVisible: false,
 }
 
@@ -100,6 +102,12 @@ interface ToggleCharacterModalAction {
   type: 'TOGGLE_CHARACTER_MODAL'
 }
 
+// Action for storing temporarily generated character
+interface StoreCharacterAction {
+  type: 'STORE_CHARACTER'
+  payload: Character
+}
+
 // AppAction is a union of all possible actions
 export type AppAction =
   | ChangeSceneAction
@@ -110,3 +118,4 @@ export type AppAction =
   | ResolveCheckOutcomeAction
   | ClearCheckAttemptAction
   | ToggleCharacterModalAction
+  | StoreCharacterAction // Added

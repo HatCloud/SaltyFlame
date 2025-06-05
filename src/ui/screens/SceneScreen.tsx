@@ -1,8 +1,8 @@
 import { ScrollView, StyleSheet, View } from 'react-native'
 import React from 'react'
-import palette from '../theme/palette'
-import StoryCard from './components/StoryCard'
-import CharacterBottomSheet from './components/CharacterBottomSheet'
+import palette from '../../theme/palette'
+import StoryCard from '../components/StoryCard'
+import CharacterBottomSheet from '../components/CharacterBottomSheet'
 
 const SceneScreen: React.FC = React.memo(() => {
   return (

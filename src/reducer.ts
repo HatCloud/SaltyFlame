@@ -5,7 +5,7 @@ import {
   // CheckAttemptState,
 } from './interface/MyAppState'
 import { Effect, Check } from './interface/Scene'
-import { EffectType, CheckDifficulty } from './constant/enums'
+import { EffectType, CheckDifficulty, SkillKey } from './constant/enums' // Added SkillKey
 import { Character } from './interface/Character' // Import Character type
 import { parseDiceString } from './utils/utils' // Import parseDiceString
 
@@ -183,11 +183,12 @@ function applySingleEffect(state: MyAppState, effect: Effect): MyAppState {
           newCharacterData.markedSkills = []
         }
         // Add skill to markedSkills if not already present
-        if (!newCharacterData.markedSkills.includes(effect.target)) {
-          newCharacterData.markedSkills.push(effect.target)
+        const skillToMark = effect.target as SkillKey // Type assertion
+        if (!newCharacterData.markedSkills.includes(skillToMark)) {
+          newCharacterData.markedSkills.push(skillToMark)
           console.log(
             `Marked skill success: ${
-              effect.target
+              skillToMark
             }. Marked skills: ${newCharacterData.markedSkills.join(', ')}`,
           )
         }
@@ -342,6 +343,12 @@ export const appReducer = (
       return {
         ...newState,
         isCharacterModalVisible: !newState.isCharacterModalVisible,
+      }
+
+    case 'STORE_CHARACTER':
+      return {
+        ...newState,
+        characterData: action.payload as Character,
       }
 
     default:

@@ -67,8 +67,22 @@ interface GotoDrivenOption {
   effects?: Effect[] // 点击选项后、跳转前应用的效果 (可选)
 }
 
-// 玩家可交互的选项是以上两者的联合类型
-export type SceneInteractOption = CheckDrivenOption | GotoDrivenOption
+// 选项：点击后触发自定义导航
+export interface CustomNavigationOption {
+  type: 'custom_navigation'
+  text: string // 按钮上显示的文本
+  condition?: Condition // 选项的显示条件 (可选)
+  navigationTarget: 'AttributeAllocationScreen' // 标识导航目标屏幕的键
+  onCompleteNavigateToSceneId: string // 导航到的屏幕完成后，应跳转到的场景ID
+  attributeValuesToAssign?: number[] // (可选) 需要在目标屏幕上分配的属性数值列表
+  effects?: Effect[] // 点击选项后、导航前应用的效果 (可选)
+}
+
+// 玩家可交互的选项是以上三者的联合类型
+export type SceneInteractOption =
+  | CheckDrivenOption
+  | GotoDrivenOption
+  | CustomNavigationOption
 
 // 场景定义
 export interface Scene {

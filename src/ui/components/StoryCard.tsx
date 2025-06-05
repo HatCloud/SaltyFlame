@@ -15,10 +15,21 @@ import OptionButton from './OptionButton'
 import CheckResult from './CheckResult'
 import CheckOption from './CheckOption'
 import { useI18n } from '../../i18n/useI18n'
+import { useNavigation } from '@react-navigation/native' // Added
+import { StackNavigationProp } from '@react-navigation/stack' // Added
+import { RootStackParamList } from '../../App' // Added
+
 // LanguageCode import might be needed if `lang` from useI18n is used by getConditionDescription
+
+// Define navigation prop type for this screen
+type StoryCardNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'SceneScreen' // Assuming StoryCard is primarily used within SceneScreen context for navigation
+>
 
 const StoryCard: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer()
+  const navigation = useNavigation<StoryCardNavigationProp>() // Added
   const { t, lang } = useI18n() // lang might be needed for getConditionDescription
   const currentScene: Scene | undefined =
     state.sceneData?.[state.currentSceneKey]
@@ -215,9 +226,29 @@ const StoryCard: React.FC = React.memo(() => {
           type: 'CHANGE_SCENE',
           payload: option.goto,
         })
+      } else if (option.type === 'custom_navigation') {
+        // Apply pre-navigation effects if any
+        if (option.effects && option.effects.length > 0) {
+          option.effects.forEach(effect =>
+            dispatch({ type: 'APPLY_EFFECT', payload: effect }),
+          )
+        }
+        // Navigate to the target screen with parameters
+        if (option.navigationTarget === 'AttributeAllocationScreen') {
+          navigation.navigate('AttributeAllocationScreen', {
+            onCompleteNavigateToSceneId: option.onCompleteNavigateToSceneId,
+            attributeValuesToAssign: option.attributeValuesToAssign || [], // Provide a default empty array
+          })
+        } else {
+          // Handle other potential custom navigation targets if any
+          console.warn(
+            'Unknown custom_navigation target:',
+            option.navigationTarget,
+          )
+        }
       }
     },
-    [dispatch],
+    [dispatch, navigation], // Added navigation
   )
 
   const handleResolveCheckOutcome = useCallback(() => {
@@ -292,6 +323,20 @@ const StoryCard: React.FC = React.memo(() => {
                   {option.text
                     ? `${option.text}`
                     : `${t('common.goTo')} ${option.goto}`}
+                </OptionButton>
+              )
+            } else if (option.type === 'custom_navigation') {
+              // Render a button for custom navigation
+              return (
+                <OptionButton
+                  key={index.toString()}
+                  onPress={() =>
+                    handleInteractOptionPress(option, !conditionResult.met)
+                  }
+                  disabled={!conditionResult.met}
+                  conditionDescription={conditionResult.description}
+                >
+                  {option.text}
                 </OptionButton>
               )
             }
