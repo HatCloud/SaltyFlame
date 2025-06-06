@@ -1,25 +1,18 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-import 'react-native-gesture-handler' // Needs to be at the top
-import React, { useEffect } from 'react' // Added useEffect
+import 'react-native-gesture-handler'
+import React, { useEffect } from 'react'
 import { StatusBar } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage' // Added AsyncStorage
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import SceneScreen from './ui/screens/SceneScreen'
 import AttributeAllocationScreen from './ui/screens/AttributeAllocationScreen'
 import palette from './theme/palette'
 import { initialState, MyAppState, AppAction } from './interface/MyAppState'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { appReducer } from './reducer' // PERSISTED_STATE_KEY is not exported from reducer.ts, will get it from there.
-// Let's assume PERSISTED_STATE_KEY is 'SaltyFlameAppState' as defined in reducer.ts
+import { appReducer } from './reducer'
 const PERSISTED_STATE_KEY = 'SaltyFlameAppState'
 import { Dispatch } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { RootStackParamList } from './interface/navigation' // Import the unified type
+import { RootStackParamList } from './interface/navigation'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -42,10 +35,6 @@ function App(): React.ReactElement {
           console.log('App: State hydrated from storage on mount.')
         } else {
           console.log('App: No persisted state found in storage.')
-          // Optionally, save the initial default state if nothing is found
-          // This ensures that on the very first run, if the reducer doesn't save
-          // immediately for some reason, there's a baseline saved.
-          // However, reducer should handle saving on relevant actions.
         }
       } catch (e) {
         console.error(
@@ -56,7 +45,7 @@ function App(): React.ReactElement {
     }
 
     loadState()
-  }, []) // Empty dependency array ensures this runs only once on mount
+  }, [])
 
   return (
     <AppStateContext.Provider value={state}>
@@ -70,7 +59,7 @@ function App(): React.ReactElement {
             <Stack.Navigator
               initialRouteName="SceneScreen"
               screenOptions={{
-                headerShown: false, // Assuming no header is desired globally
+                headerShown: false,
                 cardStyle: { backgroundColor: palette.Background },
               }}
             >
@@ -86,12 +75,5 @@ function App(): React.ReactElement {
     </AppStateContext.Provider>
   )
 }
-
-// Styles are no longer needed here if the container View is removed
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: palette.Background,
-//   },
-// })
 
 export default App

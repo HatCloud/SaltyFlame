@@ -1,12 +1,10 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CoreCharacteristicEnum, // Added
-  RollEnum, // Added
-  SkillEnum, // Added
+  CoreCharacteristicEnum,
+  RollEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
-  // ConditionType, // Removed as not used in scenes 101-120
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_101_120: SceneData = {
@@ -17,7 +15,6 @@ export const scenes_101_120: SceneData = {
     options: [{ type: 'goto', text: '继续', goto: '108' }],
   },
   '102': {
-    // This scene was already present
     id: '102',
     story:
       '你说道，自己刚刚在亲戚的远方朋友强烈推荐下，得到了“阿卡姆珍本舆图行”的助理职位。收到录用通知函的时候的那份兴奋，只要想一想那些必须来店一游的文物，你就能回忆起来三分。你心里一阵痒痒；你恨不得马上就开始工作。\n“书，哈？”西拉斯没有再继续对话。你感觉他不像是喜欢读书的人。',

@@ -1,15 +1,13 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CoreCharacteristicEnum, // Added
-  SkillEnum, // Added
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
-  ConditionType, // Re-adding as scene 78 might use it
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
+  ConditionType,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
-// import { antiquarianTemplate } from '../occupations/antiquarian' // No longer needed directly
-import { OccupationKey } from '../occupations' // Import OccupationKey
+import { OccupationKey } from '../occupations'
 
 export const scenes_061_080: SceneData = {
   '61': {
@@ -55,13 +53,11 @@ export const scenes_061_080: SceneData = {
     id: '65',
     story:
       '火舌舔上你的双腿。你的眼中充满泪水。你被烟幕笼罩了；也许是你的想象，但你认为你感觉到铁链有一点点松动。你用尽全力挣扎，全然不顾铁链在你的手腕上拴得有多么牢固。\n你因为火焰受到 1D6 点耐久值伤害。如果你的耐久值因此归零，你就会失去意识，被烈焰烧死！【剧终】。否则，进行一次“力量”检定。如果你成功了，前往 93。如果你失败了，前往 77。',
-    // entryEffects moved to the check's effects or the option leading here.
-    // The HP check for death needs to be handled in the reducer after applying damage.
     options: [
       {
         type: 'check',
-        text: '进行“力量”检定', // Player must choose this to proceed after damage.
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }], // Apply damage when this option is chosen (or before check)
+        text: '进行“力量”检定',
+        effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
         check: {
           details: {
             object: 'characteristic',
@@ -72,8 +68,6 @@ export const scenes_061_080: SceneData = {
           onFailureSceneId: '77',
           successText: '进行“力量”检定（成功）',
           failureText: '进行“力量”检定（失败）',
-          // TODO: Add logic for HP check leading to END scene if HP <= 0 after damage.
-          // This might mean onSuccessSceneId/onFailureSceneId could point to an END scene.
         },
       },
     ],
@@ -111,12 +105,9 @@ export const scenes_061_080: SceneData = {
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '82',
-          onFailureSceneId: '92', // This scene implies death if HP is 0.
+          onFailureSceneId: '92',
           successText: '进行“体质”检定（成功）',
           failureText: '进行“体质”检定（失败或HP为0）',
-          // TODO: Reducer needs to check HP after this check's outcome if failure leads to 92.
-          // If HP is 0, it should override to 92 even on "success" of this CON check if text implies.
-          // Or, 92 is simply the "you died" scene.
         },
       },
     ],
@@ -210,13 +201,11 @@ export const scenes_061_080: SceneData = {
         type: 'goto',
         text: '（若HP > 0）继续',
         goto: '82',
-        // Condition: HP > 0 (needs to be implemented in reducer or condition checker)
       },
       {
         type: 'goto',
         text: '（若HP <= 0）前往结局',
         goto: '92',
-        // Condition: HP <= 0
       },
     ],
   },
@@ -264,8 +253,8 @@ export const scenes_061_080: SceneData = {
   '77': {
     id: '77',
     story:
-      '铁链又松动了一点。你觉得你快要挣脱它了，只要再多一点时间——\n但同时，你也感觉到自己的双腿在烤焦，火焰攀上了你的夹克，冲刷着你的脸。你意识到，你已经没时间了。\n你在灯塔上被烧死了。\n为何不重新尝试呢？选择不同的选项，你也许就能逃脱甚至智胜烬头村的村民了。\n【剧终】',
-    options: [{ type: 'goto', text: '游戏结束', goto: 'END' }], // END signifies an ending
+      '你在灯塔上被烧死了。\n为何不重新尝试呢？选择不同的选项，你也许就能逃脱甚至智胜烬头村的村民了。\n【剧终】',
+    options: [{ type: 'goto', text: '游戏结束', goto: 'END' }],
   },
   '78': {
     id: '78',

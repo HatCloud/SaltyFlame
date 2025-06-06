@@ -6,7 +6,7 @@ import {
   CheckDifficulty,
   ConditionType,
 } from '../../constant/enums'
-import { GameFlag } from '../../constant/GameFlags' // GameFlag is already imported by user
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_161_180: SceneData = {
   '161': {
@@ -63,7 +63,7 @@ export const scenes_161_180: SceneData = {
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '177',
-          onFailureSceneId: '184', // TODO: Handle re-roll logic for failed Library Use check
+          onFailureSceneId: '184',
           successText: '进行「图书馆使用」检定（成功）',
           failureText: '进行「图书馆使用」检定（失败）',
         },
@@ -92,8 +92,6 @@ export const scenes_161_180: SceneData = {
     id: '167',
     story:
       '就在你离道路还有差不多十步的时候，熊在你身后几寸远的地方咆哮一声，爪子撕破了你的夹克。\n熊会用双爪攻击，每一爪都是一次单独的攻击。它每次都有35%的概率击中你，造成3D6点伤害。若任一次攻击对你造成的伤害大于等于你最大耐久值的一半，你就受到了重伤。\n在两爪都结算完成后，如果你受到了重伤，前往 179。否则前往 186。',
-    // This is combat, very complex. For now, simplified.
-    // TODO: Implement combat logic.
     options: [
       { type: 'goto', text: '（假设受到重伤）', goto: '179' },
       { type: 'goto', text: '（假设未受重伤）', goto: '186' },
@@ -149,7 +147,7 @@ export const scenes_161_180: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CoreCharacteristicEnum.POW, // Sanity check
+            subObject: CoreCharacteristicEnum.POW,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: 'END',
@@ -172,8 +170,6 @@ export const scenes_161_180: SceneData = {
     id: '173',
     story:
       '熊并没有被你的勇气打动。它立起身，挥爪向你袭来。\n处理近身战斗时，使用快速开始规则的第14～16页（规则书第102～111页）。你需要先阅读第8页（规则书第33页）来查询自己的伤害加值。\n参战者中“敏捷”最高的最先行动。你每个战斗轮可以进行一个动作。熊每向你攻击一次，你都可以选择反击（投掷「格斗(斗殴)」）或者闪避（投掷「闪避」）。战斗技能检定是对抗检定：谁的成功度高，谁得手。\n黑熊的“敏捷”为58，耐久值为20。它浓密厚实的皮毛会吸收你每轮造成伤害的前3点。它第一轮会用两只爪子各攻击一次。它的「爪击」技能为35%（半值17%/五分之一值7%），每次攻击成功后都能造成2D6点伤害。第二轮它会用一只爪子攻击并用嘴咬。它的「啃咬」技能是25%（半值12%/五分之一值5%），造成1D8点伤害。第三轮它会再次使用双爪攻击。\n如果你带着小刀或类似的武器，你每次攻击成功都会造成1D4点加上伤害加值点数的伤害。如果你赤手空拳，伤害是1D3点加上伤害加值点数。\n如果你受了重伤，进行一次“体质”检定。如果你失败了，前往193。如果你在三轮结束后仍然没有倒下，前往201。',
-    // Combat scene. Very complex.
-    // TODO: Implement full combat. For now, simplified options.
     options: [
       { type: 'goto', text: '（战斗后，假设失败并受重伤）', goto: '193' },
       { type: 'goto', text: '（战斗后，假设三轮后未倒下）', goto: '201' },
@@ -201,7 +197,7 @@ export const scenes_161_180: SceneData = {
   '175': {
     id: '175',
     story:
-      '天色已晚，你坐在学校后面的悬崖顶上，跟着一个疯子学他背下来的咒语，颇有脱离现实之感。阿博加斯特小心翼翼地一段一段教你。\n他望了一眼天空。“现在没有用。云挡住了星星.”但他仍然特别留心，不会一次说出整句咒语。\n它的开头很有韵律，还有各种精巧的设计，但最核心的是重复三次的段落：\nPh’nglui mglw’nafh Cthugha Fomalhaut \nn’ghaghaa naf ’l thagn! Iä! Cthugha!\n最后，阿博加斯特听了你的背诵，点点头。“每个字都要记住。但只要你在这地上还有活路，就千万不要念出它.”\n你发现了一个秘密。如果有朝一日你的状况绝望到需要用到阿博加斯特的仪式，这段文字可以提供你施法的机会。到那时，如果你想尝试，在你所在的条目号上加10，前往对应的条目。\n阿博加斯特侧回身。“它会让你变成和活——”',
+      '天色已晚，你坐在学校后面的悬崖顶上，跟着一个疯子学他背下来的咒语，颇有脱离现实之感。阿博加斯特小心翼翼地一段一段教你。\n他望了一眼天空。“现在没有用。云挡住了星星.”但他仍然特别留心，不会一次说出整句咒语。\n它的开头很有韵律，还有各种精巧的设计，但最核心的是重复三次的段落：\nPh’nglui mglw’nafh Cthugha Fomalhaut \nn’ghaghaa naf ’l thagn! Iä! Cthugha!\n最后，阿博加斯特听了你的背诵，点点头。“每个字都要记住。但只要你在这地上还有活路，就千万不要念出它.”\n你发现了一个秘密。如果有朝一日你的状况绝望到需要用到阿博加斯特的仪式，这段文字可以提供你施法的机会。到那时，如果你想尝试这个仪式，在你所在的条目号上加10，前往对应的条目。\n阿博加斯特侧回身。“它会让你变成和活——”',
     options: [
       {
         type: 'goto',
@@ -276,7 +272,7 @@ export const scenes_161_180: SceneData = {
             target: SkillEnum.LIBRARY_USE,
           },
         ],
-      }, // Assuming skill mark applies regardless of choice here
+      },
     ],
   },
   '178': {

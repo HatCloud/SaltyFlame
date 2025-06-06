@@ -1,11 +1,10 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CoreCharacteristicEnum, // Added
-  SkillEnum, // Added
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
   ConditionType,
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_001_020: SceneData = {
@@ -20,7 +19,6 @@ export const scenes_001_020: SceneData = {
     story:
       '你勇敢地抵抗，但这男人的块头和决心还是压服了你。最后他打出一记重拳，你摔倒在地，眼前顿时一片黑暗。\n过了一会儿，你朦朦胧胧地感觉到你的两腿被人抬着，后背刮蹭地面，就像被人拖着走一样。',
     info: '（译注：如果你的 HP 归零）你可以回复 1 点耐久值。',
-    // entryEffects removed, should be handled by the option leading to this scene or a check outcome
     options: [
       {
         type: 'goto',
@@ -29,8 +27,7 @@ export const scenes_001_020: SceneData = {
         effects: [
           {
             type: EffectType.CHANGE_HP,
-            value:
-              '+1' /* TODO: Conditional on HP=0, special logic needed in reducer */,
+            value: '+1',
           },
         ],
       },

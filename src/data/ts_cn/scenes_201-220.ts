@@ -4,7 +4,7 @@ import {
   SkillEnum,
   EffectType,
   CheckDifficulty,
-  ConditionType, // Re-added
+  ConditionType,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
 

@@ -167,15 +167,8 @@ export const CheckObjectNames: Record<
   [SkillEnum.TRACK]: { en: 'Track', cn: '追踪' },
 }
 
-// --- Type Aliases for specific categories of CheckObjectKey ---
-
-// Core characteristics directly from the character sheet
 export type CoreCharacteristicKey = keyof typeof CoreCharacteristicEnum
-
-// Rolls like Luck, Sanity, and potentially Move if treated as a rollable value
 export type RollKey = keyof typeof RollEnum
-
-// All skills available for checks
 export type SkillKey = keyof typeof SkillEnum
 
 export enum EffectType {
@@ -184,12 +177,11 @@ export enum EffectType {
   CHANGE_SKILL = 'CHANGE_SKILL',
   ADD_ITEM = 'ADD_ITEM',
   REMOVE_ITEM = 'REMOVE_ITEM',
-  SET_FLAG = 'SET_FLAG', // 设置一个游戏状态标记
-  CLEAR_FLAG = 'CLEAR_FLAG', // 清除一个游戏状态标记
-  MARK_SKILL_SUCCESS = 'MARK_SKILL_SUCCESS', // 技能检定成功后打勾
+  SET_FLAG = 'SET_FLAG',
+  CLEAR_FLAG = 'CLEAR_FLAG',
+  MARK_SKILL_SUCCESS = 'MARK_SKILL_SUCCESS',
 }
 
-// Enum for Condition Types to make it more structured
 export enum ConditionType {
   HAS_ITEM = 'HAS_ITEM',
   HAS_NOT_ITEM = 'HAS_NOT_ITEM',
@@ -198,7 +190,6 @@ export enum ConditionType {
   CHARACTERISTIC_COMPARE = 'CHARACTERISTIC_COMPARE',
 }
 
-// Enum for Check Difficulty
 export enum CheckDifficulty {
   NORMAL = 'normal',
   HARD = 'hard',
@@ -212,11 +203,9 @@ export enum CheckOutcome {
   FUMBLE = 'fumble',
 }
 
-// Default values for investigator skills based on the provided image
 export const CheckObjectDefaultValues: Partial<
   Record<CheckObjectKey, number | string>
 > = {
-  // Characteristics
   [CoreCharacteristicEnum.STR]: 0,
   [CoreCharacteristicEnum.CON]: 0,
   [CoreCharacteristicEnum.SIZ]: 0,
@@ -225,13 +214,9 @@ export const CheckObjectDefaultValues: Partial<
   [CoreCharacteristicEnum.INT]: 0,
   [CoreCharacteristicEnum.POW]: 0,
   [CoreCharacteristicEnum.EDU]: 0,
-
-  // Rolls
-  [RollEnum.LUCK]: 0, // Luck is usually POW or rolled
-  [RollEnum.SANITY]: 0, // Sanity is usually POW
+  [RollEnum.LUCK]: 0,
+  [RollEnum.SANITY]: 0,
   [RollEnum.MOV]: 0,
-
-  // Skills
   [SkillEnum.NATURAL_WORLD]: 10,
   [SkillEnum.MANIPULATE]: 1,
   [SkillEnum.OPERATE_HEAVY_MACHINERY]: 1,
@@ -245,7 +230,7 @@ export const CheckObjectDefaultValues: Partial<
   [SkillEnum.FIRST_AID]: 30,
   [SkillEnum.PSYCHOANALYSIS]: 1,
   [SkillEnum.ARCHAEOLOGY]: 1,
-  [SkillEnum.SCIENCE]: 1, // General Science
+  [SkillEnum.SCIENCE]: 1,
   [SkillEnum.CTHULHU_MYTHOS]: 0,
   [SkillEnum.INTIMIDATE]: 15,
   [SkillEnum.ACCOUNTING]: 5,
@@ -259,7 +244,7 @@ export const CheckObjectDefaultValues: Partial<
   [SkillEnum.DISGUISE]: 5,
   [SkillEnum.APPEASE]: 15,
   [SkillEnum.ANTHROPOLOGY]: 1,
-  [SkillEnum.DODGE]: 'DEX/2', // Special value
+  [SkillEnum.DODGE]: 'DEX/2',
   [SkillEnum.FIREARMS_HANDGUN]: 20,
   [SkillEnum.FIREARMS_RIFLE_SHOTGUN]: 25,
   [SkillEnum.OCCULT]: 5,
@@ -272,12 +257,10 @@ export const CheckObjectDefaultValues: Partial<
   [SkillEnum.PSYCHOLOGY]: 10,
   [SkillEnum.CREDIT_RATING]: 0,
   [SkillEnum.MEDICINE]: 1,
-  [SkillEnum.ART_CRAFT]: 5, // General Art/Craft
+  [SkillEnum.ART_CRAFT]: 5,
   [SkillEnum.SWIM]: 20,
-  [SkillEnum.OTHER_LANGUAGE]: 1, // General Other Language
-  [SkillEnum.OWN_LANGUAGE]: 'EDU', // Special value
+  [SkillEnum.OTHER_LANGUAGE]: 1,
+  [SkillEnum.OWN_LANGUAGE]: 'EDU',
   [SkillEnum.SPOT_HIDDEN]: 25,
   [SkillEnum.TRACK]: 10,
-  // ART_CRAFT_PHOTOGRAPHY, SCIENCE_BOTANY, OTHER_LANGUAGE_LATIN, CHARM are not in the image with default values
-  // They will be handled by specific occupation templates or character choices if needed.
 }

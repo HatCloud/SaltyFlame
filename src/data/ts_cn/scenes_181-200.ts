@@ -5,7 +5,6 @@ import {
   RollEnum,
   EffectType,
   CheckDifficulty,
-  // ConditionType, // Removed as not used
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
 
@@ -105,7 +104,7 @@ export const scenes_181_200: SceneData = {
   '189': {
     id: '189',
     story:
-      '你向柱子上弯曲得最厉害的部位猛然砸去。你听到断裂的声音，于是收回武器，又砸了一次。\n柱子被击垮，喀嚓一声断裂了。你的头顶开始发出雷鸣一般的巨响。你因喜悦而呆住了一瞬间，但追逐你的人不约而同地瞪大眼睛，恐惧地仰视。很快，天花板就坠落下来。', // Corrected story
+      '你向柱子上弯曲得最厉害的部位猛然砸去。你听到断裂的声音，于是收回武器，又砸了一次。\n柱子被击垮，喀嚓一声断裂了。你的头顶开始发出雷鸣一般的巨响。你因喜悦而呆住了一瞬间，但追逐你的人不约而同地瞪大眼睛，恐惧地仰视。很快，天花板就坠落下来。',
     options: [
       {
         type: 'check',
@@ -141,11 +140,11 @@ export const scenes_181_200: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CoreCharacteristicEnum.POW, // Sanity
+            subObject: CoreCharacteristicEnum.POW,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '199',
-          onFailureSceneId: '199', // Both lead to 199
+          onFailureSceneId: '199',
           successText: '理智检定成功',
           failureText: '理智检定失败',
           onFailureEffects: [{ type: EffectType.CHANGE_SANITY, value: '-1' }],
@@ -186,7 +185,7 @@ export const scenes_181_200: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CoreCharacteristicEnum.POW, // Sanity
+            subObject: CoreCharacteristicEnum.POW,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '210',
@@ -226,8 +225,6 @@ export const scenes_181_200: SceneData = {
     id: '198',
     story:
       '你感到，而不是看到，星辰从你头上的天顶坠落。你虽然被绑在燃烧的铁链上，却能号令群星。\n你每消耗1点魔法值，就有10%的概率成功。比如你消耗了6点魔法值，你要进行一次成功率60%的检定。检定结果为96～100必然失败。\n如果你施放“号令天之火”成功，前往209。如果你失败了，前往65。',
-    // This is a special check based on MP spent.
-    // TODO: Implement this custom check logic. For now, simplified.
     options: [
       { type: 'goto', text: '（假设施法成功）', goto: '209' },
       { type: 'goto', text: '（假设施法失败）', goto: '65' },

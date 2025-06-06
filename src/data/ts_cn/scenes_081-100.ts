@@ -1,11 +1,9 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  RollEnum, // Added
-  SkillEnum, // Added
+  RollEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
-  // ConditionType, // Removed as not used in current scenes 81-100
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 
 export const scenes_081_100: SceneData = {
@@ -114,13 +112,13 @@ export const scenes_081_100: SceneData = {
       '你仔细搜索莱德贝特的抽屉。抽屉里只有一张结婚照还算有点意思。梅的丈夫瘦长结实，脸型方正。虽然他们的姿势很正式，但你还是能看出他们之间的爱意。你突然对自己的闯入感到后悔。而且梅任何时候都有可能回来。\n如果你希望孤注一掷，重新投掷「侦查」检定。如果你成功了，前往 95。如果你失败了，前往 101。如果你不想冒险继续，前往 120。\n（译注：如果你刚才的「侦查」检定掷出大失败，不能孤注一掷。前往 120。）',
     options: [
       {
-        type: 'check', // Changed from goto to check
+        type: 'check',
         text: '孤注一掷，重新投掷「侦查」检定',
         check: {
           details: {
             object: 'skill',
             subObject: SkillEnum.SPOT_HIDDEN,
-            difficulty: CheckDifficulty.NORMAL, // Assuming re-roll is normal difficulty
+            difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '95',
           onFailureSceneId: '101',
@@ -135,7 +133,7 @@ export const scenes_081_100: SceneData = {
     id: '90',
     story:
       '你清清嗓子，开始吟诵你在奇怪书本上找到的仪式，尽力将怪异的音节念得正确。你的脸上翻腾着热浪，明白火焰越来越逼近，但你放下自己的恐慌，集中精力完成吟唱。\n当你说出这些奇怪的字眼时，你发现村民的歌唱改变了，他们也在吟诵咒语。你的手心和太阳穴发出一阵阵奇异的刺痛。\n你正在施放法术。你在本法术中最多可以消耗10点魔法值。如果你的魔法值不足10点，可以在耗尽魔法值之后继续消耗耐久值——但你不能消耗到使耐久值归零。决定消耗的点数以后，前往 198。',
-    options: [{ type: 'goto', text: '决定消耗的点数后继续', goto: '198' }], // Player needs to decide MP/HP to spend. This might need a UI element or a different scene structure.
+    options: [{ type: 'goto', text: '决定消耗的点数后继续', goto: '198' }],
   },
   '91': {
     id: '91',
@@ -159,7 +157,6 @@ export const scenes_081_100: SceneData = {
         text: '（若未死）继续',
         goto: '137',
         effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
-        // TODO: Add HP check for death in reducer or via a condition
       },
     ],
   },
@@ -176,7 +173,6 @@ export const scenes_081_100: SceneData = {
           {
             type: EffectType.CHANGE_SANITY,
             value: '+1',
-            // TODO: condition: 'HAD_LOST_SANITY', // Conditional logic to be handled by reducer
           },
         ],
       },
@@ -217,12 +213,11 @@ export const scenes_081_100: SceneData = {
     id: '97',
     story:
       '根须绊住了你的脚踝，你重重地扑倒在地。你痛苦地喘息，手臂针刺一般地疼痛。一条枯枝刺破了你的前臂，削出一道约莫三寸长的口子，鲜血滴到草上。\n你在树丛中发现了道路。也许你应该坚持沿道路走，而不是前往未知的地域。\n失去 1D3 点耐久值。你可以用普通六面骰来投掷：只需要将结果除以二，小数进位。这算是挺严重的伤，但幸运的是它并不足以让你失去意识。\n你可以尝试一次「急救」检定。如果你成功了，回复 1 点耐久值并在「急救」技能左边的小方框里打勾。',
-    // entryEffects moved to options
     options: [
       {
         type: 'check',
         text: '尝试「急救」检定',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }], // Apply damage before check option
+        effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }],
         check: {
           details: {
             object: 'skill',
@@ -246,7 +241,7 @@ export const scenes_081_100: SceneData = {
         type: 'goto',
         text: '不尝试急救，继续',
         goto: '79',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }], // Apply damage if not attempting first aid
+        effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }],
       },
     ],
   },
@@ -287,7 +282,4 @@ export const scenes_081_100: SceneData = {
       '你沿着狭窄的街道往回逃，拽着油灯不住地摇晃。你回到门前，急速地咚咚敲门。梅看你这么快就回来了也很惊讶。\n她说：“你要是不适应这里的气氛，很快就会累趴的。”\n你关门之前又往回瞥了一眼。那漆黑的身影站在街道尽头的墙边，仍然紧盯着你。可是，是它吗？黑暗会欺骗你的眼睛。你把沉重的门闩插到了顶。\n梅坐回自己的椅子，但她现在眼皮开始打架，打起了呵欠。“不早了，我想我该睡觉了。你想几点钟吃早饭？”',
     options: [{ type: 'goto', text: '继续', goto: '63' }],
   },
-
-  // Helper scenes S89_REROLL_CHECK and S97_AID_CHECK are now integrated into their respective parent scenes (89 and 97)
-  // and can be removed.
 }

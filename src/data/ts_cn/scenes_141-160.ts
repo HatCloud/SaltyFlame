@@ -1,13 +1,10 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CoreCharacteristicEnum, // Added
-  SkillEnum, // Added
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
-  // ConditionType, // Removed as not used in scenes 141-160
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
-import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_141_160: SceneData = {
   '141': {
@@ -21,11 +18,11 @@ export const scenes_141_160: SceneData = {
         check: {
           details: {
             object: 'characteristic',
-            subObject: CoreCharacteristicEnum.POW, // Or SANITY if that's the intent
+            subObject: CoreCharacteristicEnum.POW,
             difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '63',
-          onFailureSceneId: '63', // Goes to 63 in both cases, but failure applies an effect
+          onFailureSceneId: '63',
           successText: '理智检定成功',
           failureText: '理智检定失败',
           onFailureEffects: [{ type: EffectType.CHANGE_SANITY, value: '-1D2' }],
@@ -33,7 +30,6 @@ export const scenes_141_160: SceneData = {
       },
     ],
   },
-  // S141_SAN_LOSS_THEN_63 is removed as its logic is integrated above.
   '142': {
     id: '142',
     story:
@@ -99,12 +95,10 @@ export const scenes_141_160: SceneData = {
       },
     ],
   },
-  // S144_AUTODRIVE_CHECK and S144_PSYCH_CHECK removed as integrated above.
   '145': {
     id: '145',
     story:
       '“好吧......我想我几分钟以后就回来。”梅抓起一件外套，走进夜色之中。你等了一会儿，到看不见她以后，才开始敲卧室的门。没有人回答，一片沉默。脚步声从地面传来，门开了几寸宽的一道缝。露丝的两只眼睛透过门缝向外张望，从左边看到右边。你告诉她她妈妈出门了，问她在烦恼什么。这双眼一下就盯住了你。\n她低声说：“是明天，每年都会有的。他们带走了我大。如果他们得手了，也会带走你的。”\n她坚定的目光令你不寒而栗。你反复追问。她到底说的是什么？\n“所有人。每个人。你刚一来，他们就在看着你。你被盯上了。”她的声音十分空洞。“过几年，等我再大一些......他们也会带走我。”\n你听到门外传过来脚步声。露丝眨了一下眼睛，随即碰上了卧室的大门。你回头去晾干碗碟。梅走进来，脱下她的外套。\n“和这男人讲话是白费时间，”她不忿地嘟哝着回到了卧室里。\n你可以在所用技能左边的小方框里打勾。',
-    // entryEffects depend on the skill used in scene 138. This needs to be handled by the CheckPayload's onSuccessEffects from scene 138.
     options: [{ type: 'goto', text: '继续', goto: '157' }],
   },
   '146': {
@@ -153,8 +147,6 @@ export const scenes_141_160: SceneData = {
     id: '150',
     story:
       '你脱离道路开始追逐这人，感受着野草抓着你的脚。他沿着山脊飞奔，试图躲进一块巨石后面；这巨石正支撑着悬崖之上那座金属建筑物。\n要逮住这个男人，你必须进行一次对抗检定，用你的“敏捷”对抗他的“敏捷”。这个男人的“敏捷”是38。他掷出小于等于19点为困难成功，小于等于7点为极难成功。先进行这个男人的“敏捷”检定，再做你的“敏捷”检定。\n比较你们两人的成功等级。极难成功胜过困难成功，困难成功胜过常规（普通）成功，常规成功胜过失败。如果成功等级相同，技能值高的人胜出。',
-    // This is a complex opposed roll. For now, representing as two outcomes.
-    // True implementation would require more complex reducer logic or a dedicated action.
     options: [
       { type: 'goto', text: '进行对抗检定（假设你胜出）', goto: '172' },
       { type: 'goto', text: '进行对抗检定（假设你落败）', goto: '87' },
@@ -206,7 +198,7 @@ export const scenes_141_160: SceneData = {
         type: 'goto',
         text: '继续',
         goto: '166',
-        effects: [{ type: EffectType.CHANGE_HP, value: '+1' }], // TODO: Conditional logic for "if injured"
+        effects: [{ type: EffectType.CHANGE_HP, value: '+1' }],
       },
     ],
   },
@@ -214,7 +206,6 @@ export const scenes_141_160: SceneData = {
     id: '155',
     story:
       '你慌忙在树丛间攀爬，强行抑制恐惧感，想要回到道路上。\n想要从熊掌下逃脱，你必须用你的“敏捷”和熊的“敏捷”进行一次对抗检定。熊的“敏捷”是58。它掷出小于等于29点为困难成功，小于等于11点为极难成功。先进行熊的“敏捷”检定，再做你的“敏捷”检定。\n比较你们两方的成功等级。极难成功胜过困难成功，困难成功胜过常规（普通）成功，常规成功胜过失败。如果成功等级相同，技能值高的一方胜出。',
-    // Opposed roll, similar to scene 150.
     options: [
       { type: 'goto', text: '进行对抗检定（假设你胜出）', goto: '161' },
       { type: 'goto', text: '进行对抗检定（假设你落败）', goto: '167' },
@@ -275,7 +266,7 @@ export const scenes_141_160: SceneData = {
         type: 'goto',
         text: '继续',
         goto: '120',
-        effects: [{ type: EffectType.ADD_ITEM, target: '阿撒托斯及其他' }], // Corrected from itemName to target
+        effects: [{ type: EffectType.ADD_ITEM, target: '阿撒托斯及其他' }],
       },
     ],
   },
@@ -286,5 +277,3 @@ export const scenes_141_160: SceneData = {
     options: [{ type: 'goto', text: '继续', goto: '25' }],
   },
 }
-
-// Helper scenes S141_SAN_LOSS_THEN_63, S144_AUTODRIVE_CHECK, S144_PSYCH_CHECK are removed.

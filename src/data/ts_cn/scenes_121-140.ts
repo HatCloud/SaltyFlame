@@ -1,11 +1,9 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CoreCharacteristicEnum, // Added
-  SkillEnum, // Added
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
-  // ConditionType, // Removed as not used
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
 
@@ -141,8 +139,6 @@ export const scenes_121_140: SceneData = {
             object: 'skill',
             subObject: SkillEnum.SPOT_HIDDEN,
             difficulty: CheckDifficulty.NORMAL,
-            // TODO: Implement logic for bonus dice if player previously checked shelves.
-            // bonusDice: true,
           },
           onSuccessSceneId: '147',
           onFailureSceneId: '140',
@@ -153,7 +149,6 @@ export const scenes_121_140: SceneData = {
     ],
   },
   '134': {
-    // This scene was already present
     id: '134',
     story:
       '长途车突突地响着，在乡间缓慢挪动。车里的气氛令人窒息，每当车转弯的时候，你的肚子里就一阵翻腾。不过司机身边的窗户是开着的，你换了几个座，找到了一个可以让微风吹到脸上的位置。没多久你就放松下来，开始享受旅程，观察着长途车经过的富有古趣的小小村落。在一个村庄，一位体格粗壮的女人上了车，对你礼貌地点点头。到了下一个村庄，她就下车了。\n道路升高了一些，穿越一片又一片的玉米地和果园。树叶正在变色，把树木装点成鲜红、金黄，灿烂缤纷，富有生机。当你快要打起瞌睡的时候，司机开始快速通过一个急弯。',
@@ -161,7 +156,7 @@ export const scenes_121_140: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行敏捷检定', // This text might not be shown if the check is immediate
+        text: '进行敏捷检定',
         check: {
           details: {
             object: 'characteristic',
@@ -270,10 +265,8 @@ export const scenes_121_140: SceneData = {
         type: 'goto',
         text: '继续',
         goto: '120',
-        effects: [{ type: EffectType.ADD_ITEM, target: '烬头村地图' }], // Player acquires map
+        effects: [{ type: EffectType.ADD_ITEM, target: '烬头村地图' }],
       },
     ],
   },
 }
-
-// Helper scenes S138_CHARM_CHECK, S138_PERSUADE_CHECK, S138_FASTTALK_CHECK are now integrated into scene 138.

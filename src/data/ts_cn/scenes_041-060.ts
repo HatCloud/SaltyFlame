@@ -1,11 +1,9 @@
 import type { SceneData } from '../../interface/Scene'
 import {
   EffectType,
-  CoreCharacteristicEnum, // Added
-  SkillEnum, // Added
+  CoreCharacteristicEnum,
+  SkillEnum,
   CheckDifficulty,
-  // ConditionType, // Will be added if used by scenes 41-60
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
 
