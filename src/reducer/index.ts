@@ -80,10 +80,21 @@ export const appReducer = (
         saveStateToStorage(tempState)
       }
 
-      const { rollValue, resultType } = executeCheckLogic(
+      const { rollValue, resultType, diceFaces } = executeCheckLogic(
+        // Added diceFaces here
         tempState,
         checkPayload.details,
       )
+
+      // Trigger dice roll animation
+      // Now executeCheckLogic returns diceFaces
+      if (rollValue !== undefined && diceFaces !== undefined) {
+        tempState.diceRollAnimation = {
+          isVisible: true,
+          rollResult: rollValue,
+          diceFaces: diceFaces, // Use diceFaces from executeCheckLogic
+        }
+      }
 
       tempState.currentCheckAttempt = {
         checkDefinition: checkPayload.details,
@@ -97,6 +108,10 @@ export const appReducer = (
         effectsToApplyOnFailure: checkPayload.onFailureEffects,
         originalOption: originalOption,
       }
+      // Note: saveStateToStorage will be called if originalOption.effects exist,
+      // otherwise it's implicitly part of the state update.
+      // If we always want to save after this, it should be called here.
+      // For now, relying on existing save points.
       return tempState
     }
 
@@ -177,6 +192,26 @@ export const appReducer = (
       }
       return newState
     }
+
+    // New cases for dice roll animation
+    case 'SHOW_DICE_ROLL_ANIMATION': // This might be redundant if PERFORM_INLINE_CHECK handles it
+      return {
+        ...newState,
+        diceRollAnimation: {
+          isVisible: true,
+          rollResult: action.payload.rollResult,
+          diceFaces: action.payload.diceFaces,
+        },
+      }
+
+    case 'HIDE_DICE_ROLL_ANIMATION':
+      return {
+        ...newState,
+        diceRollAnimation: {
+          ...newState.diceRollAnimation,
+          isVisible: false,
+        },
+      }
 
     default:
       return newState

@@ -53,4 +53,6 @@
 
 ## 编码风格
 
-参考项目根目录下的 `.clinerules/coding-style.md` 文件。
+- UI 组件的颜色和字体应优先使用项目主题文件 `src/theme/palette.ts` (颜色) 和 `src/theme/typeface.ts` (字体、字号、字重) 中定义的值。
+  - 如果现有主题无法满足需求，应优先考虑扩展主题文件，而不是在组件中硬编码样式值。
+- 参考项目根目录下的 `.clinerules/coding-style.md` 文件。

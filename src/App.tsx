@@ -13,6 +13,7 @@ import { Dispatch } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { RootStackParamList } from './interface/navigation'
+import GlobalDiceRollAnimation from './ui/components/GlobalDiceRollAnimation' // Import the animation component
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -47,6 +48,10 @@ function App(): React.ReactElement {
     loadState()
   }, [])
 
+  const handleAnimationFinish = React.useCallback(() => {
+    dispatch({ type: 'HIDE_DICE_ROLL_ANIMATION' })
+  }, [dispatch])
+
   return (
     <AppStateContext.Provider value={state}>
       <AppDispatchContext.Provider value={dispatch}>
@@ -70,6 +75,12 @@ function App(): React.ReactElement {
               />
             </Stack.Navigator>
           </NavigationContainer>
+          <GlobalDiceRollAnimation
+            isVisible={state.diceRollAnimation.isVisible}
+            rollResult={state.diceRollAnimation.rollResult}
+            diceFaces={state.diceRollAnimation.diceFaces}
+            onAnimationFinish={handleAnimationFinish}
+          />
         </SafeAreaProvider>
       </AppDispatchContext.Provider>
     </AppStateContext.Provider>

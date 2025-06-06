@@ -43,6 +43,14 @@ export interface MyAppState {
   currentCheckAttempt?: CheckAttemptState | null // Stores state of an ongoing/completed check
   gameFlags: Record<GameFlag, GameFlagVaule>
   isCharacterModalVisible?: boolean
+  diceRollAnimation: DiceRollAnimationState // Added for dice roll animation
+}
+
+// State for dice roll animation
+export interface DiceRollAnimationState {
+  isVisible: boolean
+  rollResult: number | null
+  diceFaces: number | null
 }
 
 export const initialState: MyAppState = {
@@ -63,6 +71,12 @@ export const initialState: MyAppState = {
     [GameFlag.APPOINTMENT_WITH_ABOGAIST_9PM_CEMETERY]: false,
   },
   isCharacterModalVisible: false,
+  diceRollAnimation: {
+    // Initial state for dice roll animation
+    isVisible: false,
+    rollResult: null,
+    diceFaces: null,
+  },
 }
 
 // Action Definitions
@@ -129,6 +143,19 @@ interface ApplyChosenOccupationAction {
   payload: OccupationKey
 }
 
+// Actions for Dice Roll Animation
+interface ShowDiceRollAnimationAction {
+  type: 'SHOW_DICE_ROLL_ANIMATION'
+  payload: {
+    rollResult: number
+    diceFaces: number
+  }
+}
+
+interface HideDiceRollAnimationAction {
+  type: 'HIDE_DICE_ROLL_ANIMATION'
+}
+
 // AppAction is a union of all possible actions
 export type AppAction =
   | ChangeSceneAction
@@ -142,3 +169,5 @@ export type AppAction =
   | StoreCharacterAction // Added
   | HydrateStateAction // Added
   | ApplyChosenOccupationAction
+  | ShowDiceRollAnimationAction // Added
+  | HideDiceRollAnimationAction // Added
