@@ -38,9 +38,17 @@ export const appReducer = (
     case 'CHANGE_SCENE': {
       const newSceneKey = action.payload as string
       newState.currentCheckAttempt = null
-      if (state.currentSceneKey !== newSceneKey) {
+
+      if (newSceneKey === '1') {
+        // Reset history, characterData, and gameFlags when going to scene '1'
+        newState.history = []
+        newState.characterData = defaultInitialState.characterData // Reset to initial character
+        newState.gameFlags = defaultInitialState.gameFlags // Reset to initial game flags (empty object)
+        console.log('State reset for new game (scene 1).')
+      } else if (state.currentSceneKey !== newSceneKey) {
         newState.history = [...state.history, state.currentSceneKey]
       }
+
       newState.currentSceneKey = newSceneKey
       saveStateToStorage(newState)
       return newState
@@ -49,11 +57,27 @@ export const appReducer = (
     case 'GO_BACK': {
       newState.currentCheckAttempt = null
       if (newState.history.length === 0) {
-        return newState
+        return newState // Cannot go back if history is empty
       }
+
       const previousSceneKey = newState.history[newState.history.length - 1]
       newState.currentSceneKey = previousSceneKey
       newState.history = newState.history.slice(0, -1)
+
+      // Check if the new current scene is '1' after going back
+      if (newState.currentSceneKey === '1') {
+        // Reset history, characterData, and gameFlags when going back to scene '1'
+        // Note: history is already modified above, so we just ensure it's empty if current is '1'
+        // However, typically, if currentSceneKey becomes '1' via GO_BACK, history should be empty.
+        // For safety, explicitly set history to [] if we land on '1'.
+        newState.history = []
+        newState.characterData = defaultInitialState.characterData // Reset to initial character
+        newState.gameFlags = defaultInitialState.gameFlags // Reset to initial game flags (empty object)
+        console.log(
+          'State reset for new game (returned to scene 1 via GO_BACK).',
+        )
+      }
+
       saveStateToStorage(newState)
       return newState
     }
