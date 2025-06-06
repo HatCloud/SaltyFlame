@@ -7,7 +7,8 @@ import Animated, {
   Easing,
   runOnJS,
 } from 'react-native-reanimated'
-import Icon from 'react-native-vector-icons/FontAwesome5' // Using FontAwesome5 for dice icons
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import Sound from 'react-native-sound'
 import palette from '../../theme/palette'
 import { typeface } from '../../theme/typeface'
 
@@ -15,11 +16,11 @@ interface GlobalDiceRollAnimationProps {
   isVisible: boolean
   rollResult: number | null
   diceFaces: number | null
-  onAnimationFinish: () => void // Callback to inform parent when animation (including display duration) is done
+  onAnimationFinish: () => void
 }
 
-const ANIMATION_DURATION = 500 // ms for enter/exit animation
-const DISPLAY_DURATION = 2500 // ms to display the result card after entry animation
+const ANIMATION_DURATION = 500
+const DISPLAY_DURATION = 2000 // Corrected display duration
 
 const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
   isVisible,
@@ -29,14 +30,39 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
 }) => {
   const opacity = useSharedValue(0)
   const scale = useSharedValue(0.5)
-  const rotateYValue = useSharedValue(0) // Renamed from rotate for clarity
-  const rotateXValue = useSharedValue(0) // Added for X-axis rotation
+  const rotateZValue = useSharedValue(0) // For simple Z-axis rotation
 
   const [showModalContent, setShowModalContent] = useState(false)
 
   useEffect(() => {
+    let sound: Sound | null = null // Renamed for clarity and to avoid conflict if any
+
     if (isVisible) {
       setShowModalContent(true)
+
+      try {
+        const soundFileName = 'dice_roll.wav'
+        sound = new Sound(soundFileName, Sound.MAIN_BUNDLE, error => {
+          if (error) {
+            console.log(`Failed to load the sound: ${soundFileName}`, error)
+            return
+          }
+          // Sound loaded successfully
+          sound?.play(success => {
+            if (success) {
+              console.log(`Sound ${soundFileName} played successfully`)
+            } else {
+              console.log(
+                `Sound ${soundFileName} playback failed due to audio decoding errors`,
+              )
+            }
+            sound?.release() // Release after playing or if failed to play
+          })
+        })
+      } catch (e) {
+        console.error('Error initializing Sound:', e)
+      }
+
       opacity.value = withTiming(1, {
         duration: ANIMATION_DURATION,
         easing: Easing.out(Easing.ease),
@@ -45,14 +71,9 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
         duration: ANIMATION_DURATION,
         easing: Easing.out(Easing.cubic),
       })
-      // Animate both X and Y rotation
-      rotateYValue.value = withTiming(360, {
-        // Full spin on Y
-        duration: ANIMATION_DURATION * 1.8, // Slightly different duration for a more complex feel
-        easing: Easing.linear,
-      })
-      rotateXValue.value = withTiming(360 * 1.5, {
-        // One and a half spins on X
+      // Animate Z-axis rotation
+      rotateZValue.value = withTiming(360, {
+        // Full spin on Z
         duration: ANIMATION_DURATION * 2,
         easing: Easing.linear,
       })
@@ -69,16 +90,29 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
             if (finished) {
               runOnJS(setShowModalContent)(false)
               runOnJS(onAnimationFinish)()
-              rotateYValue.value = 0 // Reset rotation
-              rotateXValue.value = 0 // Reset rotation
+              rotateZValue.value = 0 // Reset rotation
             }
           },
         )
       }, DISPLAY_DURATION)
 
-      return () => clearTimeout(timer)
+      return () => {
+        // Cleanup function
+        clearTimeout(timer)
+        if (sound && sound.isLoaded()) {
+          // Check if sound was successfully loaded and assigned
+          sound.stop(() => {
+            sound?.release()
+          })
+        } else if (sound) {
+          // If sound object exists but might not be loaded (e.g. error during load)
+          sound.release() // Still try to release
+        }
+        sound = null // Clear the reference
+      }
     } else {
-      // If isVisible becomes false externally, hide immediately (or with exit animation)
+      // When isVisible becomes false, the cleanup function from the previous effect (when isVisible was true)
+      // will be called, handling the sound release. We only need to manage animations here.
       opacity.value = withTiming(0, { duration: ANIMATION_DURATION / 2 })
       scale.value = withTiming(
         0.5,
@@ -86,13 +120,12 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
         finished => {
           if (finished) {
             runOnJS(setShowModalContent)(false)
-            rotateYValue.value = 0
-            rotateXValue.value = 0
+            rotateZValue.value = 0 // Reset rotation if hiding early
           }
         },
       )
     }
-  }, [isVisible, onAnimationFinish, opacity, scale, rotateYValue, rotateXValue])
+  }, [isVisible, onAnimationFinish, opacity, scale, rotateZValue])
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -103,10 +136,7 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
 
   const iconAnimatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [
-        { rotateY: `${rotateYValue.value}deg` },
-        { rotateX: `${rotateXValue.value}deg` },
-      ],
+      transform: [{ rotateZ: `${rotateZValue.value}deg` }],
     }
   })
 

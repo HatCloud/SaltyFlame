@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
     "format": "prettier --write .",
+    "postinstall": "patch-package",
     "android:release": "cd android && ./gradlew assembleRelease && cd .. && VERSION=$(node -p \"require('./package.json').version\") && DATETIME=$(date +%Y%m%d%H%M) && APK_NAME=\"SaltyFlame_${VERSION}_${DATETIME}.apk\" && mv android/app/build/outputs/apk/release/app-release.apk \"android/app/build/outputs/apk/release/${APK_NAME}\" && cp \"android/app/build/outputs/apk/release/${APK_NAME}\" ~/Downloads/ && adb install \"android/app/build/outputs/apk/release/${APK_NAME}\""
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "react-native-reanimated": "^3.17.5",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.11.1",
+    "react-native-sound": "^0.11.2",
     "react-native-vector-icons": "^10.2.0",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1"
@@ -41,6 +43,8 @@
     "@types/react-native-vector-icons": "^6.4.18",
     "eslint": "^8.19.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.5.3",
     "react-native-clean-project": "^4.0.3",
     "typescript": "5.0.4"
