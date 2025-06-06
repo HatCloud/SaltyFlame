@@ -1,12 +1,13 @@
-import React, { useMemo, useRef, useState, useCallback } from 'react' // Added useEffect
+import React, { useMemo, useRef, useState, useCallback } from 'react'
 import {
   View,
   Text,
   StyleSheet,
-  Button,
   Alert,
   TouchableOpacity,
   LayoutRectangle,
+  SafeAreaView, // Added SafeAreaView
+  Pressable, // Added Pressable for the new button
 } from 'react-native'
 import {
   useNavigation,
@@ -22,11 +23,16 @@ import { Character } from '../../interface/Character'
 import {
   CoreCharacteristicKey,
   CoreCharacteristicEnum,
+  CheckObjectNames,
 } from '../../constant/enums' // Removed CheckObjectKey, Added CoreCharacteristicEnum
 import { typeface } from '../../theme/typeface'
 import palette from '../../theme/palette'
-import DraggableListItem from '../components/DraggableListItem'
+import { padding } from '../../theme/padding' // Correctly import padding
+import DraggableListItem, {
+  DraggableValue,
+} from '../components/DraggableListItem' // Added DraggableValue import
 import { useAttributeAllocator } from '../../hooks/useAttributeAllocator'
+import { useI18n } from '../../i18n/useI18n' // Added useI18n import
 
 type AttributeAllocationScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -37,9 +43,11 @@ const VALUE_ITEM_HEIGHT = 50
 const ATTRIBUTE_SLOT_HEIGHT = 60
 
 const AttributeAllocationScreen: React.FC = () => {
+  const { t, lang } = useI18n() // Initialize useI18n
   const [, dispatch] = useAppReducer()
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
   const route = useRoute<AttributeAllocationScreenRouteProp>()
+  // Removed incorrect useTheme call: const { padding } = ใช้Theme()
 
   const {
     onCompleteNavigateToSceneId,
@@ -87,6 +95,16 @@ const AttributeAllocationScreen: React.FC = () => {
   // Refs for view elements to measure
   const availableValuesContainerRef = useRef<View>(null)
   const attributeSlotViewRefs = useRef<Record<string, View | null>>({})
+
+  // Custom handler to clear hover state after drop
+  const customOnDropHandler = (
+    draggedItem: DraggableValue,
+    originKey: CoreCharacteristicKey | 'available',
+    targetKey: CoreCharacteristicKey | 'available',
+  ) => {
+    handleDrop(draggedItem, originKey, targetKey)
+    setHoveredDropTargetKey(null)
+  }
 
   const measureLayout = useCallback(() => {
     // Measure available values zone
@@ -163,7 +181,10 @@ const AttributeAllocationScreen: React.FC = () => {
 
   const handleConfirm = () => {
     if (!isAllocationComplete) {
-      Alert.alert('提示', '请分配所有属性点！')
+      Alert.alert(
+        t('attributeAllocation.alertTitleHint'),
+        t('attributeAllocation.alertMessageAllPoints'),
+      )
       return
     }
 
@@ -180,7 +201,10 @@ const AttributeAllocationScreen: React.FC = () => {
     }
 
     if (!allKeysPresent) {
-      Alert.alert('错误', '内部错误：并非所有属性都已分配值。')
+      Alert.alert(
+        t('attributeAllocation.alertTitleError'),
+        t('attributeAllocation.alertMessageInternalError'),
+      )
       return
     }
     const emptyCharacter = generateCharacter(finalCharacteristics)
@@ -190,125 +214,138 @@ const AttributeAllocationScreen: React.FC = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>分配调查员属性</Text>
-      <Text style={styles.instructions}>
-        将数值拖拽到对应的属性上进行分配或交换。
-      </Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text style={styles.title}>{t('attributeAllocation.title')}</Text>
 
-      <View
-        ref={availableValuesContainerRef} // Added ref
-        style={[
-          styles.availableValuesContainer,
-          hoveredDropTargetKey === 'available' && styles.dropTargetHovered,
-        ]}
-        // onLayout is no longer the primary source for this ref's data
-      >
-        <Text style={styles.subHeader}>待分配数值:</Text>
-        <View style={styles.valueList}>
-          {availableValues.map(item => (
-            <DraggableListItem
-              key={item.id}
-              item={item}
-              originKey="available"
-              characteristicKeys={characteristicKeys}
-              attributeSlotsLayoutData={absAttributeSlotsLayout}
-              availableValuesZoneLayoutData={absAvailableValuesZoneLayout}
-              onDrop={handleDrop}
-              itemHeight={VALUE_ITEM_HEIGHT}
-              onHover={setHoveredDropTargetKey}
-            />
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.attributesContainer}>
-        <Text style={styles.subHeader}>属性:</Text>
-        <View style={styles.valueList}>
-          {characteristicKeys.map(charKey => {
-            const allocatedItem = allocatedAttributes[charKey]
-            return (
-              <View
-                key={charKey}
-                style={styles.attributeSlotWrapper}
-                // onLayout on wrapper is no longer primary source for attributeSlotsLayout
-              >
-                <Text style={styles.attributeLabel}>
-                  {charKey.toUpperCase()}:
-                </Text>
+        <View style={styles.attributesContainer}>
+          <View style={styles.valueList}>
+            {characteristicKeys.map(charKey => {
+              const allocatedItem = allocatedAttributes[charKey]
+              return (
                 <View
-                  ref={el => {
-                    attributeSlotViewRefs.current[charKey] = el
-                  }} // Corrected callback ref
-                  style={[
-                    styles.attributeSlot,
-                    hoveredDropTargetKey === charKey &&
-                      styles.dropTargetHovered,
-                  ]}
+                  key={charKey}
+                  style={styles.attributeSlotWrapper}
+                  // onLayout on wrapper is no longer primary source for attributeSlotsLayout
                 >
-                  {allocatedItem ? (
-                    <TouchableOpacity onPress={() => handleUnassign(charKey)}>
-                      <DraggableListItem
-                        key={allocatedItem.id}
-                        item={allocatedItem}
-                        originKey={charKey}
-                        characteristicKeys={characteristicKeys}
-                        attributeSlotsLayoutData={absAttributeSlotsLayout}
-                        availableValuesZoneLayoutData={
-                          absAvailableValuesZoneLayout
-                        }
-                        onDrop={handleDrop}
-                        itemHeight={VALUE_ITEM_HEIGHT}
-                        onHover={setHoveredDropTargetKey}
-                      />
-                    </TouchableOpacity>
-                  ) : (
-                    <Text style={styles.emptySlotText}>空</Text>
-                  )}
+                  <Text style={styles.attributeLabel}>
+                    {CheckObjectNames[charKey][lang].toUpperCase()}
+                  </Text>
+                  <View
+                    ref={el => {
+                      attributeSlotViewRefs.current[charKey] = el
+                    }} // Corrected callback ref
+                    style={[
+                      styles.attributeSlot,
+                      hoveredDropTargetKey === charKey &&
+                        styles.dropTargetHovered,
+                    ]}
+                  >
+                    {allocatedItem ? (
+                      <TouchableOpacity onPress={() => handleUnassign(charKey)}>
+                        <DraggableListItem
+                          key={allocatedItem.id}
+                          item={allocatedItem}
+                          originKey={charKey}
+                          characteristicKeys={characteristicKeys}
+                          attributeSlotsLayoutData={absAttributeSlotsLayout}
+                          availableValuesZoneLayoutData={
+                            absAvailableValuesZoneLayout
+                          }
+                          onDrop={customOnDropHandler}
+                          itemHeight={VALUE_ITEM_HEIGHT}
+                          onHover={setHoveredDropTargetKey}
+                        />
+                      </TouchableOpacity>
+                    ) : (
+                      <Text style={styles.emptySlotText}>
+                        {t('attributeAllocation.emptySlot')}
+                      </Text>
+                    )}
+                  </View>
                 </View>
-              </View>
-            )
-          })}
+              )
+            })}
+          </View>
         </View>
-      </View>
 
-      <Button
-        title="确认分配"
-        onPress={handleConfirm}
-        disabled={!isAllocationComplete}
-      />
-    </View>
+        <Text style={styles.subHeader}>
+          {t('attributeAllocation.instructions')}
+        </Text>
+
+        <View
+          ref={availableValuesContainerRef} // Added ref
+          style={styles.availableValuesContainer}
+          // onLayout is no longer the primary source for this ref's data
+        >
+          <View style={styles.valueList}>
+            {availableValues.map(item => (
+              <DraggableListItem
+                key={item.id}
+                item={item}
+                originKey="available"
+                characteristicKeys={characteristicKeys}
+                attributeSlotsLayoutData={absAttributeSlotsLayout}
+                availableValuesZoneLayoutData={absAvailableValuesZoneLayout}
+                onDrop={customOnDropHandler}
+                itemHeight={VALUE_ITEM_HEIGHT}
+                onHover={setHoveredDropTargetKey}
+              />
+            ))}
+          </View>
+        </View>
+
+        <Pressable
+          style={({ pressed }) => [
+            styles.confirmButton,
+            !isAllocationComplete && styles.confirmButtonDisabled,
+            pressed && isAllocationComplete && styles.confirmButtonPressed,
+          ]}
+          onPress={handleConfirm}
+          disabled={!isAllocationComplete}
+        >
+          <Text
+            style={[
+              styles.confirmButtonText,
+              !isAllocationComplete && styles.confirmButtonTextDisabled,
+            ]}
+          >
+            {t('attributeAllocation.confirmAllocation')}
+          </Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: palette.Background,
+  },
   container: {
     flex: 1,
-    padding: 15,
+    padding: padding.Normal, // Use theme padding
     alignItems: 'center',
-    backgroundColor: palette.Background,
   },
   title: {
     fontSize: typeface.Size.Extra,
-    fontWeight: 'bold',
-    marginTop: 30,
-    marginBottom: 15,
+    fontWeight: typeface.Weight.Bold, // Use theme weight
+    // marginTop: 30, // Removed, SafeAreaView handles top spacing
+    marginBottom: padding.Normal, // Use theme padding
     color: typeface.Color.Content,
   },
-  instructions: {
-    fontSize: typeface.Size.Normal,
-    textAlign: 'center',
-    marginBottom: 15,
-  },
   availableValuesContainer: {
-    width: '100%',
-    height: 150, // Fixed height to accommodate ~2 rows + header + padding
-    marginBottom: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: palette.Gallery,
-    borderRadius: 5,
+    alignSelf: 'stretch',
+    marginHorizontal: padding.ScreenLR,
+    borderRadius: padding.Mini,
+    paddingHorizontal: padding.Large,
+    paddingVertical: padding.Large,
+    marginBottom: padding.Large,
+    padding: padding.Small,
     alignItems: 'center',
+    height: 180,
+    backgroundColor: palette.BackgroundGrey,
   },
   valueList: {
     flexDirection: 'row',
@@ -316,13 +353,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   attributesContainer: {
-    width: '100%',
-    marginBottom: 20,
+    alignSelf: 'stretch',
+    marginHorizontal: padding.ScreenLR,
+    marginTop: padding.Extra,
+    marginBottom: padding.Extra, // Use theme padding
   },
   subHeader: {
-    fontSize: typeface.Size.XLarge,
+    fontSize: typeface.Size.Extra,
     fontWeight: typeface.Weight.Bold,
-    marginBottom: 10,
+    marginBottom: padding.Normal, // Use theme padding
     textAlign: 'center',
     color: typeface.Color.Content,
   },
@@ -330,55 +369,70 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    width: '50%',
+    paddingVertical: padding.Mini, // Use theme padding
+    paddingHorizontal: padding.Small, // Use theme padding
+    width: '50%', // Keep as is or adjust based on overall layout
   },
   attributeLabel: {
-    fontSize: typeface.Size.Large,
+    fontSize: typeface.Size.Extra,
     fontWeight: typeface.Weight.Medium,
-    marginRight: 10,
+    marginRight: padding.Small, // Use theme padding
     color: typeface.Color.Content,
   },
   attributeSlot: {
     height: ATTRIBUTE_SLOT_HEIGHT,
-    width: 80,
-    borderWidth: 1,
-    borderColor: palette.Grey,
-    borderRadius: 5,
+    width: 80, // Keep as is or make responsive
+    borderRadius: padding.Mini, // Use theme padding
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5,
+    padding: padding.Mini, // Use theme padding
   },
   emptySlotText: {
     color: typeface.Color.Inactive,
     fontStyle: 'italic',
   },
-  valueItem: {
-    height: VALUE_ITEM_HEIGHT - 10,
-    minWidth: 40,
-    paddingHorizontal: 10,
-    margin: 4,
-    borderWidth: 1,
-    borderColor: palette.Grey,
-    borderRadius: 4,
-    backgroundColor: palette.Gallery,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: palette.Black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
-  },
-  valueText: {
-    fontSize: typeface.Size.Large,
-    fontWeight: 'bold',
-  },
+  // valueItem styles are part of DraggableListItem, not directly here
+  // valueText styles are part of DraggableListItem, not directly here
   dropTargetHovered: {
-    backgroundColor: palette.LightCyan, // Light cyan
-    borderColor: palette.LightBlue, // Blue
-    borderWidth: 1.5, // Slightly thicker border when hovered
+    backgroundColor: palette.LightCyan,
+    borderColor: palette.LightBlue,
+    borderWidth: 1.5,
+  },
+  confirmButton: {
+    // 宽度在满足margin的请夸下尽可能的大
+    alignSelf: 'stretch',
+    marginHorizontal: padding.ScreenLR,
+    marginTop: padding.Normal,
+    paddingVertical: padding.Small,
+    paddingHorizontal: padding.Large, // Make button wider
+    backgroundColor: palette.LightYellow,
+    alignItems: 'center',
+    justifyContent: 'center', // Center text
+    shadowColor: palette.Black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: padding.Mini,
+    height: 50,
+  },
+  confirmButtonDisabled: {
+    backgroundColor: palette.DarkGrey,
+  },
+  confirmButtonPressed: {
+    backgroundColor: palette.DarkYellow,
+    opacity: 0.9,
+  },
+  confirmButtonText: {
+    fontSize: typeface.Size.Extra, // Larger text for confirm button
+    color: typeface.Color.ContentDark,
+    fontWeight: typeface.Weight.Bold,
+  },
+  confirmButtonTextDisabled: {
+    color: typeface.Color.Inactive,
   },
 })
 

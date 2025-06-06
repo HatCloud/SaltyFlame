@@ -99,6 +99,18 @@ export const translations = {
         encountersWithStrangeEntities: '第三类接触',
       },
     },
+    attributeAllocation: {
+      title: '分配调查员属性',
+      instructions: '将数值拖拽到对应的属性上进行分配。',
+      alertTitleHint: '提示',
+      alertMessageAllPoints: '请分配所有属性点！',
+      alertTitleError: '错误',
+      alertMessageInternalError: '内部错误：并非所有属性都已分配值。',
+      subHeaderAttributes: '属性:',
+      subHeaderValuesToAssign: '待分配数值:',
+      emptySlot: '空',
+      confirmAllocation: '确认分配',
+    },
   },
   en: {
     common: {
@@ -199,6 +211,19 @@ export const translations = {
         mythosTomesSpellsArcaneObjects: 'Mythos Tomes/Spells/Arcane Objects',
         encountersWithStrangeEntities: 'Encounters with Strange Entities',
       },
+    },
+    attributeAllocation: {
+      title: 'Allocate Investigator Attributes',
+      instructions: 'Drag and drop values to the corresponding attributes.',
+      alertTitleHint: 'Hint',
+      alertMessageAllPoints: 'Please allocate all attribute points!',
+      alertTitleError: 'Error',
+      alertMessageInternalError:
+        'Internal error: Not all attributes have been assigned a value.',
+      subHeaderAttributes: 'Attributes:',
+      subHeaderValuesToAssign: 'Values to Assign:',
+      emptySlot: 'Empty',
+      confirmAllocation: 'Confirm Allocation',
     },
   },
 } as const

@@ -33,8 +33,8 @@
   - `src/interface/MyAppState.ts` 中的 `initialState` 已更新，通过调用 `loadAllCnSceneData()` 来加载场景数据。
   - 旧的单一数据文件 `src/data/SceneData_CN.ts` 已被删除。
 - [x] **国际化 (i18n) 功能初步实现**:
-  - 添加了 `src/i18n/` 目录及相关文件 (`useI18n.ts`, `resources.ts`, `types.ts`)。
-  - `useI18n` hook 已在多个UI组件中用于文本本地化。
+  - 添加了 `src/i18n/` 目录及相关文件 (`useI18n.ts`, `resources.ts`, `interface.ts` - 原 `types.ts` 已重命名并更新)。
+  - `useI18n` hook 已集成到主要UI组件中。
 - [x] **UI改进**:
   - 为 `src/ui/components/OptionButton.tsx` 和 `src/ui/components/CheckResult.tsx` 中的 `resolveButton` 添加了按下效果。
 - [x] **选项条件显示**:
@@ -44,7 +44,7 @@
     - 支持 `CHARACTERISTIC_COMPARE` 条件类型。
     - 为 `HAS_ITEM`, `HAS_NOT_ITEM`, `FLAG_SET`, `FLAG_NOT_SET` 添加了初步支持（依赖 `gameFlags`）和本地化描述文本。
   - `OptionButton.tsx` 和 `CheckOption.tsx` 已更新以支持 `disabled` 和 `conditionDescription` props。
-  - `i18n` 相关文件 (`resources.ts`, `useI18n.ts`, `types.ts`) 已更新以支持带插值的条件描述文本。
+  - `i18n` 相关文件 (`resources.ts`, `useI18n.ts`, `interface.ts`) 已更新以支持带插值的条件描述文本。
   - 在 `MyAppState.ts` 中添加了 `gameFlags` 状态。
   - 更新了 `reducer.ts` 以处理 `SET_FLAG` 和 `CLEAR_FLAG` 效果，修改 `gameFlags`。
 - [x] **检定UI改进 (显示角色检定值)**:
@@ -110,6 +110,18 @@
   - 将 `src/ui/components/StoryCard.tsx` 中的 `getConditionDescription` 方法提取到了新的自定义 Hook `src/hooks/useConditionDescription.ts`。
   - 将 `src/ui/components/StoryCard.tsx` 中的 `checkCondition` 方法提取到了新的自定义 Hook `src/hooks/useCheckCondition.ts`。
   - 更新了 `StoryCard.tsx` 以使用这两个新 Hook，并清理了相关的无用导入和注释。
+- [x] **游戏状态重置**:
+  - 修改了 `src/reducer/index.ts` 中的 `CHANGE_SCENE` action 处理逻辑。当目标场景ID为 '1' 时，会自动重置 `history` 为空数组，`characterData` 为 `defaultInitialState.characterData`，以及 `gameFlags` 为 `defaultInitialState.gameFlags` (空对象)。
+  - **补充**: 修改了 `src/reducer/index.ts` 中的 `GO_BACK` action 处理逻辑。当通过返回操作到达场景 '1' 时，同样会自动重置 `history`、`characterData` 和 `gameFlags`。
+- [x] **属性分配界面 (AttributeAllocationScreen.tsx) UI优化与本地化**:
+  - 使用 `SafeAreaView` 包裹屏幕内容，确保顶部标题不会与状态栏重叠。
+  - 调整了布局，将“待分配数值”区域移到了“属性”区域的下方。
+  - “确认分配”按钮的样式已更新，使其视觉风格与 `OptionButton.tsx` 组件类似（例如，使用了相似的背景色、圆角、阴影和文字样式）。
+  - 修正了因错误使用 `padding.Tiny` (实际应为 `padding.Mini`) 导致的 TypeScript 类型错误。
+  - **本地化**: `AttributeAllocationScreen.tsx` 中的所有硬编码中文字符串（如标题、说明、提示信息、按钮文本等）已替换为使用 `useI18n` hook 的本地化版本。
+  - **i18n资源更新**:
+    - 在 `src/i18n/interface.ts` 中添加并导出了 `LanguageResources` 和 `SingleLanguageResources` 类型定义。
+    - 在 `src/i18n/resources.ts` 中为属性分配界面的相关文本添加了中英文翻译键。
 
 ## 未完成功能 (来自 projectbrief.md)
 
@@ -131,6 +143,8 @@
 - 核心UI组件 (`StoryCard.tsx`) 和状态管理器 (`reducer.ts`) 已初步重构。
 - `StoryCard.tsx` 中的条件描述和条件检查逻辑已重构为自定义Hooks (`useConditionDescription.ts`, `useCheckCondition.ts`)。
 - `reducer.ts` 中的具体检定逻辑（如根据角色属性掷骰）和效果应用逻辑（如解析"1D3"伤害）尚待完整实现。
+- 当通过 `CHANGE_SCENE` 或 `GO_BACK` 切换到场景 '1' 时，游戏状态（历史、角色数据、游戏标记）会自动重置。
+- 属性分配界面 (`AttributeAllocationScreen.tsx`) 已根据用户反馈进行了UI优化和本地化，并修复了相关错误。
 
 ## 已知问题
 
@@ -198,4 +212,18 @@
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。
 - **2025-06-06 (续)**:
   - **Bug修复与代码重构**: 修正了 `src/ui/components/StoryCard.tsx` 中 `checkCondition` 函数内 `ConditionType.FLAG_NOT_SET` 的逻辑。将 `getConditionDescription` 和 `checkCondition` 方法从 `StoryCard.tsx` 提取到各自的自定义Hooks (`useConditionDescription.ts`, `useCheckCondition.ts`)。更新了 `StoryCard.tsx` 以使用这些Hooks，并清理了相关代码。
+  - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。
+- **2025-06-06 (更晚)**:
+  - **游戏状态重置**:
+    - 修改了 `src/reducer/index.ts` 中的 `CHANGE_SCENE` action 处理逻辑。当目标场景ID为 '1' 时，会自动重置 `history` 为空数组，`characterData` 为 `defaultInitialState.characterData`，以及 `gameFlags` 为 `defaultInitialState.gameFlags` (空对象)。
+    - **补充**: 修改了 `src/reducer/index.ts` 中的 `GO_BACK` action 处理逻辑。当通过返回操作到达场景 '1' 时，同样会自动重置 `history`、`characterData` 和 `gameFlags`。
+  - **属性分配界面 (AttributeAllocationScreen.tsx) UI优化与本地化**:
+    - 使用 `SafeAreaView` 包裹屏幕内容，确保顶部标题不会与状态栏重叠。
+    - 调整了布局，将“待分配数值”区域移到了“属性”区域的下方。
+    - “确认分配”按钮的样式已更新，使其视觉风格与 `OptionButton.tsx` 组件类似。
+    - 修正了 `AttributeAllocationScreen.tsx` 中因错误使用 `padding.Tiny` (实际应为 `padding.Mini`) 导致的 TypeScript 类型错误。
+    - **本地化**: `AttributeAllocationScreen.tsx` 中的所有硬编码中文字符串已替换为使用 `useI18n` hook 的本地化版本。
+    - **i18n资源更新**:
+      - 在 `src/i18n/interface.ts` 中添加并导出了 `LanguageResources` 和 `SingleLanguageResources` 类型定义。
+      - 在 `src/i18n/resources.ts` 中为属性分配界面的相关文本添加了中英文翻译键。
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。

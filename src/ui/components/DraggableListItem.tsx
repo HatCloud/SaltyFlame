@@ -1,11 +1,7 @@
 import React, { useRef } from 'react' // Added useRef
 import { Text, StyleSheet, LayoutRectangle } from 'react-native'
-import {
-  PanGestureHandler,
-  PanGestureHandlerGestureEvent,
-} from 'react-native-gesture-handler'
+import { Gesture, GestureDetector } from 'react-native-gesture-handler' // Updated import
 import Animated, {
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -50,26 +46,25 @@ const DraggableListItem: React.FC<DraggableListItemProps> = ({
 }) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
+  const startX = useSharedValue(0) // Added for new gesture handler
+  const startY = useSharedValue(0) // Added for new gesture handler
   const lastHoveredKeyRef = useRef<CoreCharacteristicKey | 'available' | null>(
     null,
   ) // Added ref
 
-  const gestureHandler = useAnimatedGestureHandler<
-    PanGestureHandlerGestureEvent,
-    { startX: number; startY: number }
-  >({
-    onStart: (_, ctx) => {
-      ctx.startX = translateX.value
-      ctx.startY = translateY.value
+  const panGesture = Gesture.Pan()
+    .onStart(() => {
+      startX.value = translateX.value
+      startY.value = translateY.value
       // Clear hover on new drag start
       if (onHover && lastHoveredKeyRef.current !== null) {
         runOnJS(onHover)(null)
         lastHoveredKeyRef.current = null
       }
-    },
-    onActive: (event, ctx) => {
-      translateX.value = ctx.startX + event.translationX
-      translateY.value = ctx.startY + event.translationY
+    })
+    .onUpdate(event => {
+      translateX.value = startX.value + event.translationX
+      translateY.value = startY.value + event.translationY
 
       if (onHover) {
         let currentHoverKey: CoreCharacteristicKey | 'available' | null = null
@@ -107,8 +102,8 @@ const DraggableListItem: React.FC<DraggableListItemProps> = ({
           lastHoveredKeyRef.current = currentHoverKey
         }
       }
-    },
-    onEnd: event => {
+    })
+    .onEnd(event => {
       // Clear hover state first
       if (onHover && lastHoveredKeyRef.current !== null) {
         runOnJS(onHover)(null)
@@ -153,8 +148,7 @@ const DraggableListItem: React.FC<DraggableListItemProps> = ({
 
       translateX.value = withSpring(0)
       translateY.value = withSpring(0)
-    },
-  })
+    })
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -167,13 +161,13 @@ const DraggableListItem: React.FC<DraggableListItemProps> = ({
   })
 
   return (
-    <PanGestureHandler onGestureEvent={gestureHandler}>
+    <GestureDetector gesture={panGesture}>
       <Animated.View
         style={[styles.valueItem, { height: itemHeight - 10 }, animatedStyle]}
       >
         <Text style={styles.valueText}>{item.value}</Text>
       </Animated.View>
-    </PanGestureHandler>
+    </GestureDetector>
   )
 }
 

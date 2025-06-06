@@ -32,7 +32,7 @@
   - 旧的单一数据文件 `src/data/SceneData_CN.ts` 已被删除。
   - `src/data/loadInitialSceneData.ts` 文件中的占位符和临时注释已清理完毕。
 - **国际化 (i18n) 功能初步实现**:
-  - 在 `src/i18n/` 目录下添加了 `useI18n.ts` (自定义hook), `resources.ts` (翻译资源), 和 `types.ts` (相关类型定义)。
+  - 在 `src/i18n/` 目录下添加了 `useI18n.ts` (自定义hook), `resources.ts` (翻译资源), 和 `interface.ts` (相关类型定义，原 `types.ts` 已重命名并更新)。
   - `useI18n` hook 从应用状态读取语言设置，并提供 `t` 函数用于文本翻译。
   - 已在 `CheckOption.tsx`, `CheckResult.tsx`, `StoryCard.tsx`, 和 `CharacterBottomSheet.tsx` 组件中使用 `useI18n` 实现文本本地化。
 - **UI改进**:
@@ -143,6 +143,18 @@
         - 修改了 `PERFORM_INLINE_CHECK` action 的处理逻辑：现在它会执行检定，将完整的检定结果（包括 `checkPayload`, `originalOption`, `rollValue`, `resultType`, `diceFaces`）存入 `pendingCheckResultData`，然后触发骰子动画。`currentCheckAttempt` 不再立即设置。
         - 修改了 `HIDE_DICE_ROLL_ANIMATION` action 的处理逻辑：在动画隐藏后，它会检查 `pendingCheckResultData`。如果存在，则用其中的数据设置 `currentCheckAttempt`，然后清除 `pendingCheckResultData`。
       - `src/App.tsx`: 更新了对 `GlobalDiceRollAnimation` 组件的调用，传递 `resultType` 并移除了 `diceFaces` prop。
+- **游戏状态重置**:
+  - 修改了 `src/reducer/index.ts` 中的 `CHANGE_SCENE` action 处理逻辑。当目标场景ID为 '1' 时，会自动重置 `history` 为空数组，`characterData` 为 `defaultInitialState.characterData`，以及 `gameFlags` 为 `defaultInitialState.gameFlags` (空对象)。
+  - **补充**: 修改了 `src/reducer/index.ts` 中的 `GO_BACK` action 处理逻辑。当通过返回操作到达场景 '1' 时，同样会自动重置 `history`、`characterData` 和 `gameFlags`。
+- **属性分配界面 (AttributeAllocationScreen.tsx) UI优化与本地化**:
+  - 使用 `SafeAreaView` 包裹屏幕内容，确保顶部标题不会与状态栏重叠。
+  - 调整了布局，将“待分配数值”区域移到了“属性”区域的下方。
+  - “确认分配”按钮的样式已更新，使其视觉风格与 `OptionButton.tsx` 组件类似（例如，使用了相似的背景色、圆角、阴影和文字样式）。
+  - 修正了因错误使用 `padding.Tiny` (实际应为 `padding.Mini`) 导致的 TypeScript 类型错误。
+  - **本地化**: `AttributeAllocationScreen.tsx` 中的所有硬编码中文字符串（如标题、说明、提示信息、按钮文本等）已替换为使用 `useI18n` hook 的本地化版本。
+  - **i18n资源更新**:
+    - 在 `src/i18n/interface.ts` 中添加并导出了 `LanguageResources` 和 `SingleLanguageResources` 类型定义。
+    - 在 `src/i18n/resources.ts` 中为属性分配界面的相关文本添加了中英文翻译键。
 
 ## 后续步骤
 
