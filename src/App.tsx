@@ -78,7 +78,8 @@ function App(): React.ReactElement {
           <GlobalDiceRollAnimation
             isVisible={state.diceRollAnimation.isVisible}
             rollResult={state.diceRollAnimation.rollResult}
-            diceFaces={state.diceRollAnimation.diceFaces}
+            resultType={state.diceRollAnimation.resultType} // Added resultType
+            // diceFaces={state.diceRollAnimation.diceFaces} // Removed diceFaces as it's part of resultType logic now
             onAnimationFinish={handleAnimationFinish}
           />
         </SafeAreaProvider>

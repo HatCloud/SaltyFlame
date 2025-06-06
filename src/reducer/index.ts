@@ -80,11 +80,12 @@ export const appReducer = (
         saveStateToStorage(tempState)
       }
 
-      const { rollValue, resultType, diceFaces } = executeCheckLogic(
-        // Added diceFaces here
-        tempState,
-        checkPayload.details,
-      )
+      const { rollValue, resultType, diceFaces, targetValue } =
+        executeCheckLogic(
+          // Added diceFaces here
+          tempState,
+          checkPayload.details,
+        )
 
       // Trigger dice roll animation
       // Now executeCheckLogic returns diceFaces
@@ -93,25 +94,32 @@ export const appReducer = (
           isVisible: true,
           rollResult: rollValue,
           diceFaces: diceFaces, // Use diceFaces from executeCheckLogic
+          resultType: resultType, // Added resultType
+          targetValue: targetValue, // Added targetValue
         }
       }
 
-      tempState.currentCheckAttempt = {
-        checkDefinition: checkPayload.details,
-        rollValue,
-        resultType,
-        successMessage: checkPayload.successText,
-        failureMessage: checkPayload.failureText,
-        nextSceneIdOnSuccess: checkPayload.onSuccessSceneId,
-        nextSceneIdOnFailure: checkPayload.onFailureSceneId,
-        effectsToApplyOnSuccess: checkPayload.onSuccessEffects,
-        effectsToApplyOnFailure: checkPayload.onFailureEffects,
-        originalOption: originalOption,
+      // Store pending check data instead of directly setting currentCheckAttempt
+      tempState.pendingCheckResultData = {
+        checkPayload,
+        originalOption,
+        targetValue,
+        rollValue: rollValue as number, // Assuming rollValue is always defined if diceFaces is
+        resultType: resultType as CheckOutcome, // Assuming resultType is always defined
+        diceFaces: diceFaces as number, // Assuming diceFaces is always defined
       }
-      // Note: saveStateToStorage will be called if originalOption.effects exist,
-      // otherwise it's implicitly part of the state update.
-      // If we always want to save after this, it should be called here.
-      // For now, relying on existing save points.
+      // tempState.currentCheckAttempt = { // This will be set after animation
+      //   checkDefinition: checkPayload.details,
+      //   rollValue,
+      //   resultType,
+      //   successMessage: checkPayload.successText,
+      //   failureMessage: checkPayload.failureText,
+      //   nextSceneIdOnSuccess: checkPayload.onSuccessSceneId,
+      //   nextSceneIdOnFailure: checkPayload.onFailureSceneId,
+      //   effectsToApplyOnSuccess: checkPayload.onSuccessEffects,
+      //   effectsToApplyOnFailure: checkPayload.onFailureEffects,
+      //   originalOption: originalOption,
+      // }
       return tempState
     }
 
@@ -194,24 +202,55 @@ export const appReducer = (
     }
 
     // New cases for dice roll animation
-    case 'SHOW_DICE_ROLL_ANIMATION': // This might be redundant if PERFORM_INLINE_CHECK handles it
+    case 'SHOW_DICE_ROLL_ANIMATION':
       return {
         ...newState,
         diceRollAnimation: {
           isVisible: true,
           rollResult: action.payload.rollResult,
           diceFaces: action.payload.diceFaces,
+          resultType: action.payload.resultType,
+          targetValue: action.payload.targetValue,
         },
       }
 
-    case 'HIDE_DICE_ROLL_ANIMATION':
-      return {
+    case 'HIDE_DICE_ROLL_ANIMATION': {
+      const finalState = {
         ...newState,
         diceRollAnimation: {
           ...newState.diceRollAnimation,
           isVisible: false,
         },
       }
+      if (finalState.pendingCheckResultData) {
+        const {
+          checkPayload,
+          originalOption,
+          rollValue,
+          resultType,
+          targetValue,
+          // diceFaces is in pendingCheckResultData but not directly used for currentCheckAttempt here
+        } = finalState.pendingCheckResultData
+
+        finalState.currentCheckAttempt = {
+          checkDefinition: checkPayload.details,
+          rollValue,
+          resultType,
+          targetValue,
+          successMessage: checkPayload.successText,
+          failureMessage: checkPayload.failureText,
+          nextSceneIdOnSuccess: checkPayload.onSuccessSceneId,
+          nextSceneIdOnFailure: checkPayload.onFailureSceneId,
+          effectsToApplyOnSuccess: checkPayload.onSuccessEffects,
+          effectsToApplyOnFailure: checkPayload.onFailureEffects,
+          originalOption: originalOption,
+        }
+        finalState.pendingCheckResultData = null // Clear pending data
+        // Potentially save state here if currentCheckAttempt update should be persisted immediately
+        // saveStateToStorage(finalState);
+      }
+      return finalState
+    }
 
     default:
       return newState

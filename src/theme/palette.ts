@@ -14,6 +14,7 @@ const palette = {
   LightCyan: '#E0F7FA',
   LightBlue: '#478CFE',
   Gallery: '#F0F0F0',
+  Mask: 'rgba(10, 10, 10, 0.25)',
 }
 
 export default palette

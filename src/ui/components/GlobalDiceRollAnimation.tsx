@@ -4,6 +4,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
+  withDelay,
   Easing,
   runOnJS,
 } from 'react-native-reanimated'
@@ -11,26 +12,33 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import Sound from 'react-native-sound'
 import palette from '../../theme/palette'
 import { typeface } from '../../theme/typeface'
+import { CheckOutcome } from '../../constant/enums' // Added import
+import { useI18n } from '../../i18n/useI18n' // Added import
+import { getCheckOutcomeText } from '../../utils/checkUtils' // Updated import
 
 interface GlobalDiceRollAnimationProps {
   isVisible: boolean
   rollResult: number | null
-  diceFaces: number | null
+  resultType?: CheckOutcome // Added prop
   onAnimationFinish: () => void
 }
 
-const ANIMATION_DURATION = 500
-const DISPLAY_DURATION = 2000 // Corrected display duration
+const ANIMATION_DURATION = 400
+const DICE_ANIMATION_PEAK_DURATION = ANIMATION_DURATION * 1.2 // When dice is fully visible and spinning
+const TEXT_FADE_IN_DURATION = ANIMATION_DURATION / 2
+const DISPLAY_DURATION = 1200 // Duration the modal stays visible after text appears
 
 const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
   isVisible,
   rollResult,
-  diceFaces,
+  resultType,
   onAnimationFinish,
 }) => {
-  const opacity = useSharedValue(0)
-  const scale = useSharedValue(0.5)
-  const rotateZValue = useSharedValue(0) // For simple Z-axis rotation
+  const { t } = useI18n()
+  const overallOpacity = useSharedValue(0) // Controls the entire modal card's opacity
+  const overallScale = useSharedValue(0.5) // Controls the entire modal card's scale
+  const rotateZValue = useSharedValue(0)
+  const resultTextOpacity = useSharedValue(0) // Controls result text's opacity
 
   const [showModalContent, setShowModalContent] = useState(false)
 
@@ -63,38 +71,65 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
         console.error('Error initializing Sound:', e)
       }
 
-      opacity.value = withTiming(1, {
+      // Initial state for animations
+      resultTextOpacity.value = 0
+      rotateZValue.value = 0 // Ensure rotation is reset
+
+      // Overall modal visibility animation
+      overallOpacity.value = withTiming(1, {
         duration: ANIMATION_DURATION,
         easing: Easing.out(Easing.ease),
       })
-      scale.value = withTiming(1, {
+      overallScale.value = withTiming(1, {
         duration: ANIMATION_DURATION,
         easing: Easing.out(Easing.cubic),
       })
-      // Animate Z-axis rotation
-      rotateZValue.value = withTiming(360, {
-        // Full spin on Z
-        duration: ANIMATION_DURATION * 2,
-        easing: Easing.linear,
-      })
 
+      const rotationStartDelay = 300
+      rotateZValue.value = withDelay(
+        rotationStartDelay,
+        withTiming(180, {
+          duration: DICE_ANIMATION_PEAK_DURATION, // Rotates
+          easing: Easing.linear,
+        }),
+      )
+
+      // Step 3: Dice icon fades out after its rotation is complete.
+      // Fade out delay = rotation start delay + rotation duration
+      const diceFadeOutStartDelay =
+        rotationStartDelay + DICE_ANIMATION_PEAK_DURATION
+
+      // Step 4: Result text fades in as dice icon is fading out.
+      // Text fade-in starts when dice icon starts fading out.
+      const textFadeInStartDelay = diceFadeOutStartDelay
+      resultTextOpacity.value = withDelay(
+        textFadeInStartDelay,
+        withTiming(1, { duration: TEXT_FADE_IN_DURATION }), // Text fades in
+      )
+
+      // Overall modal fade out timer:
+      // Starts after text has been visible for DISPLAY_DURATION
+      const overallFadeOutDelay =
+        textFadeInStartDelay + TEXT_FADE_IN_DURATION + DISPLAY_DURATION
       const timer = setTimeout(() => {
-        opacity.value = withTiming(0, {
-          duration: ANIMATION_DURATION,
-          easing: Easing.in(Easing.ease),
-        })
-        scale.value = withTiming(
-          0.5,
-          { duration: ANIMATION_DURATION, easing: Easing.in(Easing.cubic) },
+        overallOpacity.value = withTiming(
+          0,
+          {
+            duration: ANIMATION_DURATION,
+            easing: Easing.in(Easing.ease),
+          },
           finished => {
             if (finished) {
               runOnJS(setShowModalContent)(false)
               runOnJS(onAnimationFinish)()
-              rotateZValue.value = 0 // Reset rotation
+              // Reset values for next time
+              resultTextOpacity.value = 0
+              rotateZValue.value = 0
+              overallScale.value = 0.5
             }
           },
         )
-      }, DISPLAY_DURATION)
+      }, overallFadeOutDelay)
 
       return () => {
         // Cleanup function
@@ -111,26 +146,34 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
         sound = null // Clear the reference
       }
     } else {
-      // When isVisible becomes false, the cleanup function from the previous effect (when isVisible was true)
-      // will be called, handling the sound release. We only need to manage animations here.
-      opacity.value = withTiming(0, { duration: ANIMATION_DURATION / 2 })
-      scale.value = withTiming(
+      // When isVisible becomes false (e.g., modal closed prematurely)
+      overallOpacity.value = withTiming(0, { duration: ANIMATION_DURATION / 2 })
+      overallScale.value = withTiming(
         0.5,
         { duration: ANIMATION_DURATION / 2 },
         finished => {
           if (finished) {
             runOnJS(setShowModalContent)(false)
-            rotateZValue.value = 0 // Reset rotation if hiding early
+            // Reset values if hiding early
+            resultTextOpacity.value = 0
+            rotateZValue.value = 0
           }
         },
       )
     }
-  }, [isVisible, onAnimationFinish, opacity, scale, rotateZValue])
+  }, [
+    isVisible,
+    onAnimationFinish,
+    overallOpacity,
+    overallScale,
+    rotateZValue,
+    resultTextOpacity,
+  ])
 
-  const animatedStyle = useAnimatedStyle(() => {
+  const animatedCardStyle = useAnimatedStyle(() => {
     return {
-      opacity: opacity.value,
-      transform: [{ scale: scale.value }],
+      opacity: overallOpacity.value,
+      transform: [{ scale: overallScale.value }],
     }
   })
 
@@ -140,25 +183,39 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
     }
   })
 
-  if (!showModalContent || rollResult === null || diceFaces === null) {
+  const resultTextStyle = useAnimatedStyle(() => {
+    return {
+      opacity: resultTextOpacity.value,
+    }
+  })
+
+  //   ? getCheckOutcomeText(resultType, t)
+  //   : `D${diceFaces ?? '?'}` // Fallback if resultType is not available
+
+  if (!showModalContent || rollResult === null) {
     return null
   }
 
+  const descriptionTextContent = getCheckOutcomeText(resultType, t)
+
   return (
-    <Modal transparent visible={showModalContent} animationType="none">
+    <Modal transparent visible={showModalContent} animationType="fade">
       <View style={styles.overlay}>
-        <Animated.View style={[styles.card, animatedStyle]}>
-          <Animated.View style={iconAnimatedStyle}>
-            <Icon
-              name="dice-d20"
-              size={60}
-              color={palette.Tomato} // Use color from palette
-              style={styles.diceIcon}
-            />
-            {/* We can choose a more generic dice or d6 if d20 is too specific, or make it dynamic */}
+        <Animated.View style={[styles.card, animatedCardStyle]}>
+          <Animated.View style={[styles.diceIconContainer, iconAnimatedStyle]}>
+            <Icon name="dice-d20" size={120} color={palette.Tomato} />
           </Animated.View>
-          <Text style={styles.resultText}>{rollResult}</Text>
-          <Text style={styles.descriptionText}>D{diceFaces} 投掷结果</Text>
+
+          <Animated.View style={[styles.textContainer, resultTextStyle]}>
+            <View style={styles.textWrap}>
+              <Text style={styles.resultText}>{rollResult}</Text>
+              {descriptionTextContent ? (
+                <Text style={styles.descriptionText}>
+                  {descriptionTextContent}
+                </Text>
+              ) : null}
+            </View>
+          </Animated.View>
         </Animated.View>
       </View>
     </Modal>
@@ -168,41 +225,48 @@ const GlobalDiceRollAnimation: React.FC<GlobalDiceRollAnimationProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: `${palette.Black}99`, // Black with ~60% opacity
+    backgroundColor: `${palette.Black}99`, // Semi-transparent black overlay
     justifyContent: 'center',
     alignItems: 'center',
   },
   card: {
-    backgroundColor: palette.BackgroundGrey, // Darker background for the card
+    backgroundColor: palette.BackgroundGrey,
     borderRadius: 16,
-    padding: 32,
     alignItems: 'center',
-    // Shadow might not be very visible on a dark overlay with a dark card, consider adjusting or removing
+    justifyContent: 'center', // Center content for overlap
     shadowColor: palette.Black,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25, // Reduced opacity for a more subtle shadow on dark theme
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // Reduced elevation
-    width: '70%',
-    maxWidth: 300,
+    elevation: 5,
+    width: 200,
+    height: 200,
   },
-  diceIcon: {
-    marginBottom: 20,
+  diceIconContainer: {
+    position: 'absolute', // For overlap
+  },
+  textContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: palette.Mask,
+  },
+  textWrap: {
+    alignItems: 'center',
   },
   resultText: {
     fontFamily: typeface.FONT_FAMILY,
     fontSize: 48, // Keeping large size for impact
     fontWeight: typeface.Weight.Bold,
-    color: palette.LightYellow, // Brighter color for dark background
+    color: palette.White,
     marginBottom: 8,
   },
   descriptionText: {
     fontFamily: typeface.FONT_FAMILY,
-    fontSize: typeface.Size.Large,
-    color: palette.Grey, // Lighter grey for dark background
+    fontSize: typeface.Size.Ultra,
+    color: palette.White,
   },
 })
 

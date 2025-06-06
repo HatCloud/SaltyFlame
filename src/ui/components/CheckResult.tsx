@@ -75,14 +75,16 @@ const CheckResult: React.FC<CheckResultProps> = ({
         <Text style={styles.checkInfoText}>{mainMessageText}</Text>
       )}
       <Text style={styles.descriptionText}>
-        {characterValueText ? characterValueText : ''} {t('check.rollValue')}:{' '}
-        {checkAttempt.rollValue}
+        {characterValueText ? characterValueText : ''}
         {'\n'}
         {t('check.difficulty')}
         {checkAttempt.checkDefinition.difficulty
           ? `${checkAttempt.checkDefinition.difficulty}, `
           : ' '}
-        {t('check.result')}
+        {t('check.targetValue')}
+        {checkAttempt.targetValue}
+        {'\n'}
+        {t('check.rollValue')}: {checkAttempt.rollValue}, {t('check.result')}
         {resultStatusText}
       </Text>
 

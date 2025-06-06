@@ -21,6 +21,7 @@ export interface CheckAttemptState {
   checkDefinition: Check // The check being performed (from CheckPayload.details)
   rollValue?: number // The D100 roll result
   resultType?: CheckOutcome // Detailed result of the check
+  targetValue: number
   // isSuccess?: boolean // This can be derived from resultType if needed
 
   // Information to display and use post-check, derived from CheckPayload
@@ -44,13 +45,26 @@ export interface MyAppState {
   gameFlags: Record<GameFlag, GameFlagVaule>
   isCharacterModalVisible?: boolean
   diceRollAnimation: DiceRollAnimationState // Added for dice roll animation
+  pendingCheckResultData?: PendingCheckResultData | null // Added for deferring check attempt set
 }
 
 // State for dice roll animation
 export interface DiceRollAnimationState {
   isVisible: boolean
   rollResult: number | null
-  diceFaces: number | null
+  diceFaces: number | null // diceFaces might still be useful for "D100" etc. if not showing full outcome text
+  resultType?: CheckOutcome // Added for outcome-specific text
+  targetValue: number // Added for target value
+}
+
+// To store check result data temporarily while animation is playing
+export interface PendingCheckResultData {
+  checkPayload: CheckPayload
+  originalOption?: SceneInteractOption
+  rollValue: number
+  resultType: CheckOutcome
+  diceFaces: number
+  targetValue: number
 }
 
 export const initialState: MyAppState = {
@@ -76,7 +90,10 @@ export const initialState: MyAppState = {
     isVisible: false,
     rollResult: null,
     diceFaces: null,
+    resultType: undefined, // Added
+    targetValue: 0,
   },
+  pendingCheckResultData: null, // Initialize pendingCheckResultData
 }
 
 // Action Definitions
@@ -149,6 +166,8 @@ interface ShowDiceRollAnimationAction {
   payload: {
     rollResult: number
     diceFaces: number
+    resultType: CheckOutcome // Added
+    targetValue: number // Added
   }
 }
 

@@ -118,6 +118,31 @@
   - 安装了 `babel-plugin-transform-remove-console`。
   - 修改了 `babel.config.js`，使其在生产环境中移除 `console.*` 调用（保留 `console.error` 和 `console.warn`）。
   - 修改了 `tsconfig.json`，在 `compilerOptions.types` 中明确指定 `"react-native"`，以解决因移除 Jest 后产生的 TypeScript 类型定义错误。
+- **UI动画调整**:
+  - 在 `src/ui/components/GlobalDiceRollAnimation.tsx` 中，为图标的旋转动画 (`iconAnimatedStyle`) 添加了 300ms 的延迟，使用了 `withDelay` 函数。
+  - **骰子动画细节调整 (GlobalDiceRollAnimation.tsx)**:
+    - **布局更改**:
+      - 实现了骰子图标和结果文本（点数、成功类型）的重叠显示。
+      - 调整了卡片样式以适度减小整体高度。
+    - **动画序列调整**:
+      - 初始状态下，结果数值和说明文案不显示。
+      - 播放骰子声效。
+      - 骰子图标在300ms延迟后开始渐显并同时开始旋转。
+      - 骰子图标旋转结束后渐隐。
+      - 骰子图标渐隐的同时，结果数值和说明文案渐显。
+      - 调整了整体模态框消失前的显示时长。
+    - **说明文案内容**:
+      - `GlobalDiceRollAnimationProps` 接口更新，移除了 `diceFaces`（因其不再直接用于描述文本），添加了 `resultType?: CheckOutcome`。
+      - `src/utils/checkUtils.ts` 中添加了 `getCheckOutcomeText` 工具函数，用于根据 `CheckOutcome` 获取本地化的结果描述文本 (并修正了其中使用的i18n键以匹配 `resources.ts`)。
+      - 组件现在使用此工具函数和 `useI18n` 来显示检定的成功类型（如大成功、失败等）。
+    - **状态管理适配与检定结果延迟设定**:
+      - `src/interface/MyAppState.ts`:
+        - 更新了 `DiceRollAnimationState` 接口和 `ShowDiceRollAnimationAction` payload，以包含 `resultType`。
+        - 添加了 `PendingCheckResultData` 接口和 `pendingCheckResultData` 状态字段，用于在骰子动画播放期间暂存检定结果。
+      - `src/reducer/index.ts`:
+        - 修改了 `PERFORM_INLINE_CHECK` action 的处理逻辑：现在它会执行检定，将完整的检定结果（包括 `checkPayload`, `originalOption`, `rollValue`, `resultType`, `diceFaces`）存入 `pendingCheckResultData`，然后触发骰子动画。`currentCheckAttempt` 不再立即设置。
+        - 修改了 `HIDE_DICE_ROLL_ANIMATION` action 的处理逻辑：在动画隐藏后，它会检查 `pendingCheckResultData`。如果存在，则用其中的数据设置 `currentCheckAttempt`，然后清除 `pendingCheckResultData`。
+      - `src/App.tsx`: 更新了对 `GlobalDiceRollAnimation` 组件的调用，传递 `resultType` 并移除了 `diceFaces` prop。
 
 ## 后续步骤
 
