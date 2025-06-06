@@ -50,6 +50,7 @@
 - **代码格式化**: Prettier (根据 `.prettierrc.js` 文件推断)
 - **代码检查**: ESLint (根据 `.eslintrc.js` 文件推断)
 - **构建与调试**: React Native CLI, Android Studio, Xcode
+- **移除控制台输出**: 使用 `babel-plugin-transform-remove-console` 在生产构建中移除 `console.log` 调用 (保留 `console.error` 和 `console.warn`)。
 
 ## 编码风格
 

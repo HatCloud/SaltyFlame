@@ -114,6 +114,10 @@
   - 将 `src/ui/components/StoryCard.tsx` 中的 `checkCondition` 方法提取到了新的自定义 Hook `src/hooks/useCheckCondition.ts` 中。
   - 更新了 `StoryCard.tsx` 以使用这两个新 Hook，并清理了相关的无用导入和注释。
   - 修复了迁移过程中产生的 ESLint 和 TypeScript 错误。
+- **配置生产环境移除 console.log**:
+  - 安装了 `babel-plugin-transform-remove-console`。
+  - 修改了 `babel.config.js`，使其在生产环境中移除 `console.*` 调用（保留 `console.error` 和 `console.warn`）。
+  - 修改了 `tsconfig.json`，在 `compilerOptions.types` 中明确指定 `"react-native"`，以解决因移除 Jest 后产生的 TypeScript 类型定义错误。
 
 ## 后续步骤
 
@@ -133,9 +137,12 @@
 - **检定流程**: 采纳了用户反馈，实现了多阶段检定流程：先执行检定并显示结果，再由用户点击确认后续操作，而不是检定后自动跳转。这对状态管理 (`currentCheckAttempt`) 和UI组件 (`StoryCard.tsx`) 均有较大影响。
 - **数据结构迭代**: `Scene.ts` 和 `MyAppState.ts` 中的数据结构经过了讨论和调整，以更好地支持游戏逻辑和检定流程。
 - **数据存储策略**：
-  - 中文场景数据已从单一大型文件迁移到 `src/data/ts_cn/` 目录下的多个模块化TS文件，并通过 `loadInitialSceneData.ts` 统一加载。此策略已成功实施。
+  - 中文场景数据已从单一大型文件迁移到 `src/data/ts_cn/` 目录下的多个模块化TS文件，并通过 `src/data/loadInitialSceneData.ts` 统一加载。此策略已成功实施。
   - 应用的关键状态字段现在会通过 AsyncStorage 持久化到本地，并在应用启动时加载。
 - **代码组织**: 倾向于将可复用的逻辑（如条件描述生成、条件检查）提取到自定义Hooks中，以保持组件的简洁性和逻辑的模块化。
+- **构建配置**:
+  - 生产环境中的 `console.log` 调用已配置为自动移除，以减小包体积并避免不必要的日志输出。
+  - `tsconfig.json` 中明确指定 `compilerOptions.types` 以避免因依赖移除（如Jest）导致的不必要的类型查找错误。
 
 ## 重要模式与偏好
 

@@ -6,7 +6,8 @@
     "outDir": "dist",
     "jsx": "react-jsx",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["react-native"]
   },
   "include": ["src/**/*", "index.js", ".eslintrc.js"],
   "exclude": [
