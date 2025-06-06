@@ -20,7 +20,7 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
     dispatch({ type: 'TOGGLE_CHARACTER_MODAL' })
   }
 
-  if (!characterData) {
+  if (!characterData || characterData.occupation === 'Unknown') {
     return null
   }
 
