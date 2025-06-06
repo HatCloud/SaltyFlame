@@ -1,20 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useCallback, useEffect } from 'react' // Added useEffect
-import { Character } from '../../interface/Character'
-import { Condition } from '../../interface/Scene'
-import {
-  ConditionType,
-  CheckObjectNames,
-  CoreCharacteristicKey,
-} from '../../constant/enums' // Corrected import for ConditionType, CheckObjectKey removed
-import type { LanguageCode } from '../../i18n/types'
 // Assuming gameFlags will be part of MyAppState, adjust import if necessary
 // import { MyAppState } from '../../interface/MyAppState';
 import { padding } from '../../theme/padding'
 import palette from '../../theme/palette'
 import { typeface } from '../../theme/typeface'
 import { useAppReducer } from '../../hook'
-import type { Scene, SceneInteractOption } from '../../interface/Scene'
+import type { Scene, SceneInteractOption } from '../../interface/Scene' // Scene type is used for currentScene
 import OptionButton from './OptionButton'
 import CheckResult from './CheckResult'
 import CheckOption from './CheckOption'
@@ -22,7 +14,7 @@ import { useI18n } from '../../i18n/useI18n'
 import { useNavigation } from '@react-navigation/native' // Added
 import { StackNavigationProp } from '@react-navigation/stack' // Added
 import { RootStackParamList } from '../../interface/navigation' // Updated import
-import { GameFlagNames } from '../../constant/GameFlags'
+import { useCheckCondition } from '../../hooks/useCheckCondition'
 
 type StoryCardNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,7 +24,8 @@ type StoryCardNavigationProp = StackNavigationProp<
 const StoryCard: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer()
   const navigation = useNavigation<StoryCardNavigationProp>()
-  const { t, lang } = useI18n() // lang might be needed for getConditionDescription
+  const { t } = useI18n()
+  const { checkCondition } = useCheckCondition()
   const currentScene: Scene | undefined =
     state.sceneData?.[state.currentSceneKey]
 
@@ -45,204 +38,7 @@ const StoryCard: React.FC = React.memo(() => {
     }
   }, [currentScene, dispatch]) // Rerun when currentScene or dispatch changes
 
-  const getConditionDescription = useCallback(
-    (condition: Condition): string | undefined => {
-      const currentLang = lang as LanguageCode // Assuming lang is 'cn' or 'en'
-      switch (condition.type) {
-        case ConditionType.HAS_ITEM:
-          return condition.item
-            ? t('condition.hasItem', { item: condition.item })
-            : undefined
-        case ConditionType.HAS_NOT_ITEM:
-          return condition.item
-            ? t('condition.hasNotItem', { item: condition.item })
-            : undefined
-        case ConditionType.FLAG_SET:
-          return condition.gameFlag
-            ? t('condition.flagSet', {
-                flag: GameFlagNames[condition.gameFlag][lang],
-              })
-            : undefined
-        case ConditionType.FLAG_NOT_SET:
-          return condition.gameFlag
-            ? t('condition.flagNotSet', {
-                flag: GameFlagNames[condition.gameFlag][lang],
-              })
-            : undefined
-        case ConditionType.CHARACTERISTIC_COMPARE:
-          if (
-            condition.targetObject &&
-            condition.comparisonOperator &&
-            condition.comparisonObject !== undefined
-          ) {
-            const charName =
-              (condition.targetObject &&
-                CheckObjectNames[condition.targetObject]?.[currentLang]) ||
-              condition.targetObject ||
-              ''
-            // Simple operator display, can be localized further if needed
-            let displayOp = ''
-            switch (condition.comparisonOperator) {
-              case 'gt':
-                displayOp = '>'
-                break
-              case 'lt':
-                displayOp = '<'
-                break
-              case 'eq':
-                displayOp = '='
-                break
-              case 'gte':
-                displayOp = '>='
-                break
-              case 'lte':
-                displayOp = '<='
-                break
-              default:
-                displayOp = condition.comparisonOperator || ''
-                break
-            }
-
-            return `${charName} ${displayOp} ${condition.comparisonObject}`
-          }
-          return undefined
-        default:
-          return undefined
-      }
-    },
-    [t, lang],
-  )
-
-  // Helper function to check conditions
-  const checkCondition = useCallback(
-    (
-      condition: Condition,
-      characterData: Character | null,
-      gameFlags: Record<string, boolean | number | string> | undefined, // Assuming gameFlags on state
-    ): { met: boolean; description?: string } => {
-      const description = getConditionDescription(condition)
-      if (!characterData) return { met: false, description } // Cannot check conditions without character data
-
-      let met = false
-      switch (condition.type) {
-        case ConditionType.HAS_ITEM:
-          if (!condition.item) {
-            break
-          }
-          met =
-            characterData.inventory.find(item => {
-              if (typeof item === 'string') {
-                item === condition.item
-              } else {
-                item.name === condition.item
-              }
-            }) !== undefined
-          break
-        case ConditionType.HAS_NOT_ITEM:
-          if (!condition.item) {
-            break
-          }
-          met =
-            characterData.inventory.find(item => {
-              if (typeof item === 'string') {
-                item === condition.item
-              } else {
-                item.name === condition.item
-              }
-            }) === undefined
-          break
-        case ConditionType.FLAG_SET:
-          if (!condition.gameFlag || !gameFlags) {
-            met = true
-            break
-          }
-          if (condition.expectedValue === undefined) {
-            met = condition.gameFlag in gameFlags
-            break
-          }
-          met = gameFlags[condition.gameFlag] === condition.expectedValue
-          break
-        case ConditionType.FLAG_NOT_SET:
-          if (!condition.gameFlag || !gameFlags) {
-            met = true
-            break
-          }
-          if (condition.expectedValue === undefined) {
-            met = !(condition.gameFlag in gameFlags)
-            break
-          }
-          // 如果期望值已定义，则当 gameFlags 中该 flag 的值不等于期望值时条件满足
-          met = gameFlags[condition.gameFlag] !== condition.expectedValue
-          break
-        case ConditionType.CHARACTERISTIC_COMPARE:
-          if (
-            condition.targetObject &&
-            condition.comparisonObject !== undefined &&
-            condition.comparisonOperator &&
-            characterData
-          ) {
-            const characteristicKey = condition.targetObject
-            if (!characteristicKey) {
-              met = false
-              break
-            }
-            if (!(characteristicKey in characterData.characteristics)) {
-              met = false
-              break
-            }
-            const targetValue =
-              characterData.characteristics[
-                characteristicKey as CoreCharacteristicKey
-              ]
-
-            let comparisonValue: number | undefined
-            if (typeof condition.comparisonObject === 'number') {
-              comparisonValue = condition.comparisonObject
-            } else if (
-              condition.comparisonObject in characterData.characteristics
-            ) {
-              comparisonValue =
-                characterData.characteristics[
-                  condition.comparisonObject as CoreCharacteristicKey
-                ]
-            }
-            if (comparisonValue === undefined) {
-              met = false
-              break
-            }
-            switch (condition.comparisonOperator) {
-              case 'gt':
-                met = targetValue > comparisonValue
-                break
-              case 'lt':
-                met = targetValue < comparisonValue
-                break
-              case 'eq':
-                met = targetValue === comparisonValue
-                break
-              case 'gte':
-                met = targetValue >= comparisonValue
-                break
-              case 'lte':
-                met = targetValue <= comparisonValue
-                break
-              default:
-                met = false
-            }
-          } else {
-            met = false
-          }
-          break
-        default: {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const _exhaustiveCheck: never = condition.type
-          met = true // If condition type is unknown, default to met
-        }
-      }
-      return { met, description }
-    },
-    [getConditionDescription],
-  )
+  // Helper function to check conditions is now imported from useCheckCondition
 
   const handleInteractOptionPress = useCallback(
     (option: SceneInteractOption, disabled?: boolean) => {

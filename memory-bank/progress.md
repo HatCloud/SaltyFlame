@@ -82,7 +82,6 @@
       - 仅更新 `characterData` 中已存在的 `occupation` (string) 和 `background` (CharacterBackground object) 字段。
       - 为职业模板中定义的 `interestSkills`（兴趣技能）实现逻辑：在其当前值或基础值（来自 `CheckObjectDefaultValues`，并处理如DEX/2, EDU等派生情况）的基础上增加20点，结果上限为75。此更新会修改 `characterData.skills`。
       - 移除了未使用的 `generateCharacter` 导入，并修正了 `skillKey` 的类型。
-      - (注意：模块导入路径 `../data/occupations` 仍然报告 "Cannot find module" 错误，这可能是环境问题，因为路径和导出本身是正确的。)
     - `src/ui/components/StoryCard.tsx`: 修改了选项处理逻辑，以 dispatch `APPLY_CHOSEN_OCCUPATION` action。
 - [x] **为职业模板添加示例角色预设信息并调整背景字段**:
   - `src/interface/OccupationTemplate.ts`:
@@ -93,13 +92,24 @@
     - 将原 `background` 字段重命名为 `background_cn`。
     - 添加了新的 `background_en` 字段，并为其所有子属性填充了英文翻译内容。
     - 移除了 `skillPointsFormula` 字段。
-    - （这些文件之前已更新过，添加了示例角色预设字段并填充了数据）。
   - `src/ui/components/CharacterModal.tsx`: 修正了一个TypeScript错误（访问 `personalData.dodge`），之后进一步修改以新的布局（标签居上，内容居左下方）显示角色的详细背景信息，并修正了相关的样式问题。
   - `src/reducer.ts`: 进一步更新了 `APPLY_CHOSEN_OCCUPATION` action 的处理逻辑：
     - 根据当前语言从职业模板的示例预设数据中，为 `characterData` 的 `name`, `sex`, `age`, `birthplace`, `residence` 字段赋值（如果模板中有提供）。
     - 根据职业模板的 `creditRatingRange` 为角色随机生成一个信用评级值，并更新到 `characterData.skills.CREDIT_RATING`。
     - 保留了根据语言选择 `background_cn` 或 `template.background_en` 的逻辑。
   - `src/i18n/resources.ts`: 为角色背景信息的各个字段（如描述、思想信念等）添加了对应的中英文i18n翻译键。
+- [x] **检定逻辑正式化与大成功/大失败实现**:
+  - `src/reducer.ts` 中的 `executeCheckLogic` 函数已更新，以包含基于《克苏鲁的呼唤》第七版规则的大成功和大失败判断逻辑，并返回 `resultType: CheckOutcome`。
+  - `src/constant/enums.ts`: 添加了 `CheckOutcome` 枚举。
+  - `src/interface/MyAppState.ts`: `CheckAttemptState` 接口更新，使用 `resultType` 代替 `isSuccess`。
+  - `src/reducer.ts`: `PERFORM_INLINE_CHECK` 和 `RESOLVE_CHECK_OUTCOME` action 处理更新，以适配 `resultType`。
+  - `src/i18n/resources.ts`: 为检定结果状态（如“大成功”）添加了新的翻译键。
+  - `src/ui/components/CheckResult.tsx`: UI更新，以根据 `resultType` 显示更具体的检定结果文案。
+- [x] **Bug修复与代码重构**:
+  - 修正了 `src/ui/components/StoryCard.tsx` 中 `checkCondition` 函数内 `ConditionType.FLAG_NOT_SET` 的逻辑。
+  - 将 `src/ui/components/StoryCard.tsx` 中的 `getConditionDescription` 方法提取到了新的自定义 Hook `src/hooks/useConditionDescription.ts`。
+  - 将 `src/ui/components/StoryCard.tsx` 中的 `checkCondition` 方法提取到了新的自定义 Hook `src/hooks/useCheckCondition.ts`。
+  - 更新了 `StoryCard.tsx` 以使用这两个新 Hook，并清理了相关的无用导入和注释。
 
 ## 未完成功能 (来自 projectbrief.md)
 
@@ -107,7 +117,6 @@
 - [ ] 英文剧本数据转换 (推迟)
 - [ ] 基于现有代码先实现游戏主体部分
   - 角色的人物卡先用 Fake 数据
-  - [~] 先不实现剧情卡片底部选项的具体判断，让玩家自己先选 (条件显示已部分实现)
 - [ ] 实现全局级别的投骰子能力
 - [ ] 基于投骰子能力，实现 Call of Cthulhu 7th Ed. 规则中定义的相关判定能力，并接入到游戏中
 - [ ] 根据剧情开头的交互来生成真正的角色数据，提供相应的界面支持。
@@ -119,7 +128,8 @@
 - 项目核心依赖已升级，原生项目文件已适配新版 React Native。
 - 剧本的核心数据结构已定义完毕。
 - 中文场景数据（至场景270）的结构化和模块化加载已完成。
-- 核心UI组件 (`StoryCard.tsx`) 和状态管理器 (`reducer.ts`) 已初步重构，以支持用户反馈的多阶段检定流程框架。
+- 核心UI组件 (`StoryCard.tsx`) 和状态管理器 (`reducer.ts`) 已初步重构。
+- `StoryCard.tsx` 中的条件描述和条件检查逻辑已重构为自定义Hooks (`useConditionDescription.ts`, `useCheckCondition.ts`)。
 - `reducer.ts` 中的具体检定逻辑（如根据角色属性掷骰）和效果应用逻辑（如解析"1D3"伤害）尚待完整实现。
 
 ## 已知问题
@@ -187,5 +197,5 @@
     - `src/ui/components/CheckResult.tsx`: UI更新，以根据 `resultType` 显示更具体的检定结果文案。
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。
 - **2025-06-06 (续)**:
-  - **Bug修复**: 修正了 `src/ui/components/StoryCard.tsx` 中 `checkCondition` 函数内 `ConditionType.FLAG_NOT_SET` 的逻辑。
+  - **Bug修复与代码重构**: 修正了 `src/ui/components/StoryCard.tsx` 中 `checkCondition` 函数内 `ConditionType.FLAG_NOT_SET` 的逻辑。将 `getConditionDescription` 和 `checkCondition` 方法从 `StoryCard.tsx` 提取到各自的自定义Hooks (`useConditionDescription.ts`, `useCheckCondition.ts`)。更新了 `StoryCard.tsx` 以使用这些Hooks，并清理了相关代码。
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。

@@ -1,6 +1,6 @@
 import { useAppReducer } from '../hook'
 import { translations } from './resources'
-import { I18nContextType, LanguageCode } from './types'
+import { I18nContextType, LanguageCode } from './interface'
 
 export function useI18n(): I18nContextType {
   const [state] = useAppReducer()

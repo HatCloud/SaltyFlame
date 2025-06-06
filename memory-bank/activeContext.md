@@ -109,19 +109,17 @@
   - `src/ui/components/CheckResult.tsx`: 更新了UI逻辑，以根据 `resultType` 显示更具体的检定结果文案（例如，“大成功”、“大失败”）。
 - **Bug修复**:
   - `src/ui/components/StoryCard.tsx`: 修正了 `checkCondition` 函数中 `ConditionType.FLAG_NOT_SET` 的逻辑错误。当 `condition.expectedValue` 未定义时，错误地将 `gameFlags` 对象赋给了 `met` 变量，现已更正为检查 `gameFlags` 中是否存在对应的 `condition.gameFlag` 键，并相应地设置 `met` 的布尔值。
+- **代码重构**:
+  - 将 `src/ui/components/StoryCard.tsx` 中的 `getConditionDescription` 方法提取到了新的自定义 Hook `src/hooks/useConditionDescription.ts` 中。
+  - 将 `src/ui/components/StoryCard.tsx` 中的 `checkCondition` 方法提取到了新的自定义 Hook `src/hooks/useCheckCondition.ts` 中。
+  - 更新了 `StoryCard.tsx` 以使用这两个新 Hook，并清理了相关的无用导入和注释。
+  - 修复了迁移过程中产生的 ESLint 和 TypeScript 错误。
 
 ## 后续步骤
 
 1.  **完善核心游戏逻辑**:
     - `src/reducer.ts` 中的 `executeCheckLogic` 已包含大成功/大失败的基础逻辑。后续可考虑奖励/惩罚骰的实现。
     - `applySingleEffect` 已更新以处理 `SET_FLAG` 和 `CLEAR_FLAG` 效果，修改 `state.gameFlags`。后续需完整实现解析如 "1D3" 的字符串值、处理所有 `EffectType`，管理物品和游戏标记。
-    - 在 `StoryCard.tsx` 中，实现选项的条件显示逻辑 (`option.condition`)。**已完成并改进**:
-      - `StoryCard.tsx` 现在会根据 `option.condition` 来决定是否显示选项。
-      - 如果选项有条件且条件满足，会在选项文本前显示条件的描述（例如“体型判定：大于40”）。
-      - 不满足条件的选项会显示为灰色且不可点击，而不是消失。
-      - `OptionButton.tsx` 和 `CheckOption.tsx` 已更新以支持 `disabled` 和 `conditionDescription` props。
-      - `i18n` 相关文件 (`resources.ts`, `useI18n.ts`, `types.ts`) 已更新以支持带插值的条件描述文本。
-      - `MyAppState` 已添加 `gameFlags` 属性。
 2.  **剧本数据转换**:
     - 英文剧本数据转换 (推迟)。
 3.  **角色创建流程实现**: 实现角色创建相关场景（如属性分配、职业选择、技能点分配）与 `characterData` 状态的实际交互逻辑。
@@ -137,11 +135,13 @@
 - **数据存储策略**：
   - 中文场景数据已从单一大型文件迁移到 `src/data/ts_cn/` 目录下的多个模块化TS文件，并通过 `loadInitialSceneData.ts` 统一加载。此策略已成功实施。
   - 应用的关键状态字段现在会通过 AsyncStorage 持久化到本地，并在应用启动时加载。
+- **代码组织**: 倾向于将可复用的逻辑（如条件描述生成、条件检查）提取到自定义Hooks中，以保持组件的简洁性和逻辑的模块化。
 
 ## 重要模式与偏好
 
 - **文档驱动**：Memory Bank 是项目的核心信息库，所有重要决策和变更都应在此记录。
 - **结构化文档**：遵循 Memory Bank 的文件结构和层级关系。
+- **自定义Hooks**: 鼓励将可复用的、与UI不直接相关的逻辑封装到自定义Hooks中。
 
 ## 学习与项目洞察
 
@@ -152,3 +152,4 @@
 - **交互流程驱动状态设计**: 用户期望的检定交互流程直接影响了 `MyAppState` 中 `currentCheckAttempt` 状态的设计，以及 `reducer` 中相关action的处理方式。
 - **逐步完善**: 对于复杂功能如检定逻辑和效果应用，采用先搭建框架，然后逐步填充和完善具体实现的策略。
 - **i18n集成**: 引入国际化支持，使得应用能够方便地支持多种语言，提升了用户体验的灵活性。
+- **自定义Hooks**: 将可复用的逻辑（如条件描述生成、条件检查）提取到自定义Hooks中，可以使组件更简洁，逻辑更易于管理和测试。这有助于提高代码的可维护性和可读性。
