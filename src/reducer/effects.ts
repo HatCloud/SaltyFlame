@@ -220,6 +220,7 @@ export function applySingleEffect(
       console.warn(`Unhandled effect type: ${effect.type}`)
       break
   }
+  effect.isActive = false // Mark effect as inactive after application
   // Ensure the returned characterData conforms to Character type.
   // If newCharacterData was correctly typed as Character from the spread, this should be fine.
   return {

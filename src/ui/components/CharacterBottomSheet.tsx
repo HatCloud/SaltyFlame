@@ -17,10 +17,13 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
   const [showCharacteristics] = React.useState(true) // Keep showCharacteristics if it's meant to be toggled elsewhere, or remove if always false
 
   const handlePress = () => {
+    if (!characterData || characterData.occupation === 'Unknown') {
+      return
+    }
     dispatch({ type: 'TOGGLE_CHARACTER_MODAL' })
   }
 
-  if (!characterData || characterData.occupation === 'Unknown') {
+  if (!characterData) {
     return null
   }
 

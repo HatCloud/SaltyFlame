@@ -54,7 +54,15 @@ const StoryCard: React.FC = React.memo(() => {
   // 监听场景变化，触发双卡片动画
   useEffect(() => {
     if (!screneChanged) return
+    const nextScene = state.sceneData?.[state.currentSceneKey]
     const isBack = state.history.length + 1 < takeNumber
+    console.log('当前场景效果:', currentScene?.effects)
+    if (!isBack && nextScene?.effects && nextScene.effects.length > 0) {
+      nextScene.effects.forEach(effect => {
+        if (effect.isActive === false) return // Skip inactive effects
+        dispatch({ type: 'APPLY_EFFECT', payload: effect })
+      })
+    }
     prevTranslateX.value = 0
     prevTranslateX.value = withTiming(isBack ? SCREEN_WIDTH : -SCREEN_WIDTH, {
       duration: ANIMATION_DURATION,
@@ -68,7 +76,7 @@ const StoryCard: React.FC = React.memo(() => {
         easing: Easing.out(Easing.cubic),
       },
       () => {
-        runOnJS(setCurrentScene)(state.sceneData?.[state.currentSceneKey])
+        runOnJS(setCurrentScene)(nextScene)
         runOnJS(setTakeNumber)(state.history.length + 1)
         runOnJS(setChangingScrene)(false)
       },
@@ -82,17 +90,9 @@ const StoryCard: React.FC = React.memo(() => {
     state.sceneData,
     takeNumber,
     translateX,
+    currentScene?.effects,
+    dispatch,
   ])
-
-  // 场景效果处理
-  useEffect(() => {
-    console.log('当前场景效果:', currentScene?.effects)
-    if (currentScene?.effects && currentScene.effects.length > 0) {
-      currentScene.effects.forEach(effect => {
-        dispatch({ type: 'APPLY_EFFECT', payload: effect })
-      })
-    }
-  }, [currentScene, dispatch])
 
   // 动画样式
   const animatedStyle = useAnimatedStyle(() => {

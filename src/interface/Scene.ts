@@ -25,6 +25,7 @@ export interface Effect {
   gameFlag?: GameFlag // 用于设置/取消游戏标记
   flagValue?: boolean // 游戏标记的值
   item?: string | Weapon // For ADD_ITEM, REMOVE_ITEM: the item name or Weapon object
+  isActive?: boolean
 }
 
 // 条件定义 (根据项目实际情况可能更复杂)
