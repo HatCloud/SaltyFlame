@@ -188,6 +188,8 @@ export enum ConditionType {
   FLAG_SET = 'FLAG_SET',
   FLAG_NOT_SET = 'FLAG_NOT_SET',
   CHARACTERISTIC_COMPARE = 'CHARACTERISTIC_COMPARE',
+  NOT_GONE = 'NOT_GONE',
+  HAS_GONE_SOME_SCENE = 'HAS_GONE_SOME_SCENE',
 }
 
 export enum CheckDifficulty {

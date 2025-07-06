@@ -12,6 +12,7 @@ export const useCheckCondition = () => {
       condition: Condition,
       characterData: Character | null,
       gameFlags: Record<string, boolean | number | string> | undefined,
+      history: string[],
     ): { met: boolean; description?: string } => {
       const description = getConditionDescription(condition)
       if (!characterData) return { met: false, description } // Cannot check conditions without character data
@@ -127,12 +128,49 @@ export const useCheckCondition = () => {
             met = false
           }
           break
-        default: {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const _exhaustiveCheck: never = condition.type
-          met = true // If condition type is unknown, default to met
+        case ConditionType.NOT_GONE: {
+          // Check if the scene has not been visited
+          if (
+            !condition.expectedValue ||
+            typeof condition.expectedValue !== 'string'
+          ) {
+            met = false // If no expected value, default to not met
+          } else {
+            // Check if the scene ID is not in the gone list
+            met = !history?.includes(condition.expectedValue)
+          }
+          break
+        }
+        case ConditionType.HAS_GONE_SOME_SCENE: {
+          // Check if any of the gone scene IDs are in the history
+          if (
+            !condition.sceneGoneIds ||
+            !Array.isArray(condition.sceneGoneIds)
+          ) {
+            met = false // If no gone IDs, default to not met
+          } else {
+            // 需要检查一下满足条件（condition.sceneGoneIds中的）去过的场景ID的数量是否超过 condition.expectedValue
+            const goneCount = condition.sceneGoneIds.reduce(
+              (count, sceneId) => count + (history.includes(sceneId) ? 1 : 0),
+              0,
+            )
+            if (condition.expectedValue === undefined) {
+              met = goneCount > 0 // 如果没有期望值，则只要有去过一个场景就满足条件
+            } else if (typeof condition.expectedValue === 'number') {
+              met = goneCount >= condition.expectedValue // 检查是否去过的场景数量大于等于期望值
+            } else {
+              met = false // 如果期望值不是数字，则不满足条件
+            }
+          }
+          break
         }
       }
+      console.log(`Condition check for ${condition.type} met: ${met}`, {
+        condition,
+        characterData,
+        gameFlags,
+        history,
+      })
       return { met, description }
     },
     [getConditionDescription],

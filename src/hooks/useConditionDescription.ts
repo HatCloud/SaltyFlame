@@ -73,9 +73,11 @@ export const useConditionDescription = () => {
             return `${charName} ${displayOp} ${condition.comparisonObject}`
           }
           return undefined
+        case ConditionType.HAS_GONE_SOME_SCENE:
+          return t('condition.hasGoneSomeScene', {
+            count: condition.expectedValue,
+          })
         default: {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const _exhaustiveCheck: never = condition.type // Ensures all cases are handled
           return undefined
         }
       }

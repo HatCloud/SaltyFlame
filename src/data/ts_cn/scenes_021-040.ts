@@ -42,35 +42,71 @@ export const scenes_021_040: SceneData = {
   },
   '25': {
     id: '25',
-    story:
-      '你已经能大概摸清自己在烬头村的位置了。\n你想继续深入调查吗？你可以从以下几个选项中再选择一项。不要重复之前的选择。如果下面的选项你已经试过四个（或者在那之前，如果你打算推进时间），前往3。',
+    story: '你已经能大概摸清自己在烬头村的位置了。\n你想继续深入调查吗？',
     options: [
       {
         type: 'goto',
         text: '在本地杂货店询问交通方式',
         goto: '16',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '16',
+        },
       },
-      { type: 'goto', text: '找到村会堂', goto: '84' },
+      {
+        type: 'goto',
+        text: '找到村会堂',
+        goto: '84',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '84',
+        },
+      },
       {
         type: 'goto',
         text: '沿着道路下坡，查看东盘山路',
         goto: '115',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '115',
+        },
       },
       {
         type: 'goto',
         text: '调查巨大的金属建筑物',
         goto: '57',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '57',
+        },
       },
-      { type: 'goto', text: '探索教堂', goto: '34' },
+      {
+        type: 'goto',
+        text: '探索教堂',
+        goto: '34',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '34',
+        },
+      },
       {
         type: 'goto',
         text: '寻找拥有交通工具的当地居民',
         goto: '96',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '96',
+        },
       },
       {
         type: 'goto',
-        text: '（如果已尝试四个或准备推进时间）结束调查，前往村中',
+        text: '结束调查，前往村中',
         goto: '3',
+        condition: {
+          type: ConditionType.HAS_GONE_SOME_SCENE,
+          expectedValue: 4,
+          sceneGoneIds: ['16', '84', '115', '57', '34', '96'],
+        },
       },
     ],
   },

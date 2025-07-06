@@ -41,6 +41,7 @@ export const translations = {
       hasNotItem: '不能拥有物品：{{item}}',
       flagSet: '需要标记：{{flag}}',
       flagNotSet: '不能有标记：{{flag}}',
+      hasGoneSomeScene: '至少调查过 {{count}} 个场景后',
     },
     roles: {
       privateInvestigator: '私家侦探',
@@ -154,6 +155,7 @@ export const translations = {
       hasNotItem: 'Must not have item: {{item}}',
       flagSet: 'Requires flag: {{flag}}',
       flagNotSet: 'Must not have flag: {{flag}}',
+      hasGoneSomeScene: 'Investigated at least {{count}} scenes',
     },
     roles: {
       privateInvestigator: 'Private Investigator',

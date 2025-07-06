@@ -38,6 +38,7 @@ export interface Condition {
   targetObject?: CheckObjectKey // The characteristic to compare (e.g., SIZ, STR)
   comparisonObject?: CheckObjectKey | number // The value to compare against
   comparisonOperator?: 'gt' | 'lt' | 'eq' | 'gte' | 'lte' // Comparison operator
+  sceneGoneIds?: string[] // 场景ID列表，用于检查是否已访问过某些场景
 }
 
 // 通用的“检定核心负载”接口

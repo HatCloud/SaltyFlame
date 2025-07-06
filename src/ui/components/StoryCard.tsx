@@ -56,6 +56,8 @@ const StoryCard: React.FC = React.memo(() => {
     if (!screneChanged) return
     const nextScene = state.sceneData?.[state.currentSceneKey]
     const isBack = state.history.length + 1 < takeNumber
+    console.log('切换场景:')
+    console.log(nextScene)
     console.log('当前场景效果:', currentScene?.effects)
     if (!isBack && nextScene?.effects && nextScene.effects.length > 0) {
       nextScene.effects.forEach(effect => {
@@ -210,6 +212,7 @@ const StoryCard: React.FC = React.memo(() => {
                   option.condition,
                   state.characterData,
                   state.gameFlags,
+                  state.history,
                 )
               : { met: true, description: undefined }
             if (option.type === 'check') {
