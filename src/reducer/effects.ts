@@ -15,9 +15,10 @@ export function applySingleEffect(
     )
     return state
   }
-
   // Now we know state.characterData is not null, so it must be a Character object.
-  const newCharacterData = { ...state.characterData } // This should be safe.
+  const newCharacterData = JSON.parse(
+    JSON.stringify(state.characterData),
+  ) as Character
   const newGameFlags = { ...state.gameFlags }
 
   switch (effect.type) {
@@ -30,6 +31,21 @@ export function applySingleEffect(
       }
       // Since hitPoints and hitPoints.current are mandatory in Character, direct assignment is fine.
       newCharacterData.hitPoints.current += hpChange
+      newCharacterData.hitPoints.current = Math.min(
+        newCharacterData.hitPoints.max,
+        newCharacterData.hitPoints.current,
+      )
+      if (newCharacterData.hitPoints.current <= 0) {
+        newCharacterData.hitPoints.current = 0 // Ensure HP does not go below 0
+        newCharacterData.hitPoints.isDying = true // Mark as dead if HP is 0
+      }
+      if (
+        !newCharacterData.hitPoints.isDying &&
+        hpChange < 0 &&
+        -hpChange > newCharacterData.hitPoints.max / 2
+      ) {
+        newCharacterData.hitPoints.isMajorWound = true
+      }
       console.log(
         `Applied HP Change: ${hpChange} (from ${effect.value}), New HP: ${newCharacterData.hitPoints.current}`,
       )

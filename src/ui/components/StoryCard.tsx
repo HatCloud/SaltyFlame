@@ -86,6 +86,7 @@ const StoryCard: React.FC = React.memo(() => {
 
   // 场景效果处理
   useEffect(() => {
+    console.log('当前场景效果:', currentScene?.effects)
     if (currentScene?.effects && currentScene.effects.length > 0) {
       currentScene.effects.forEach(effect => {
         dispatch({ type: 'APPLY_EFFECT', payload: effect })
