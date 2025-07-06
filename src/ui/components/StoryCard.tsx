@@ -1,20 +1,28 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect, useMemo } from 'react' // Added useEffect
-// Assuming gameFlags will be part of MyAppState, adjust import if necessary
-// import { MyAppState } from '../../interface/MyAppState';
+import { StyleSheet, Text, Dimensions, View } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+  useSharedValue,
+  Easing,
+  runOnJS,
+} from 'react-native-reanimated'
 import { padding } from '../../theme/padding'
 import palette from '../../theme/palette'
 import { typeface } from '../../theme/typeface'
 import { useAppReducer } from '../../hook'
-import type { Scene, SceneInteractOption } from '../../interface/Scene' // Scene type is used for currentScene
+import type { Scene, SceneInteractOption } from '../../interface/Scene'
 import OptionButton from './OptionButton'
 import CheckResult from './CheckResult'
 import CheckOption from './CheckOption'
 import { useI18n } from '../../i18n/useI18n'
-import { useNavigation } from '@react-navigation/native' // Added
-import { StackNavigationProp } from '@react-navigation/stack' // Added
-import { RootStackParamList } from '../../interface/navigation' // Updated import
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RootStackParamList } from '../../interface/navigation'
 import { useCheckCondition } from '../../hooks/useCheckCondition'
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
+const ANIMATION_DURATION = 800
 
 type StoryCardNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -26,23 +34,78 @@ const StoryCard: React.FC = React.memo(() => {
   const navigation = useNavigation<StoryCardNavigationProp>()
   const { t } = useI18n()
   const { checkCondition } = useCheckCondition()
-  const currentScene: Scene | undefined =
-    state.sceneData?.[state.currentSceneKey]
 
-  const takeNumber = useMemo(() => {
-    return state.history.length + 1
-  }, [state.history.length])
+  const translateX = useSharedValue(SCREEN_WIDTH)
+  const prevTranslateX = useSharedValue(0)
 
-  // useEffect to handle scene effects when currentScene changes
+  const [takeNumber, setTakeNumber] = useState(() => state.history.length + 1)
+
+  const [currentScene, setCurrentScene] = useState<Scene | undefined>(
+    state.sceneData?.[state.currentSceneKey],
+  )
+
+  const screneChanged = useMemo(
+    () => state.currentSceneKey && currentScene?.id !== state.currentSceneKey,
+    [currentScene, state.currentSceneKey],
+  )
+
+  const [changingScrene, setChangingScrene] = useState(false)
+
+  // 监听场景变化，触发双卡片动画
+  useEffect(() => {
+    if (!screneChanged) return
+    const isBack = state.history.length + 1 < takeNumber
+    prevTranslateX.value = 0
+    prevTranslateX.value = withTiming(isBack ? SCREEN_WIDTH : -SCREEN_WIDTH, {
+      duration: ANIMATION_DURATION,
+      easing: Easing.out(Easing.cubic),
+    })
+    translateX.value = isBack ? -SCREEN_WIDTH : SCREEN_WIDTH
+    translateX.value = withTiming(
+      0,
+      {
+        duration: ANIMATION_DURATION,
+        easing: Easing.out(Easing.cubic),
+      },
+      () => {
+        runOnJS(setCurrentScene)(state.sceneData?.[state.currentSceneKey])
+        runOnJS(setTakeNumber)(state.history.length + 1)
+        runOnJS(setChangingScrene)(false)
+      },
+    )
+    setChangingScrene(true)
+  }, [
+    screneChanged,
+    prevTranslateX,
+    state.currentSceneKey,
+    state.history.length,
+    state.sceneData,
+    takeNumber,
+    translateX,
+  ])
+
+  // 场景效果处理
   useEffect(() => {
     if (currentScene?.effects && currentScene.effects.length > 0) {
       currentScene.effects.forEach(effect => {
         dispatch({ type: 'APPLY_EFFECT', payload: effect })
       })
     }
-  }, [currentScene, dispatch]) // Rerun when currentScene or dispatch changes
+  }, [currentScene, dispatch])
 
-  // Helper function to check conditions is now imported from useCheckCondition
+  // 动画样式
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.value }],
+      position: 'absolute',
+    }
+  })
+  const prevAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: prevTranslateX.value }],
+      position: 'absolute',
+    }
+  })
 
   const handleInteractOptionPress = useCallback(
     (option: SceneInteractOption, disabled?: boolean) => {
@@ -101,7 +164,7 @@ const StoryCard: React.FC = React.memo(() => {
         }
       }
     },
-    [dispatch, navigation], // Added navigation
+    [dispatch, navigation],
   )
 
   const handleResolveCheckOutcome = useCallback(() => {
@@ -114,34 +177,33 @@ const StoryCard: React.FC = React.memo(() => {
 
   if (!currentScene) {
     return (
-      <View style={styles.storyCardContainer}>
+      <Animated.View style={[styles.storyCardContainer, animatedStyle]}>
         <Text style={styles.storyCardContentText}>{t('common.notFound')}</Text>
         <OptionButton onPress={goBack}>{t('common.goBack')}</OptionButton>
-      </View>
+      </Animated.View>
     )
   }
 
-  return (
-    <View style={styles.storyCardContainer}>
+  // 渲染卡片内容的函数，避免重复
+  const renderCardContent = (scene: Scene, takeNum: number) => (
+    <>
       <Text style={styles.takeText} onPress={goBack}>
-        TAKE {takeNumber}
+        TAKE {takeNum}
       </Text>
-      {currentScene.story.split('\n').map((paragraph, index) => (
+      {scene.story.split('\n').map((paragraph, index) => (
         <Text key={`story-para-${index}`} style={styles.storyCardContentText}>
           {paragraph}
         </Text>
       ))}
-
       {state.currentCheckAttempt && (
         <CheckResult
           checkAttempt={state.currentCheckAttempt}
           onResolve={handleResolveCheckOutcome}
         />
       )}
-
       {!state.currentCheckAttempt && (
         <>
-          {currentScene.options?.map((option, index) => {
+          {scene.options?.map((option, index) => {
             const conditionResult = option.condition
               ? checkCondition(
                   option.condition,
@@ -149,8 +211,6 @@ const StoryCard: React.FC = React.memo(() => {
                   state.gameFlags,
                 )
               : { met: true, description: undefined }
-
-            // Options are now rendered even if not met, but disabled
             if (option.type === 'check') {
               return (
                 <CheckOption
@@ -179,7 +239,6 @@ const StoryCard: React.FC = React.memo(() => {
                 </OptionButton>
               )
             } else if (option.type === 'custom_navigation') {
-              // Render a button for custom navigation
               return (
                 <OptionButton
                   key={index.toString()}
@@ -197,7 +256,33 @@ const StoryCard: React.FC = React.memo(() => {
           })}
         </>
       )}
-      <Text style={styles.idText}>ID: {currentScene.id}</Text>
+      <Text style={styles.idText}>ID: {scene.id}</Text>
+    </>
+  )
+
+  if (changingScrene) {
+    return (
+      <>
+        <View style={styles.overlay} pointerEvents="auto" />
+        {/* 旧卡片滑出动画 */}
+        <Animated.View style={[styles.storyCardContainer, prevAnimatedStyle]}>
+          {renderCardContent(currentScene, takeNumber)}
+        </Animated.View>
+        {changingScrene && (
+          <Animated.View style={[styles.storyCardContainer, animatedStyle]}>
+            {renderCardContent(
+              state.sceneData?.[state.currentSceneKey],
+              state.history.length + 1,
+            )}
+          </Animated.View>
+        )}
+      </>
+    )
+  }
+
+  return (
+    <View style={styles.storyCardContainer}>
+      {renderCardContent(currentScene, takeNumber)}
     </View>
   )
 })
@@ -232,6 +317,10 @@ const styles = StyleSheet.create({
     color: typeface.Color.Content,
     lineHeight: typeface.Size.Normal * 1.4,
     marginBottom: padding.Normal, // Ensure inter-paragraph spacing is Normal
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 10,
   },
 })
 
