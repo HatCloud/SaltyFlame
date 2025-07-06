@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect } from 'react' // Added useEffect
+import React, { useCallback, useEffect, useMemo } from 'react' // Added useEffect
 // Assuming gameFlags will be part of MyAppState, adjust import if necessary
 // import { MyAppState } from '../../interface/MyAppState';
 import { padding } from '../../theme/padding'
@@ -28,6 +28,10 @@ const StoryCard: React.FC = React.memo(() => {
   const { checkCondition } = useCheckCondition()
   const currentScene: Scene | undefined =
     state.sceneData?.[state.currentSceneKey]
+
+  const takeNumber = useMemo(() => {
+    return state.history.length + 1
+  }, [state.history.length])
 
   // useEffect to handle scene effects when currentScene changes
   useEffect(() => {
@@ -120,7 +124,7 @@ const StoryCard: React.FC = React.memo(() => {
   return (
     <View style={styles.storyCardContainer}>
       <Text style={styles.takeText} onPress={goBack}>
-        TAKE {currentScene.id}
+        TAKE {takeNumber}
       </Text>
       {currentScene.story.split('\n').map((paragraph, index) => (
         <Text key={`story-para-${index}`} style={styles.storyCardContentText}>
@@ -193,6 +197,7 @@ const StoryCard: React.FC = React.memo(() => {
           })}
         </>
       )}
+      <Text style={styles.idText}>ID: {currentScene.id}</Text>
     </View>
   )
 })
@@ -204,6 +209,13 @@ const styles = StyleSheet.create({
     fontWeight: typeface.Weight.Bold,
     marginBottom: padding.Small,
     letterSpacing: 2,
+  },
+  idText: {
+    fontSize: typeface.Size.Normal,
+    color: typeface.Color.Inactive,
+    marginTop: padding.Large,
+    letterSpacing: 2,
+    alignSelf: 'flex-end',
   },
   storyCardContainer: {
     marginHorizontal: padding.ScreenLR,
