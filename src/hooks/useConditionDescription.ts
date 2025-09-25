@@ -25,18 +25,18 @@ export const useConditionDescription = () => {
             ? t('condition.hasNotItem', { item: condition.item })
             : undefined
         case ConditionType.FLAG_SET:
-          return condition.gameFlag
+          return condition.gameFlag && GameFlagNames[condition.gameFlag][lang]
             ? t('condition.flagSet', {
                 flag: GameFlagNames[condition.gameFlag][lang],
               })
             : undefined
         case ConditionType.FLAG_NOT_SET:
-          return condition.gameFlag
+          return condition.gameFlag && GameFlagNames[condition.gameFlag][lang]
             ? t('condition.flagNotSet', {
                 flag: GameFlagNames[condition.gameFlag][lang],
               })
             : undefined
-        case ConditionType.CHARACTERISTIC_COMPARE:
+        case ConditionType.COMPARE:
           if (
             condition.targetObject &&
             condition.comparisonOperator &&
@@ -77,6 +77,12 @@ export const useConditionDescription = () => {
           return t('condition.hasGoneSomeScene', {
             count: condition.expectedValue,
           })
+        case ConditionType.ALIVE:
+          if (condition.expectedValue === true) {
+            return t('condition.alive')
+          } else {
+            return t('condition.notAlive')
+          }
         default: {
           return undefined
         }

@@ -4,25 +4,27 @@ import {
   SkillEnum,
   EffectType,
   CheckDifficulty,
+  ConditionType,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_241_260: SceneData = {
   '241': {
     id: '241',
     story:
       '你甩掉了熊，回到道路上，心脏咚咚地锤打着你的胸腔。你又奔跑了几分钟，直到你确认它不再理会你，才停了下来。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.FIGHTING_BRAWL,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '223',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.FIGHTING_BRAWL,
-          },
-        ],
       },
     ],
   },
@@ -78,8 +80,20 @@ export const scenes_241_260: SceneData = {
   '247': {
     id: '247',
     story:
-      '你倒在了落叶和烂泥覆盖的地面上。你晕乎乎的感觉自己被拖到马车旁，搭上了马背。浓郁的动物气味腔充满了你的鼻腔。你在马车上待了一小会儿，感觉十分恶心，意识时断时续......然后马停住了。你在马屁股的间隙看到了奇异的色彩。\n第一个车夫问道：“现在只好这样了，我们要拿这家伙怎么办？”\n“我想我们得把人藏起来.”他的伙伴用不确定的口气回答。\n你用余下的一点力气滑下马背，跌跌撞撞地摸进树林。树干歪歪扭扭地向你迫近，你的双腿没法支撑你走太远。你摔倒了。抓你的两个人哗啦啦穿过枝叶，来到你身后。\n“......别管了。我们走.”\n车夫的声音越来越远，很快你就又听到了马蹄哒哒的响声。你趴在长满青苔的地上，动弹不得。\n等到早晨，你才挣扎着站起身来，看着晨曦透过树丛，宣示着太阳的升起。\n恭喜！你已经度过了这次冒险。你可以保留自己的角色卡，在其他的《克苏鲁的呼唤》冒险中使用它。如果你在技能左边的方框里打过勾，你可以从经历中得到提升它们的机会。\n【剧终】',
-    options: [{ type: 'goto', text: '游戏结束', goto: 'END' }],
+      '你倒在了落叶和烂泥覆盖的地面上。你晕乎乎的感觉自己被拖到马车旁，搭上了马背。浓郁的动物气味腔充满了你的鼻腔。你在马车上待了一小会儿，感觉十分恶心，意识时断时续......然后马停住了。你在马屁股的间隙看到了奇异的色彩。\n第一个车夫问道：“现在只好这样了，我们要拿这家伙怎么办？”\n“我想我们得把人藏起来.”他的伙伴用不确定的口气回答。\n你用余下的一点力气滑下马背，跌跌撞撞地摸进树林。树干歪歪扭扭地向你迫近，你的双腿没法支撑你走太远。你摔倒了。抓你的两个人哗啦啦穿过枝叶，来到你身后。\n“......别管了。我们走.”\n车夫的声音越来越远，很快你就又听到了马蹄哒哒的响声。你趴在长满青苔的地上，动弹不得。\n等到早晨，你才挣扎着站起身来，看着晨曦透过树丛，宣示着太阳的升起。\n恭喜！你已经度过了这次冒险。【剧终】',
+    info: '你可以保留自己的角色卡，在其他的《克苏鲁的呼唤》冒险中使用它。如果你在技能左边的方框里打过勾，你可以从经历中得到提升它们的机会。',
+    options: [
+      {
+        type: 'goto',
+        text: '阅读关于德比诗集',
+        goto: '171',
+        condition: {
+          type: ConditionType.HAS_ITEM,
+          item: ItemBox.AzatothBook.cn.name,
+        },
+      },
+      { type: 'goto', text: '游戏结束', goto: 'END' },
+    ],
   },
   '248': {
     id: '248',
@@ -127,12 +141,12 @@ export const scenes_241_260: SceneData = {
     id: '252',
     story:
       '这里有些东西不太对劲。即使你的手摸到、解开了腰带扣，你头脑中的一点理性还记得这火焰的样子并不自然。而且树不会自己挪动。\n腰带已经松脱，你从高空坠落。你能看到下面的影子吗？它们从黑暗中出现——\n失去1D3点耐久值。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '13',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }],
       },
     ],
   },

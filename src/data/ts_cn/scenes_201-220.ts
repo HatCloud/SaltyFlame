@@ -5,29 +5,33 @@ import {
   EffectType,
   CheckDifficulty,
   ConditionType,
+  RollEnum,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_201_220: SceneData = {
   '201': {
     id: '201',
     story:
-      '熊退后几步，漆黑的眼珠直瞪着你。它从喉咙深处发出低沉的咕哝声，转头蹒跚返回了树林。\n不管怎样，你已经在和熊的搏斗当中活了下来。你可以在你的「格斗(斗殴)」技能左边的小方框里打勾。如果熊击伤了你，你还可以尝试进行一次「急救」检定，若成功可以回复1点耐久值。',
+      '熊退后几步，漆黑的眼珠直瞪着你。它从喉咙深处发出低沉的咕哝声，转头蹒跚返回了树林。\n不管怎样，你已经在和熊的搏斗当中活了下来。',
+    info: '你可以在你的「格斗(斗殴)」技能左边的小方框里打勾。如果熊击伤了你，你还可以尝试进行一次「急救」检定，若成功可以回复1点耐久值。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.FIGHTING_BRAWL,
+      },
+    ],
     options: [
       {
         type: 'check',
-        text: '（如果受伤）尝试「急救」检定',
+        text: '尝试「急救」检定',
         condition: {
           type: ConditionType.FLAG_SET,
           gameFlag: GameFlag.IS_INJURED,
           expectedValue: true,
-        }, // Placeholder condition
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.FIGHTING_BRAWL,
-          },
-        ],
+        },
+
         check: {
           details: {
             object: 'skill',
@@ -51,32 +55,25 @@ export const scenes_201_220: SceneData = {
         type: 'goto',
         text: '（如果未受伤或不急救）继续',
         goto: '79',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.FIGHTING_BRAWL,
-          },
-        ],
       },
     ],
   },
-  // S201_AID_CHECK removed
   '202': {
     id: '202',
     story:
-      '你试着把“号令天之火”的字词记到脑海里。这篇文字里尽是些奇怪的字眼，至于它们的发音你只能按最靠谱的猜测来。整篇咒语需要大概二十秒来朗读。注释里提供了一些建议：“当其热中取水之时，万不可直视其火。欲行其道则务须身心俱入，以免自误于审判之中.”\n你发现了一个秘密。如果情形适宜，这段文字可以提供你施法的机会。到那时，如果你想尝试这个仪式，在你所在的条目号上加50，前往对应的条目。',
+      '你试着把“号令天之火”的字词记到脑海里。这篇文字里尽是些奇怪的字眼，至于它们的发音你只能按最靠谱的猜测来。整篇咒语需要大概二十秒来朗读。注释里提供了一些建议：“当其热中取水之时，万不可直视其火。欲行其道则务须身心俱入，以免自误于审判之中.”\n你发现了一个秘密。如果情形适宜，这段文字可以提供你施法的机会。',
+    info: '到那时，如果你想尝试这个仪式，在你所在的条目号上加50，前往对应的条目。',
+    effects: [
+      {
+        type: EffectType.ADD_ITEM,
+        item: ItemBox.SpellCommandFireFromSky.cn,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '207',
-        effects: [
-          {
-            type: EffectType.SET_FLAG,
-            gameFlag: GameFlag.LEARNED_SPELL_COMMAND_FIRE_FROM_SKY,
-            flagValue: true,
-          },
-        ],
       },
     ],
   },
@@ -84,12 +81,12 @@ export const scenes_201_220: SceneData = {
     id: '203',
     story:
       '有什么东西砸中了你的太阳穴，打得你晕头转向。你听到阿博加斯特的呼喊，看到刀刃的寒光：一刀、两刀、三刀，刀锋染上了殷红的鲜血。又有什么东西击中了你，在你倒下的时候，火焰从地上燃起，将夜空照得通亮。火光照出了三个黑影......\n（你）受到1D6点伤害。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '45',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
       },
     ],
   },
@@ -137,6 +134,7 @@ export const scenes_201_220: SceneData = {
     id: '208',
     story:
       '这带着回响的嗥叫再次响起，这次有什么离你更近的东西在呼应着嗥叫。看起来现在是个逃离地面的好机会。\n你找到一棵有明显立足点的树，选了大概两人高的一个坚实枝杈。你慢慢挪动上去，可你的衣服并不适合爬树。',
+    info: '进行一次「攀爬」检定。如果你掷出大失败（结果为 96 或更高），前往 222。否则前往 228。（译注：如果你的「攀爬」技能值大于等于50，则结果为 100 时才为大失败。）',
     options: [
       {
         type: 'check',
@@ -158,26 +156,53 @@ export const scenes_201_220: SceneData = {
   '209': {
     id: '209',
     story:
-      '群星活了过来。它们从天上看见了你，身处熊熊大火的中心。它们也看见了由灯塔延伸出的烬头村，窄小的高地直面夜空。它们也听见村民开始吟诵你刚刚吟诵过的咒语。\n失去1D3点理智值。如果这使你的理智值归零，前往220。',
+      '群星活了过来。它们从天上看见了你，身处熊熊大火的中心。它们也看见了由灯塔延伸出的烬头村，窄小的高地直面夜空。它们也听见村民开始吟诵你刚刚吟诵过的咒语。\n失去1D3点理智值。',
+    info: '如果这使你的理智值归零，前往220。',
+    effects: [{ type: EffectType.CHANGE_SANITY, value: '-1D3' }],
     options: [
       {
         type: 'goto',
         text: '号令群星返回原位',
         goto: '255',
-        effects: [{ type: EffectType.CHANGE_SANITY, value: '-1D3' }], // Apply SAN loss before choice
-        // TODO: Check for SAN zero in reducer
+        condition: {
+          type: ConditionType.COMPARE,
+          targetObject: RollEnum.SANITY,
+          comparisonOperator: 'gt',
+          comparisonObject: 0,
+        },
       },
       {
         type: 'goto',
         text: '号令群星放你解脱',
         goto: '243',
-        effects: [{ type: EffectType.CHANGE_SANITY, value: '-1D3' }],
+        condition: {
+          type: ConditionType.COMPARE,
+          targetObject: RollEnum.SANITY,
+          comparisonOperator: 'gt',
+          comparisonObject: 0,
+        },
       },
       {
         type: 'goto',
         text: '号令群星烧尽村民',
         goto: '231',
-        effects: [{ type: EffectType.CHANGE_SANITY, value: '-1D3' }],
+        condition: {
+          type: ConditionType.COMPARE,
+          targetObject: RollEnum.SANITY,
+          comparisonOperator: 'gt',
+          comparisonObject: 0,
+        },
+      },
+      {
+        type: 'goto',
+        text: '你呆立原地，若有所思',
+        goto: '220',
+        condition: {
+          type: ConditionType.COMPARE,
+          targetObject: RollEnum.SANITY,
+          comparisonOperator: 'lte',
+          comparisonObject: 0,
+        },
       },
     ],
   },

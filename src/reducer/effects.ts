@@ -125,18 +125,10 @@ export function applySingleEffect(
         }
 
         const itemToAdd = effect.item
-        let alreadyExists = false
-        if (typeof itemToAdd === 'string') {
-          alreadyExists = newCharacterData.inventory.some(
-            invItem => typeof invItem === 'string' && invItem === itemToAdd,
-          )
-        } else {
-          // itemToAdd is a Weapon object
-          alreadyExists = newCharacterData.inventory.some(
-            invItem =>
-              typeof invItem !== 'string' && invItem.name === itemToAdd.name,
-          )
-        }
+        const alreadyExists = newCharacterData.inventory.some(
+          invItem =>
+            typeof invItem !== 'string' && invItem.name === itemToAdd.name,
+        )
 
         if (!alreadyExists) {
           newCharacterData.inventory.push(itemToAdd)

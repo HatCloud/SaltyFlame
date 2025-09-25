@@ -4,6 +4,7 @@ import {
   SkillEnum,
   EffectType,
   CheckDifficulty,
+  ConditionType,
 } from '../../constant/enums'
 
 export const scenes_081_100: SceneData = {
@@ -26,7 +27,7 @@ export const scenes_081_100: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行「侦查」检定',
+        text: '你开始对房间进行搜索',
         check: {
           details: {
             object: 'skill',
@@ -35,8 +36,8 @@ export const scenes_081_100: SceneData = {
           },
           onSuccessSceneId: '95',
           onFailureSceneId: '89',
-          successText: '进行「侦查」检定（成功）',
-          failureText: '进行「侦查」检定（失败）',
+          successText: '你发现了让你在意的东西',
+          failureText: '你没有发现任何有用的东西',
         },
       },
     ],
@@ -85,7 +86,7 @@ export const scenes_081_100: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行困难「侦查」检定',
+        text: '你尝试打量四周，寻找他的踪迹。',
         check: {
           details: {
             object: 'skill',
@@ -94,8 +95,8 @@ export const scenes_081_100: SceneData = {
           },
           onSuccessSceneId: '181',
           onFailureSceneId: '160',
-          successText: '进行困难「侦查」检定（成功）',
-          failureText: '放弃追逐（侦查失败）',
+          successText: '你有所发现。',
+          failureText: '你一无所获，只能放弃追逐。',
         },
       },
     ],
@@ -113,7 +114,7 @@ export const scenes_081_100: SceneData = {
     options: [
       {
         type: 'check',
-        text: '孤注一掷，重新投掷「侦查」检定',
+        text: '你冒着风险，重新搜索房间。',
         check: {
           details: {
             object: 'skill',
@@ -122,8 +123,8 @@ export const scenes_081_100: SceneData = {
           },
           onSuccessSceneId: '95',
           onFailureSceneId: '101',
-          successText: '（重新侦查成功）',
-          failureText: '（重新侦查失败）',
+          successText: '你发现了让你在意的东西。',
+          failureText: '你依然一无所获。',
         },
       },
       { type: 'goto', text: '不想冒险继续', goto: '120' },
@@ -132,7 +133,7 @@ export const scenes_081_100: SceneData = {
   '90': {
     id: '90',
     story:
-      '你清清嗓子，开始吟诵你在奇怪书本上找到的仪式，尽力将怪异的音节念得正确。你的脸上翻腾着热浪，明白火焰越来越逼近，但你放下自己的恐慌，集中精力完成吟唱。\n当你说出这些奇怪的字眼时，你发现村民的歌唱改变了，他们也在吟诵咒语。你的手心和太阳穴发出一阵阵奇异的刺痛。\n你正在施放法术。你在本法术中最多可以消耗10点魔法值。如果你的魔法值不足10点，可以在耗尽魔法值之后继续消耗耐久值——但你不能消耗到使耐久值归零。决定消耗的点数以后，前往 198。',
+      '你清清嗓子，开始吟诵你在奇怪书本上找到的仪式，尽力将怪异的音节念得正确。你的脸上翻腾着热浪，明白火焰越来越逼近，但你放下自己的恐慌，集中精力完成吟唱。\n当你说出这些奇怪的字眼时，你发现村民的歌唱改变了，他们也在吟诵咒语。你的手心和太阳穴发出一阵阵奇异的刺痛。\n你正在施放法术。你在本法术中最多可以消耗10点魔法值。如果你的魔法值不足10点，可以在耗尽魔法值之后继续消耗耐久值——但你不能消耗到使耐久值归零。',
     options: [{ type: 'goto', text: '决定消耗的点数后继续', goto: '198' }],
   },
   '91': {
@@ -150,31 +151,42 @@ export const scenes_081_100: SceneData = {
   '93': {
     id: '93',
     story:
-      '绝望赐予你力量，你猛力拉扯着你觉得铁链上最薄弱的环节。它断了！你丢下铁链，跌跌撞撞地走过一具红布覆盖的尸体，离开围观的村民。\n你咳嗽不止，头发和眉毛在冒烟。\n你因为火焰受到 1D6 点耐久值伤害。如果你的耐久值因此归零，你就会失去意识，被烈焰烧死！【剧终】。否则，前往 137。',
+      '绝望赐予你力量，你猛力拉扯着你觉得铁链上最薄弱的环节。它断了！你丢下铁链，跌跌撞撞地走过一具红布覆盖的尸体，离开围观的村民。\n你咳嗽不止，头发和眉毛在冒烟。\n你因为火焰受到 1D6 点耐久值伤害。',
+    info: '如果你的耐久值因此归零，你就会失去意识，被烈焰烧死！【剧终】。否则，前往 137。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
     options: [
       {
         type: 'goto',
-        text: '（若未死）继续',
+        text: '你的意识消失在火焰中【剧终】',
+        goto: 'END',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: false,
+        },
+      },
+      {
+        type: 'goto',
+        text: '你撑过了火焰的灼烧',
         goto: '137',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
       },
     ],
   },
   '94': {
     id: '94',
     story:
-      '当你拿着破破烂烂的杂志坐下来时，文特斯挑起了一只眉毛，但什么也没说。《幻丽诡谭》上的故事尽是些异想天开：什么轨道上的监牢、囚禁中年妇女的恶魔，还有靠无线电波往来星际的机械蜘蛛。\n你看其中一篇科幻小说入了迷：这篇文章讲了难以捉摸的高跷人大步穿越月球表面下冒着蒸汽的沼泽，沼泽中漂浮的迷人大脑引诱着它们。这荒诞奇异的文章让你愉悦放松，把你当前的困境都丢进了字缝。\n如果你之前损失过理智值，你可以回复 1 点。',
+      '当你拿着破破烂烂的杂志坐下来时，文特斯挑起了一只眉毛，但什么也没说。《幻丽诡谭》上的故事尽是些异想天开：什么轨道上的监牢、囚禁中年妇女的恶魔，还有靠无线电波往来星际的机械蜘蛛。\n你看其中一篇科幻小说入了迷：这篇文章讲了难以捉摸的高跷人大步穿越月球表面下冒着蒸汽的沼泽，沼泽中漂浮的迷人大脑引诱着它们。这荒诞奇异的文章让你愉悦放松，把你当前的困境都丢进了字缝。',
+    info: '如果你之前损失过理智值，你可以回复 1 点。',
+    effects: [
+      {
+        type: EffectType.CHANGE_SANITY,
+        value: '+1',
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '99',
-        effects: [
-          {
-            type: EffectType.CHANGE_SANITY,
-            value: '+1',
-          },
-        ],
       },
     ],
   },
@@ -194,7 +206,7 @@ export const scenes_081_100: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行「心理学」检定',
+        text: '你尝试从他们的言谈举止中找出线索',
         check: {
           details: {
             object: 'skill',
@@ -203,8 +215,8 @@ export const scenes_081_100: SceneData = {
           },
           onSuccessSceneId: '106',
           onFailureSceneId: '25',
-          successText: '进行「心理学」检定（成功）',
-          failureText: '进行「心理学」检定（失败）',
+          successText: '你发现了工匠们似乎有些奇怪',
+          failureText: '你一无所获',
         },
       },
     ],
@@ -212,22 +224,23 @@ export const scenes_081_100: SceneData = {
   '97': {
     id: '97',
     story:
-      '根须绊住了你的脚踝，你重重地扑倒在地。你痛苦地喘息，手臂针刺一般地疼痛。一条枯枝刺破了你的前臂，削出一道约莫三寸长的口子，鲜血滴到草上。\n你在树丛中发现了道路。也许你应该坚持沿道路走，而不是前往未知的地域。\n失去 1D3 点耐久值。你可以用普通六面骰来投掷：只需要将结果除以二，小数进位。这算是挺严重的伤，但幸运的是它并不足以让你失去意识。\n你可以尝试一次「急救」检定。如果你成功了，回复 1 点耐久值并在「急救」技能左边的小方框里打勾。',
+      '根须绊住了你的脚踝，你重重地扑倒在地。你痛苦地喘息，手臂针刺一般地疼痛。一条枯枝刺破了你的前臂，削出一道约莫三寸长的口子，鲜血滴到草上。\n你在树丛中发现了道路。也许你应该坚持沿道路走，而不是前往未知的地域。\n失去 1D3 点耐久值。',
+    info: '你可以用普通六面骰来投掷：只需要将结果除以二，小数进位。这算是挺严重的伤，但幸运的是它并不足以让你失去意识。\n你可以尝试一次「急救」检定。如果你成功了，回复 1 点耐久值并在「急救」技能左边的小方框里打勾。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }],
     options: [
       {
         type: 'check',
-        text: '尝试「急救」检定',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }],
+        text: '尝试为伤口进行处理',
         check: {
           details: {
             object: 'skill',
             subObject: SkillEnum.FIRST_AID,
             difficulty: CheckDifficulty.NORMAL,
           },
-          onSuccessSceneId: '79', // Both lead to 79
+          onSuccessSceneId: '79',
           onFailureSceneId: '79',
-          successText: '（急救成功）',
-          failureText: '（急救失败）',
+          successText: '你对伤口进行了恰当的处理，这让你感觉好多了。',
+          failureText: '你没能很好地处理伤口，疼痛依然存在。',
           onSuccessEffects: [
             { type: EffectType.CHANGE_HP, value: '+1' },
             {
@@ -239,9 +252,8 @@ export const scenes_081_100: SceneData = {
       },
       {
         type: 'goto',
-        text: '不尝试急救，继续',
+        text: '不管伤口',
         goto: '79',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D3' }],
       },
     ],
   },

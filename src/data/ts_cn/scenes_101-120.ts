@@ -5,7 +5,9 @@ import {
   SkillEnum,
   EffectType,
   CheckDifficulty,
+  ConditionType,
 } from '../../constant/enums'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_101_120: SceneData = {
   '101': {
@@ -46,18 +48,19 @@ export const scenes_101_120: SceneData = {
   '106': {
     id: '106',
     story:
-      '有一间工坊是关着门的。当你漫步走近这里时，工匠们会从应答如流变得紧张不安——几乎是强迫的。真有趣。\n你可以在你的「心理学」技能左边的小方框里打勾。',
+      '有一间工坊是关着门的。当你漫步走近这里时，工匠们会从应答如流变得紧张不安——几乎是强迫的。真有趣。',
+    info: '你可以在你的「心理学」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.PSYCHOLOGY,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '25',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.PSYCHOLOGY,
-          },
-        ],
       },
     ],
   },
@@ -79,14 +82,26 @@ export const scenes_101_120: SceneData = {
   '109': {
     id: '109',
     story:
-      '你用滑步躲开了年轻人的抓捕。火焰顺着他们的肩膀流淌，引燃了他们的头发。你的面前笼罩着烟雾，腿上在燃烧。你必须立刻离开灯塔。\n你因为火焰受到1D6点耐久值伤害。如果你的耐久值因此归零，你就会失去意识，被烈焰烧死！【剧终】。',
+      '你用滑步躲开了年轻人的抓捕。火焰顺着他们的肩膀流淌，引燃了他们的头发。你的面前笼罩着烟雾，腿上在燃烧。你必须立刻离开灯塔。\n你因为火焰受到1D6点耐久值伤害。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
     options: [
       {
         type: 'goto',
         text: '（若未死）继续',
         goto: '137',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
-        // TODO: Add HP check for death in reducer or via a condition
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: true,
+        },
+      },
+      {
+        type: 'goto',
+        text: '（若已死）剧终',
+        goto: 'END',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: false,
+        },
       },
     ],
   },
@@ -104,7 +119,7 @@ export const scenes_101_120: SceneData = {
             difficulty: CheckDifficulty.EXTREME,
           },
           onSuccessSceneId: '143',
-          onFailureSceneId: '129', // TODO: Handle fumble (96+) for STEALTH check leading to 149.
+          onFailureSceneId: '129',
           successText: '进行极难「潜行」检定（成功）',
           failureText: '进行极难「潜行」检定（失败）',
         },
@@ -136,19 +151,24 @@ export const scenes_101_120: SceneData = {
   '112': {
     id: '112',
     story:
-      '你敏锐的眼睛在崖壁上搜索了几分钟以后有了发现。这里有一串突出的岩石，中间还夹杂看上去像是人工开凿的豁口。它们连起来就是一道巧妙的隐藏梯子，可以爬下悬崖。无疑，昨晚那个黑影正是使用它来安全下落的。\n你沿着底下的岩盘观察，但只能看见一些土褐色的小棚屋，在你右手边稍远的地方。若不是你马上要永远离开烬头村的话，这倒可以算是个有趣的发现。\n你发现了一个秘密。如果有朝一日你需要爬上或爬下东北方的这段悬崖，这段文字可以为你提供一条线索。到那时，如果你想尝试这道梯子，在你所在的条目号上加100，前往对应的条目。如果新条目看上去不符合剧情，你必须返回原来的条目并继续。\n回复1点理智值。你可以在自己「侦查」技能左边的小方框里打勾。',
+      '你敏锐的眼睛在崖壁上搜索了几分钟以后有了发现。这里有一串突出的岩石，中间还夹杂看上去像是人工开凿的豁口。它们连起来就是一道巧妙的隐藏梯子，可以爬下悬崖。无疑，昨晚那个黑影正是使用它来安全下落的。\n你沿着底下的岩盘观察，但只能看见一些土褐色的小棚屋，在你右手边稍远的地方。若不是你马上要永远离开烬头村的话，这倒可以算是个有趣的发现。\n你发现了一个秘密。你觉得有朝一日你可能需要爬上或爬下东北方的这段悬崖，于是你将这个发现记录在了纸条上。到那时，如果你想尝试这道梯子，可以在背包中使用这张纸条。',
+    info: '到那时，如果你想尝试这道梯子，在你所在的条目号上加100，前往对应的条目。如果新条目看上去不符合剧情，你必须返回原来的条目并继续。\n回复1点理智值。你可以在自己「侦查」技能左边的小方框里打勾。',
+    effects: [
+      { type: EffectType.CHANGE_SANITY, value: '+1' },
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.SPOT_HIDDEN,
+      },
+      {
+        type: EffectType.ADD_ITEM,
+        item: ItemBox.SecretPaper.cn,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '192',
-        effects: [
-          { type: EffectType.CHANGE_SANITY, value: '+1' },
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.SPOT_HIDDEN,
-          },
-        ],
       },
     ],
   },
@@ -232,18 +252,19 @@ export const scenes_101_120: SceneData = {
   '118': {
     id: '118',
     story:
-      '你搜寻书架，试图挪开三卷本的《沃波尔简明安第斯人语法》。它纹丝不动，进一步检查之下，你发现这三本书其实是黏在一起，贴在了墙上。这是不是什么隐蔽地加固书架的办法呢？\n你听到大厅里响起了脚步声，本能地离开了这个奇特的发现。\n你可以在自己「侦查」技能左边的小方框里打勾。',
+      '你搜寻书架，试图挪开三卷本的《沃波尔简明安第斯人语法》。它纹丝不动，进一步检查之下，你发现这三本书其实是黏在一起，贴在了墙上。这是不是什么隐蔽地加固书架的办法呢？\n你听到大厅里响起了脚步声，本能地离开了这个奇特的发现。',
+    info: '你可以在你的「侦查」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.SPOT_HIDDEN,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '124',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.SPOT_HIDDEN,
-          },
-        ],
       },
     ],
   },
@@ -271,18 +292,64 @@ export const scenes_101_120: SceneData = {
   },
   '120': {
     id: '120',
-    story:
-      '你对烬头村感到越来越不安，今天尤为惶恐。\n一旦下面的选项你已经试过三个，前往 98。\n否则你可以：',
+    story: '你对烬头村感到越来越不安，今天尤为惶恐。\n你决定',
+    info: '一旦下面的选项你已经试过三个，前往 98。\n否则你可以：',
     options: [
-      { type: 'goto', text: '搜索梅·莱德贝特的卧室', goto: '83' },
-      { type: 'goto', text: '独自前往村会堂', goto: '126' },
-      { type: 'goto', text: '仔细勘查工匠的工坊', goto: '219' },
-      { type: 'goto', text: '窥探灯塔前的活动', goto: '29' },
-      { type: 'goto', text: '沿东盘山路下山，溜之大吉', goto: '7' },
-      // TODO: Need a way to track "tried three options" to enable goto: '98'
-      // This might require a counter in game state and a conditional option.
-      // For now, adding a placeholder option that the player would manually choose if applicable.
-      { type: 'goto', text: '(若已尝试三个选项) 前往98', goto: '98' },
+      {
+        type: 'goto',
+        text: '搜索梅·莱德贝特的卧室',
+        goto: '83',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '83',
+        },
+      },
+      {
+        type: 'goto',
+        text: '独自前往村会堂',
+        goto: '126',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '126',
+        },
+      },
+      {
+        type: 'goto',
+        text: '仔细勘查工匠的工坊',
+        goto: '219',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '219',
+        },
+      },
+      {
+        type: 'goto',
+        text: '窥探灯塔前的活动',
+        goto: '29',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '29',
+        },
+      },
+      {
+        type: 'goto',
+        text: '沿东盘山路下山，溜之大吉',
+        goto: '7',
+        condition: {
+          type: ConditionType.NOT_GONE,
+          expectedValue: '7',
+        },
+      },
+      {
+        type: 'goto',
+        text: '思考进一步的行动',
+        goto: '98',
+        condition: {
+          type: ConditionType.HAS_GONE_SOME_SCENE,
+          expectedValue: 3,
+          sceneGoneIds: ['83', '126', '219', '29', '7'],
+        },
+      },
     ],
   },
 }

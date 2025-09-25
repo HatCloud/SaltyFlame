@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import { useAppReducer } from '../../hook'
 import { useI18n } from '../../i18n/useI18n'
-import { Weapon } from '../../interface/Character'
+import { Item, Weapon } from '../../interface/Character'
 import {
   CheckObjectKey,
   CheckObjectNames,
@@ -215,24 +215,24 @@ const CharacterModal: React.FC = () => {
               <SectionTitle title={t('charModal.inventory')} />
               {characterData.inventory.length > 0 ? (
                 characterData.inventory.map(
-                  (item: string | Weapon, index: number) => (
+                  (item: Item | Weapon, index: number) => (
                     <View key={index} style={styles.itemContainer}>
-                      {typeof item === 'string' ? (
-                        <Text style={styles.itemText}>{item}</Text>
-                      ) : (
+                      {item.type === 'weapon' ? (
                         <View>
                           <Text style={styles.itemText}>
                             {getSkillDisplayName(item.name)} (Weapon)
                           </Text>
                           <Text style={styles.weaponDetailText}>
-                            {`${t('charModal.weaponDamage')}: ${item.diceCount}D${item.dice}${item.range ? `, ${t('charModal.weaponRange')}: ${item.range}` : ''}${item.ammoCapacity ? `, ${t('charModal.weaponAmmo')}: ${item.ammoCapacity}` : ''}${item.malfunctions ? `, ${t('charModal.weaponMalf')}: ${item.malfunctions}` : ''}`}
+                            {`${t('charModal.weaponDamage')}: ${item.damage}${item.range ? `, ${t('charModal.weaponRange')}: ${item.range}` : ''}${item.ammoCapacity ? `, ${t('charModal.weaponAmmo')}: ${item.ammoCapacity}` : ''}${item.malfunctions ? `, ${t('charModal.weaponMalf')}: ${item.malfunctions}` : ''}`}
                           </Text>
-                          {item.notes && (
+                          {item.description && (
                             <Text style={styles.weaponDetailText}>
-                              {`${t('charModal.weaponNotes')}: ${item.notes}`}
+                              {`${t('charModal.weaponNotes')}: ${item.description}`}
                             </Text>
                           )}
                         </View>
+                      ) : (
+                        <Text style={styles.itemText}>{item.name}</Text>
                       )}
                     </View>
                   ),

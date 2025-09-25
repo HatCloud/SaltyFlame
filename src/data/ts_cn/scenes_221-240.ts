@@ -1,13 +1,12 @@
 import type { SceneData } from '../../interface/Scene'
 import {
-  CoreCharacteristicEnum, // Added
-  SkillEnum, // Added
+  CoreCharacteristicEnum,
+  SkillEnum,
   EffectType,
   CheckDifficulty,
-  // ConditionType, // Add if needed
-  // CheckObjectKey, // No longer needed directly for subObject if using specific enums
+  ConditionType,
 } from '../../constant/enums'
-import { GameFlag } from '../../constant/GameFlags'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_221_240: SceneData = {
   '221': {
@@ -25,24 +24,45 @@ export const scenes_221_240: SceneData = {
     id: '222',
     story:
       '你爬到半截，手从长满青苔的树枝上滑脱，跌落在地。肺里的空气直冲出你的喉咙。\n受到1点伤害。如果你因此而HP归零，前往13。否则你可以一边留意脆弱的树枝一边继续攀爬。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '-1' }],
     options: [
       {
         type: 'goto',
-        text: '（若HP > 0）继续攀爬',
+        text: '继续攀爬',
         goto: '228',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1' }],
-        // TODO: HP check for goto 13. This might need a condition or specific reducer logic.
-        // condition: { type: ConditionType.HP_CHECK, comparisonValue: 0, comparisonOperator: 'gt' }
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: true,
+        },
       },
-      // TODO: Add option for HP <= 0 leading to scene 13.
-      // { type: 'goto', text: '(若HP <= 0) 前往13', goto: '13', effects: [{type: EffectType.CHANGE_HP, value: '-1'}] },
+      {
+        type: 'goto',
+        text: '你失去了意识',
+        goto: '13',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: false,
+        },
+      },
     ],
   },
   '223': {
     id: '223',
     story:
-      '你走上一片小山的山顶，歇息片刻确认自己的方位。夕阳西下，在烬头村的后面落山，所以你要朝——\n当你望向几里外的村庄时，能看到灯塔在燃烧；橘黄色的光芒照亮了夜空，也照亮了四周的树林。翻腾的烟雾直冲天际，群星点缀在深邃的午夜蓝上，就成了闪耀的天篷。\n你对着那里看了几分钟，然后转身回去，继续你的旅程。有一瞬间给你留下了奇怪的印象；你觉得当你转身时，村子上方有一颗星星在移动。但那只意味着疯狂。\n恭喜！你已经度过了这次冒险。你可以保留自己的角色卡，在其他的《克苏鲁的呼唤》冒险中使用它。如果你在技能左边的方框里打过勾，你可以从经历中得到提升它们的机会。\n【剧终】',
-    options: [{ type: 'goto', text: '游戏结束', goto: 'END' }],
+      '你走上一片小山的山顶，歇息片刻确认自己的方位。夕阳西下，在烬头村的后面落山，所以你要朝——\n当你望向几里外的村庄时，能看到灯塔在燃烧；橘黄色的光芒照亮了夜空，也照亮了四周的树林。翻腾的烟雾直冲天际，群星点缀在深邃的午夜蓝上，就成了闪耀的天篷。\n你对着那里看了几分钟，然后转身回去，继续你的旅程。有一瞬间给你留下了奇怪的印象；你觉得当你转身时，村子上方有一颗星星在移动。但那只意味着疯狂。\n恭喜！你已经度过了这次冒险。【剧终】',
+    info: '你可以保留自己的角色卡，在其他的《克苏鲁的呼唤》冒险中使用它。如果你在技能左边的方框里打过勾，你可以从经历中得到提升它们的机会。',
+    options: [
+      {
+        type: 'goto',
+        text: '阅读关于德比诗集',
+        goto: '171',
+        condition: {
+          type: ConditionType.HAS_ITEM,
+          item: ItemBox.AzatothBook.cn.name,
+        },
+      },
+      { type: 'goto', text: '游戏结束', goto: 'END' },
+    ],
   },
   '224': {
     id: '224',
@@ -62,11 +82,11 @@ export const scenes_221_240: SceneData = {
           details: {
             object: 'skill',
             subObject: SkillEnum.LOCKSMITH,
-            difficulty: CheckDifficulty.NORMAL, // TODO: Implement doubling skill value logic
+            difficulty: CheckDifficulty.NORMAL,
           },
           onSuccessSceneId: '244',
           onFailureSceneId: '238',
-          successText: '进行“锁匠”检定（成功，打勾）',
+          successText: '进行“锁匠”检定（成功）',
           failureText: '进行“锁匠”检定（失败）',
           onSuccessEffects: [
             {
@@ -184,19 +204,19 @@ export const scenes_221_240: SceneData = {
   '237': {
     id: '237',
     story:
-      '阿博加斯特被疤痕覆盖的脸上浮现出病态的狂喜笑容。\n“旧日支配者？风行者、克苏鲁、伏行混沌。你，和其他那些人一样，地上爬来爬去的蚊蠓而已，你觉得你做的事很重要，是吗？你活着就是全部意义了.”他摇摇头。“我们不过是尘土浮沫，风一吹就飘起来，太阳一照就不见了。你什么也不是。我们都什么也不是.”\n他沉默起来。正当你以为他的说教要结束时，他又兴奋起来。\n“在这里你可以离活火焰最近。不是金斯波特人痴迷的那种喷火的绿焰柱。我是说它比地球上所有活物都早！开天辟地时是它点燃了虚空！它有无穷的燃料，无限的耐心。它会烧尽我们所有人！”\n阿博加斯特用手撩了撩头发。他左边的头发缺了一大片，只有伤疤留在上面。他直起身来。\n你可以在你的「克苏鲁神话」技能上永久增加2点。',
+      '阿博加斯特被疤痕覆盖的脸上浮现出病态的狂喜笑容。\n“旧日支配者？风行者、克苏鲁、伏行混沌。你，和其他那些人一样，地上爬来爬去的蚊蠓而已，你觉得你做的事很重要，是吗？你活着就是全部意义了.”他摇摇头。“我们不过是尘土浮沫，风一吹就飘起来，太阳一照就不见了。你什么也不是。我们都什么也不是.”\n他沉默起来。正当你以为他的说教要结束时，他又兴奋起来。\n“在这里你可以离活火焰最近。不是金斯波特人痴迷的那种喷火的绿焰柱。我是说它比地球上所有活物都早！开天辟地时是它点燃了虚空！它有无穷的燃料，无限的耐心。它会烧尽我们所有人！”\n阿博加斯特用手撩了撩头发。他左边的头发缺了一大片，只有伤疤留在上面。他直起身来。\n你的「克苏鲁神话」技能永久增加2点。',
+    effects: [
+      {
+        type: EffectType.CHANGE_SKILL,
+        target: SkillEnum.CTHULHU_MYTHOS,
+        value: 2,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '259',
-        effects: [
-          {
-            type: EffectType.CHANGE_SKILL,
-            target: SkillEnum.CTHULHU_MYTHOS,
-            value: 2,
-          },
-        ],
       },
     ],
   },
@@ -216,18 +236,19 @@ export const scenes_221_240: SceneData = {
   '240': {
     id: '240',
     story:
-      '你听到身后的路上传来什么声音。是沉闷的喀嚓声——可能是枯枝坠落的声音。你停下脚步，但声音并没有再次响起。你往回走了几步，沿路望去，但什么也看不到。\n你可以在「聆听」技能左边的小方框里打勾。',
+      '你听到身后的路上传来什么声音。是沉闷的喀嚓声——可能是枯枝坠落的声音。你停下脚步，但声音并没有再次响起。你往回走了几步，沿路望去，但什么也看不到。',
+    info: '你可以在「聆听」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.LISTEN,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '234',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.LISTEN,
-          },
-        ],
       },
     ],
   },

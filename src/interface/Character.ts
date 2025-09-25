@@ -1,4 +1,3 @@
-import { Dice } from './Dice'
 import { CoreCharacteristicKey, SkillKey } from '../constant/enums'
 
 /**
@@ -46,22 +45,28 @@ export interface Character {
   }
   // Final skill values after points allocation
   skills: Partial<Record<SkillKey, number>> // Using Partial as not all skills might have points or be known
-  inventory: (string | Weapon)[] // Inventory can hold item names or Weapon objects
+  inventory: (Item | Weapon)[] // Inventory can hold item names or Weapon objects
   markedSkills: SkillKey[] // Tracks skills successfully used, using SkillKey for type safety
   background?: CharacterBackground // From OccupationTemplate
+}
+
+export interface Item {
+  type: 'item'
+  name: string
+  description?: string
 }
 
 /**
  * weapon in call of cthulhu
  */
 export interface Weapon {
+  type: 'weapon'
   name: string
-  diceCount: number
-  dice: Dice
+  description?: string
+  damage: string
   range?: number // 武器的射程范围，单位是英寸
   ammoCapacity?: number // 弹药容量，只适用于需要弹药的武器，如步枪或手枪。
   malfunctions?: number // 武器故障率，该值越高，武器的故障几率就越大。
-  notes?: string
 }
 
 /**

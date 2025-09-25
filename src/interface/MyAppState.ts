@@ -28,7 +28,7 @@ export interface CheckAttemptState {
   successMessage?: string
   failureMessage?: string
   nextSceneIdOnSuccess: string
-  nextSceneIdOnFailure: string
+  nextSceneIdOnFailure?: string
   effectsToApplyOnSuccess?: Effect[]
   effectsToApplyOnFailure?: Effect[]
 
@@ -78,10 +78,7 @@ export const initialState: MyAppState = {
     [GameFlag.LAST_NIGHT_SKILL_CHECK_SUCCESS]: false,
     [GameFlag.PENALTY_DICE_TODAY]: false,
     [GameFlag.FOUGHT_LAST_NIGHT]: false,
-    [GameFlag.LEARNED_ABOGASTR_CHANT]: false,
     [GameFlag.IS_INJURED]: false,
-    [GameFlag.LEARNED_SPELL_COMMAND_FIRE_FROM_SKY]: false,
-    [GameFlag.LEARNED_SPELL_SUMMON_FIRE_FROM_SKY]: false,
     [GameFlag.APPOINTMENT_WITH_ABOGAIST_9PM_CEMETERY]: false,
   },
   isCharacterModalVisible: false,

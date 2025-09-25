@@ -4,7 +4,7 @@ import {
   ConditionType,
   EffectType,
 } from '../constant/enums'
-import { Weapon } from '../interface/Character' // Import Weapon type
+import { Item, Weapon } from '../interface/Character' // Import Weapon type
 import { OccupationKey } from '../data/occupations' // Import OccupationKey
 import { GameFlag } from '../constant/GameFlags'
 
@@ -17,6 +17,12 @@ export interface Check {
   // penaltyDice?: number; // 未来可扩展惩罚骰
 }
 
+export interface Against {
+  object: 'skill' | 'characteristic' | 'luck'
+  subObject: CheckObjectKey // 例如 CheckObjectKey.MEDICINE, CheckObjectKey.STRENGTH
+  targetValue: number // 对抗对象的目标值
+}
+
 // 效果定义 (根据项目实际情况可能更复杂)
 export interface Effect {
   type: EffectType // 例如 EffectType.GAIN_ITEM, EffectType.LOSE_HP
@@ -24,7 +30,7 @@ export interface Effect {
   value?: string | number // 例如 '1D3', 1, '克苏鲁的护符'
   gameFlag?: GameFlag // 用于设置/取消游戏标记
   flagValue?: boolean // 游戏标记的值
-  item?: string | Weapon // For ADD_ITEM, REMOVE_ITEM: the item name or Weapon object
+  item?: Item | Weapon // For ADD_ITEM, REMOVE_ITEM: the item name or Weapon object
   isActive?: boolean
 }
 
@@ -44,9 +50,9 @@ export interface Condition {
 // 通用的“检定核心负载”接口
 // 这个接口描述了“进行一次检定，并根据结果决定后续”的完整信息包
 export interface CheckPayload {
-  details: Check // 具体检定什么
+  details: Check | Against // 具体检定什么
   onSuccessSceneId: string // 成功后跳转到哪个场景
-  onFailureSceneId: string // 失败后跳转到哪个场景
+  onFailureSceneId?: string // 失败后跳转到哪个场景
   successText?: string // 检定成功后，在当前卡片上显示的提示文本 (可选)
   failureText?: string // 检定失败后，在当前卡片上显示的提示文本 (可选)
   onSuccessEffects?: Effect[] // 检定成功后应用的效果 (可选)
@@ -56,7 +62,7 @@ export interface CheckPayload {
 // 选项：点击后执行检定
 interface CheckDrivenOption {
   text: string
-  type: 'check' // 用于类型守卫的辨别字段
+  type: 'check' // 用于类型的辨别字段
   condition?: Condition
   check: CheckPayload // 直接使用通用的 CheckPayload
   effects?: Effect[] // 点击选项后、检定执行前应用的效果 (可选)

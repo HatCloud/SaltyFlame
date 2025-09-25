@@ -7,6 +7,7 @@ import {
   ConditionType,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_021_040: SceneData = {
   '21': {
@@ -22,7 +23,7 @@ export const scenes_021_040: SceneData = {
   '22': {
     id: '22',
     story:
-      '你别过莱德贝特母女，向她们家走去。房门一下就打开了。在低矮的厨房里，你用干硬的面包和剩下的炖菜凑合了一顿午餐。厨房里有扇小窗户，可以望见群山。\n这一上午你的唯一收获就是——烬头村并没有什么可以吸引外界游客的东西。但现在白昼还剩下差不多五个小时。你可以准备一点干粮，带上自己行李里仅有的必需品，继续出发，希望能在中国黑之前抵达下一个村庄。你也可以去文特斯先生那里寻求帮助。',
+      '你别过莱德贝特母女，向她们家走去。房门一下就打开了。在低矮的厨房里，你用干硬的面包和剩下的炖菜凑合了一顿午餐。厨房里有扇小窗户，可以望见群山。\n这一上午你的唯一收获就是——烬头村并没有什么可以吸引外界游客的东西。但现在白昼还剩下差不多五个小时。你可以准备一点干粮，带上自己行李里仅有的必需品，继续出发，希望能在天黑之前抵达下一个村庄。你也可以去文特斯先生那里寻求帮助。',
     options: [
       { type: 'goto', text: '稍作准备出村去', goto: '28' },
       { type: 'goto', text: '转而造访村会堂', goto: '11' },
@@ -113,19 +114,20 @@ export const scenes_021_040: SceneData = {
   '26': {
     id: '26',
     story:
-      '你在晨光中浑浑噩噩地醒了过来。太阳已经升得很高，但你感到自己一点也没有休息好。你发现自己的思绪被房间里的各种细节占据了：门框上的木材纹路，还有衣橱上一个有缺口的把手。\n当你翻身下床时，腹部却一阵绞痛，脚下不稳，差点扑倒在地。可能你是生了什么病？你眨眨眼，小心翼翼地直起腰来。房间里的空气芳香馥郁。\n你凝视窗外，直到你感觉自己已经稳住，可以离开了。\n今天你的技能检定受到一颗惩罚骰。额外投一颗十位骰，分别计算结果后取最高值。这不影响幸运、理智和伤害检定。\n现在前往64。',
+      '你在晨光中浑浑噩噩地醒了过来。太阳已经升得很高，但你感到自己一点也没有休息好。你发现自己的思绪被房间里的各种细节占据了：门框上的木材纹路，还有衣橱上一个有缺口的把手。\n当你翻身下床时，腹部却一阵绞痛，脚下不稳，差点扑倒在地。可能你是生了什么病？你眨眨眼，小心翼翼地直起腰来。房间里的空气芳香馥郁。\n你凝视窗外，直到你感觉自己已经稳住，可以离开了。',
+    info: '今天你的技能检定受到一颗惩罚骰。额外投一颗十位骰，分别计算结果后取最高值。这不影响幸运、理智和伤害检定。',
+    effects: [
+      {
+        type: EffectType.SET_FLAG,
+        gameFlag: GameFlag.PENALTY_DICE_TODAY,
+        flagValue: true,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '64',
-        effects: [
-          {
-            type: EffectType.SET_FLAG,
-            gameFlag: GameFlag.PENALTY_DICE_TODAY,
-            flagValue: true,
-          },
-        ],
       },
     ],
   },
@@ -151,8 +153,8 @@ export const scenes_021_040: SceneData = {
           },
           onSuccessSceneId: '35',
           onFailureSceneId: '41',
-          successText: '进行「博物学」检定（成功）',
-          failureText: '进行「博物学」检定（失败）',
+          successText: '你成功辨别出来了那是什么',
+          failureText: '你没有辨别出来那是什么',
         },
       },
     ],
@@ -160,15 +162,16 @@ export const scenes_021_040: SceneData = {
   '29': {
     id: '29',
     story:
-      '村子北边十分繁忙，你在那里大概隐蔽不了多久。你向教堂的方向前进，然后沿着房子背面向村东头前进。你右边出现了一段断崖。有一部分地面非常狭窄，你必须扶住屋墙作支撑。\n你可以选择放弃这条路，前往120。如果要前进，比较你的“体型”和“敏捷”。如果你的“敏捷”较高，前往42。如果你的“体型”较高，进行一次“敏捷”检定。如果你成功了，前往42。如果你失败了，前往36。\n（译注: 如果你的“体型”和“敏捷”相等, 请检定。）',
+      '村子北边十分繁忙，你在那里大概隐蔽不了多久。你向教堂的方向前进，然后沿着房子背面向村东头前进。你右边出现了一段断崖。有一部分地面非常狭窄，你必须扶住屋墙作支撑',
+    info: '你可以选择放弃这条路，前往120。如果要前进，比较你的“体型”和“敏捷”。如果你的“敏捷”较高，前往42。如果你的“体型”较高，进行一次“敏捷”检定。如果你成功了，前往42。如果你失败了，前往36。\n（译注: 如果你的“体型”和“敏捷”相等, 请检定。）',
     options: [
       { type: 'goto', text: '放弃这条路', goto: '120' },
       {
         type: 'goto',
-        text: '前进（如果敏捷 > 体型）',
+        text: '选择断崖前进，你完全能应付这条小路',
         goto: '42',
         condition: {
-          type: ConditionType.CHARACTERISTIC_COMPARE,
+          type: ConditionType.COMPARE,
           targetObject: CoreCharacteristicEnum.DEX,
           comparisonObject: CoreCharacteristicEnum.SIZ,
           comparisonOperator: 'gt',
@@ -176,9 +179,9 @@ export const scenes_021_040: SceneData = {
       },
       {
         type: 'check',
-        text: '前进（如果体型 >= 敏捷，进行敏捷检定）',
+        text: '选择断崖前进，但你知道自己得十分小心才能通过',
         condition: {
-          type: ConditionType.CHARACTERISTIC_COMPARE,
+          type: ConditionType.COMPARE,
           targetObject: CoreCharacteristicEnum.SIZ,
           comparisonObject: CoreCharacteristicEnum.DEX,
           comparisonOperator: 'gte',
@@ -189,7 +192,9 @@ export const scenes_021_040: SceneData = {
             subObject: CoreCharacteristicEnum.DEX,
             difficulty: CheckDifficulty.NORMAL,
           },
+          successText: '你小心翼翼地走过了这段路段',
           onSuccessSceneId: '42',
+          failureText: '看来你还是不够小心',
           onFailureSceneId: '36',
         },
       },
@@ -198,7 +203,8 @@ export const scenes_021_040: SceneData = {
   '30': {
     id: '30',
     story:
-      '午后的阳光照射到地面上，你发现了一些有意思的东西。窗户下面的地板比房间中央的地板要新。窗框也有最近曾经更换过的痕迹。也许是雨水漏进来，木头被腐蚀了。\n你可以在「侦查」技能左边的小方框里打勾。现在前往37。',
+      '午后的阳光照射到地面上，你发现了一些有意思的东西。窗户下面的地板比房间中央的地板要新。窗框也有最近曾经更换过的痕迹。也许是雨水漏进来，木头被腐蚀了。',
+    info: '你可以在「侦查」技能左边的小方框里打勾。',
     options: [
       {
         type: 'goto',
@@ -236,8 +242,8 @@ export const scenes_021_040: SceneData = {
             },
           ],
           onFailureSceneId: '51',
-          successText: '进行「魅惑」检定（成功）',
-          failureText: '进行「魅惑」检定（失败）',
+          successText: '虽然梅没有说什么，但你感觉她对你有好感',
+          failureText: '你能感觉到梅对你和其他人并没有什么不同',
         },
       },
     ],
@@ -277,8 +283,8 @@ export const scenes_021_040: SceneData = {
           },
           onSuccessSceneId: '46',
           onFailureSceneId: '25',
-          successText: '进行「骑术」检定（成功）',
-          failureText: '进行「骑术」检定（失败）',
+          successText: '你闻到了一些奇怪的气味',
+          failureText: '你没能找到任何有趣的东西，于是决定离开。',
         },
       },
     ],
@@ -286,18 +292,18 @@ export const scenes_021_040: SceneData = {
   '35': {
     id: '35',
     story:
-      '那是郊狼的嗥叫，在这个地区很常见。狼嗥听上去很吓人，尤其是晚上的时候，但郊狼懂得躲避人类。你可以毫无惧色地前进。\n你可以在「博物学」技能左边的小方框里打勾。现在前往54。',
+      '那是郊狼的嗥叫，在这个地区很常见。狼嗥听上去很吓人，尤其是晚上的时候，但郊狼懂得躲避人类。你可以毫无惧色地前进',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.NATURAL_WORLD,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '54',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.NATURAL_WORLD,
-          },
-        ],
       },
     ],
   },
@@ -317,8 +323,8 @@ export const scenes_021_040: SceneData = {
           },
           onSuccessSceneId: '48',
           onFailureSceneId: '55',
-          successText: '进行「攀爬」检定（成功）',
-          failureText: '进行「攀爬」检定（失败）',
+          successText: '你平日的锻炼让你在这次意外中幸存了下来',
+          failureText: '你没能在下落过程中抓住机会',
         },
       },
     ],
@@ -338,31 +344,29 @@ export const scenes_021_040: SceneData = {
   '39': {
     id: '39',
     story:
-      '随着时间流逝，梅乐观的态度变成了沉吟。\n“生活也不是一帆风顺的。你知道吗，我是个寡妇。我手头有点儿钱，当然也欢迎像你这样的旅行者做客。只要我们住在这里就不会挨饿，但我觉得我是不可能再嫁出去了。村里的每个男人我都认识。我太了解他们了，你懂我的意思吧。”\n她撇了撇嘴，打了个呵欠，伸手拢了几下头发。\n“不早了，我该睡觉了。你想几点钟吃早饭？”\n在你的调查员角色卡上「魅惑」左边的小方框里打勾。如果你成功完成了本次冒险，你有机会通过这次和梅的经历，学到一些东西。\n现在前往63。',
+      '随着时间流逝，梅乐观的态度变成了沉吟。\n“生活也不是一帆风顺的。你知道吗，我是个寡妇。我手头有点儿钱，当然也欢迎像你这样的旅行者做客。只要我们住在这里就不会挨饿，但我觉得我是不可能再嫁出去了。村里的每个男人我都认识。我太了解他们了，你懂我的意思吧。”\n她撇了撇嘴，打了个呵欠，伸手拢了几下头发。\n“不早了，我该睡觉了。你想几点钟吃早饭？”',
+    info: '在你的调查员角色卡上「魅惑」左边的小方框里打勾。如果你成功完成了本次冒险，你有机会通过这次和梅的经历，学到一些东西。\n现在前往63。',
+    effects: [{ type: EffectType.MARK_SKILL_SUCCESS, target: SkillEnum.CHARM }],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '63',
-        effects: [
-          { type: EffectType.MARK_SKILL_SUCCESS, target: SkillEnum.CHARM },
-        ],
       },
     ],
   },
   '40': {
     id: '40',
     story:
-      '火焰蜿蜒爬过薪柴，一边延烧一边升腾。烟雾开始弥漫，村民的身影已经难于辨认。你身边三具人体也被点燃，红色的火焰里带着黑烟。浓烟钻进了你的肺，你开始咳嗽，努力压抑涌上心头的强烈恐惧。\n如果你学过奇怪的咒语又想尝试的话，现在就抓住时机。否则前往65。',
+      '火焰蜿蜒爬过薪柴，一边延烧一边升腾。烟雾开始弥漫，村民的身影已经难于辨认。你身边三具人体也被点燃，红色的火焰里带着黑烟。浓烟钻进了你的肺，你开始咳嗽，努力压抑涌上心头的强烈恐惧。\n如果你学过奇怪的咒语又想尝试的话，现在就抓住时机。',
     options: [
       {
         type: 'goto',
         text: '尝试奇怪的咒语',
         goto: '50',
         condition: {
-          type: ConditionType.FLAG_SET, // Assuming FLAG_SET is a valid ConditionType
-          gameFlag: GameFlag.LEARNED_ABOGASTR_CHANT,
-          expectedValue: true,
+          type: ConditionType.HAS_ITEM,
+          item: ItemBox.AbogastChant.cn.name,
         },
       },
       { type: 'goto', text: '不尝试咒语/未学过咒语', goto: '65' },

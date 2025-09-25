@@ -126,6 +126,11 @@ const StoryCard: React.FC = React.memo(() => {
           type: 'PERFORM_INLINE_CHECK',
           payload: { checkPayload: option.check, originalOption: option },
         })
+      } else if (option.type === 'against_check') {
+        dispatch({
+          type: 'PERFORM_INLINE_CHECK',
+          payload: { checkPayload: option.check, originalOption: option },
+        })
       } else if (option.type === 'goto') {
         // Handle applyOccupation first if present
         if (option.applyOccupation) {

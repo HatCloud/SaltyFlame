@@ -6,6 +6,7 @@ import {
   CheckDifficulty,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_121_140: SceneData = {
   '121': {
@@ -46,8 +47,8 @@ export const scenes_121_140: SceneData = {
   '123': {
     id: '123',
     story:
-      '他们把你推回了火堆。狂热和恐惧蒙蔽了他们的双眼。即使火焰在他们身上蔓延、在你的衣服上肆虐，即使热度越来越强烧灼着你的皮肉，即使浓烟令你窒息视野模糊，他们仍然在火焰中紧紧压着你。你的尖叫和他们的混合在一起，直到火焰完成自己的使命。\n你在和两个年轻人的僵持之中被烧死了。\n为何不重新尝试呢？选择不同的选项，你也也许就能逃脱甚至智胜烬头村的村民了。\n【剧终】',
-    options: [{ type: 'goto', text: '游戏结束', goto: 'END' }],
+      '他们把你推回了火堆。狂热和恐惧蒙蔽了他们的双眼。即使火焰在他们身上蔓延、在你的衣服上肆虐，即使热度越来越强烧灼着你的皮肉，即使浓烟令你窒息视野模糊，他们仍然在火焰中紧紧压着你。你的尖叫和他们的混合在一起，直到火焰完成自己的使命。\n你在和两个年轻人的僵持之中被烧死了。\n为何不重新尝试呢？选择不同的选项，你也也许就能逃脱甚至智胜烬头村的村民了。',
+    options: [{ type: 'goto', text: '剧终', goto: 'END' }],
   },
   '124': {
     id: '124',
@@ -184,18 +185,18 @@ export const scenes_121_140: SceneData = {
     id: '136',
     story:
       '这头熊把爪子放上树干，爬上了树，动作敏捷得惊人。它在树杈上稳住身形，开始从枝叶上扯下黑色的果子——大概是李子？——塞进嘴里。\n你看了大概十分钟，这头熊似乎吃腻了，从树上落回地面。它朝空地四周望望，打了个呵欠，甩开屁股迈进了森林当中。\n观察熊是次非常有教育意义的经历。你可以在你的「博物学」技能上永久增加1点。',
+    effects: [
+      {
+        type: EffectType.CHANGE_SKILL,
+        target: SkillEnum.NATURAL_WORLD,
+        value: 1,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '79',
-        effects: [
-          {
-            type: EffectType.CHANGE_SKILL,
-            target: SkillEnum.NATURAL_WORLD,
-            value: 1,
-          },
-        ],
       },
     ],
   },
@@ -208,11 +209,12 @@ export const scenes_121_140: SceneData = {
   '138': {
     id: '138',
     story:
-      '过了一会儿，梅回到厨房开始洗涮。要想和露丝说话，你需要让梅离开一会儿。你一边帮她刷盘子，一边考虑计策。没多久，你就想到了一 个主意，问起了西拉斯和他村子里的朋友。\n梅眯起眼睛说：“他认识村那头的特洛伊，我不好说他们是朋友；他俩更像是一对欢喜老冤家。但他昨天晚上可能是在特洛伊家过的夜。”\n你问梅可不可以见见特洛伊，问问他西拉斯有没有提到过返回的计划。梅听着半信半疑，问道：“现在就去？”\n现在，不要查看自己的角色卡，决定自己如何让梅信服：是让梅感情用事？还是解释说再耽搁下去自己的事业就会受到影响？或者是让她草率遵从你的决定？请根据自己的选择，分别进行「魅惑」、「说服」或者「话术」检定。',
+      '过了一会儿，梅回到厨房开始洗涮。要想和露丝说话，你需要让梅离开一会儿。你一边帮她刷盘子，一边考虑计策。没多久，你就想到了一 个主意，问起了西拉斯和他村子里的朋友。\n梅眯起眼睛说：“他认识村那头的特洛伊，我不好说他们是朋友；他俩更像是一对欢喜老冤家。但他昨天晚上可能是在特洛伊家过的夜。”\n你问梅可不可以见见特洛伊，问问他西拉斯有没有提到过返回的计划。梅听着半信半疑，问道：“现在就去？”',
+    info: '现在，不要查看自己的角色卡，决定自己如何让梅信服：是让梅感情用事？还是解释说再耽搁下去自己的事业就会受到影响？或者是让她草率遵从你的决定？请根据自己的选择，分别进行「魅惑」、「说服」或者「话术」检定。',
     options: [
       {
         type: 'check',
-        text: '尝试「魅惑」说服梅',
+        text: '你拿出自己最迷人的一面，试图打动梅',
         check: {
           details: {
             object: 'skill',
@@ -225,7 +227,7 @@ export const scenes_121_140: SceneData = {
       },
       {
         type: 'check',
-        text: '尝试「说服」说服梅',
+        text: '解释说再耽搁下去自己的事业就会受到影响',
         check: {
           details: {
             object: 'skill',
@@ -238,7 +240,7 @@ export const scenes_121_140: SceneData = {
       },
       {
         type: 'check',
-        text: '尝试「话术」说服梅',
+        text: '就算撒谎也要让梅草率遵从你的决定',
         check: {
           details: {
             object: 'skill',
@@ -265,7 +267,7 @@ export const scenes_121_140: SceneData = {
         type: 'goto',
         text: '继续',
         goto: '120',
-        effects: [{ type: EffectType.ADD_ITEM, target: '烬头村地图' }],
+        effects: [{ type: EffectType.ADD_ITEM, item: ItemBox.Map.cn }],
       },
     ],
   },

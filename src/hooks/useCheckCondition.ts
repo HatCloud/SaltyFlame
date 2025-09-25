@@ -1,7 +1,11 @@
 import { useCallback } from 'react'
 import type { Character } from '../interface/Character'
 import type { Condition } from '../interface/Scene'
-import { ConditionType, CoreCharacteristicKey } from '../constant/enums'
+import {
+  ConditionType,
+  CoreCharacteristicKey,
+  RollEnum,
+} from '../constant/enums'
 import { useConditionDescription } from './useConditionDescription'
 
 export const useCheckCondition = () => {
@@ -69,26 +73,30 @@ export const useCheckCondition = () => {
           }
           met = gameFlags[condition.gameFlag] !== condition.expectedValue
           break
-        case ConditionType.CHARACTERISTIC_COMPARE:
+        case ConditionType.COMPARE:
           if (
             condition.targetObject &&
             condition.comparisonObject !== undefined &&
             condition.comparisonOperator &&
             characterData
           ) {
-            const characteristicKey = condition.targetObject
-            if (!characteristicKey) {
+            const objectKey = condition.targetObject
+            if (!objectKey) {
               met = false
               break
             }
-            if (!(characteristicKey in characterData.characteristics)) {
+            let targetValue: number
+            if (objectKey in characterData.characteristics) {
+              targetValue =
+                characterData.characteristics[
+                  objectKey as CoreCharacteristicKey
+                ]
+            } else if (objectKey === RollEnum.SANITY) {
+              targetValue = characterData.sanity.current
+            } else {
               met = false
               break
             }
-            const targetValue =
-              characterData.characteristics[
-                characteristicKey as CoreCharacteristicKey
-              ]
 
             let comparisonValue: number | undefined
             if (typeof condition.comparisonObject === 'number') {
@@ -100,6 +108,8 @@ export const useCheckCondition = () => {
                 characterData.characteristics[
                   condition.comparisonObject as CoreCharacteristicKey
                 ]
+            } else if (condition.comparisonObject === RollEnum.SANITY) {
+              comparisonValue = characterData.sanity.current
             }
             if (comparisonValue === undefined) {
               met = false
@@ -161,6 +171,23 @@ export const useCheckCondition = () => {
             } else {
               met = false // 如果期望值不是数字，则不满足条件
             }
+          }
+          break
+        }
+        case ConditionType.ALIVE: {
+          if (condition.expectedValue === false) {
+            met = characterData.hitPoints.current <= 0
+          } else {
+            met = characterData.hitPoints.current > 0
+          }
+          break
+        }
+        case ConditionType.IS_MAJOR_WOUND: {
+          // 检查是否有重伤
+          if (condition.expectedValue === false) {
+            met = characterData.hitPoints.isMajorWound === false
+          } else {
+            met = characterData.hitPoints.isMajorWound
           }
           break
         }

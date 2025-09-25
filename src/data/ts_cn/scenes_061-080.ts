@@ -52,12 +52,26 @@ export const scenes_061_080: SceneData = {
   '65': {
     id: '65',
     story:
-      '火舌舔上你的双腿。你的眼中充满泪水。你被烟幕笼罩了；也许是你的想象，但你认为你感觉到铁链有一点点松动。你用尽全力挣扎，全然不顾铁链在你的手腕上拴得有多么牢固。\n你因为火焰受到 1D6 点耐久值伤害。如果你的耐久值因此归零，你就会失去意识，被烈焰烧死！【剧终】。否则，进行一次“力量”检定。如果你成功了，前往 93。如果你失败了，前往 77。',
+      '火舌舔上你的双腿。你的眼中充满泪水。你被烟幕笼罩了；也许是你的想象，但你认为你感觉到铁链有一点点松动。你用尽全力挣扎，全然不顾铁链在你的手腕上拴得有多么牢固。\n你因为火焰受到 1D6 点耐久值伤害。',
+    info: '如果你的耐久值因此归零，你就会失去意识，被烈焰烧死！【剧终】。否则，进行一次“力量”检定。如果你成功了，前往 93。如果你失败了，前往 77',
+    effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
     options: [
       {
+        type: 'goto',
+        text: '你的意识消失在火焰中【剧终】',
+        goto: 'END',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: false,
+        },
+      },
+      {
         type: 'check',
-        text: '进行“力量”检定',
-        effects: [{ type: EffectType.CHANGE_HP, value: '-1D6' }],
+        text: '你强忍着痛苦，进行着殊死一搏，尝试用力挣脱铁链',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: true,
+        },
         check: {
           details: {
             object: 'characteristic',
@@ -66,8 +80,8 @@ export const scenes_061_080: SceneData = {
           },
           onSuccessSceneId: '93',
           onFailureSceneId: '77',
-          successText: '进行“力量”检定（成功）',
-          failureText: '进行“力量”检定（失败）',
+          successText: '你成功了！',
+          failureText: '你绝望地发现自己无法挣脱铁链。',
         },
       },
     ],
@@ -75,29 +89,31 @@ export const scenes_061_080: SceneData = {
   '66': {
     id: '66',
     story:
-      '太阳的位置令你困惑。它让你想起你看过的一本杂志上的东西；一篇关于英国巨石阵的文章，貌似？你查看自己的位置、北面群山的位置，闭上眼睛，根据你早上探索的结果，在心底描绘烬头村的布局。金属建筑物如同钥匙一般，坐落在它的峭壁之上。是的，这完全有可能。\n当然，你并没有得到确切的方位，也无法查找天文表，所以不能肯定。但如果你的猜测正确的话，烬头村中央大街的位置正好能让夏至日的晨光照过金属建筑物，直接投射到大街中央。\n这也许只是大胆的猜测。但是你觉得它还有些道理。\n你可以在「考古学」技能左边的小方框里打勾。',
+      '太阳的位置令你困惑。它让你想起你看过的一本杂志上的东西；一篇关于英国巨石阵的文章，你查看自己的位置、北面群山的位置，闭上眼睛，根据你早上探索的结果，在心底描绘烬头村的布局。金属建筑物如同钥匙一般，坐落在它的峭壁之上。是的，这完全有可能。\n当然，你并没有得到确切的方位，也无法查找天文表，所以不能肯定。但如果你的猜测正确的话，烬头村中央大街的位置正好能让夏至日的晨光照过金属建筑物，直接投射到大街中央。\n这也许只是大胆的猜测。但是你觉得它还有些道理。',
+    info: '你可以在「考古学」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.ARCHAEOLOGY,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '79',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.ARCHAEOLOGY,
-          },
-        ],
       },
     ],
   },
   '67': {
     id: '67',
     story:
-      '你以奇怪的角度落地，身上有哪里断掉了。你摸摸身下面，手指上沾上了湿湿的东西。你视野边缘的黑幕在徐徐关闭。\n你受到了重伤。进行一次“体质”检定。如果你成功了，前往 82。如果你失败了，或者你的耐久值已经归零，前往 92。',
+      '你以奇怪的角度落地，身上有哪里断掉了。你摸摸身下面，手指上沾上了湿湿的东西。你视野边缘的黑幕在徐徐关闭。\n你受到了重伤。',
+    info: '进行一次“体质”检定。如果你成功了，前往 82。如果你失败了，前往 92。',
     options: [
       {
         type: 'check',
-        text: '进行“体质”检定',
+        text: '尝试凝聚最后的力气，站起来',
         check: {
           details: {
             object: 'characteristic',
@@ -106,8 +122,8 @@ export const scenes_061_080: SceneData = {
           },
           onSuccessSceneId: '82',
           onFailureSceneId: '92',
-          successText: '进行“体质”检定（成功）',
-          failureText: '进行“体质”检定（失败或HP为0）',
+          successText: '你成功了！',
+          failureText: '最后的尝试也是徒劳的。',
         },
       },
     ],
@@ -126,18 +142,19 @@ export const scenes_061_080: SceneData = {
   '69': {
     id: '69',
     story:
-      '当你从这座铁铸的建筑走开时，你注意到这村子的布局有些怪异。所有的木屋都集中在村西和村西南。而到了接近灯塔的村东和村东北，建筑则变成了深色的砖房和土房。这是不是说明村庄是从灯塔开始，逐渐向西扩张的呢？\n你可以在「侦查」技能左边的小方框里打勾。',
+      '当你从这座铁铸的建筑走开时，你注意到这村子的布局有些怪异。所有的木屋都集中在村西和村西南。而到了接近灯塔的村东和村东北，建筑则变成了深色的砖房和土房。这是不是说明村庄是从灯塔开始，逐渐向西扩张的呢？',
+    info: '你可以在「侦查」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.SPOT_HIDDEN,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '25',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.SPOT_HIDDEN,
-          },
-        ],
       },
     ],
   },
@@ -194,18 +211,26 @@ export const scenes_061_080: SceneData = {
   },
   '73': {
     id: '73',
-    story:
-      '你一下撞到地面上。肺里的空气直冲出你的喉咙，鲜血渗出你的头顶。\n如果你的耐久值已经归零，前往 92。否则，前往 82。',
+    story: '你一下撞到地面上。肺里的空气直冲出你的喉咙，鲜血渗出你的头顶。',
+    info: '如果你的耐久值已经归零，前往 92。否则，前往 82。',
     options: [
       {
         type: 'goto',
-        text: '（若HP > 0）继续',
+        text: '虽然伤势严重，但你咬牙坚持了下来',
         goto: '82',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: true,
+        },
       },
       {
         type: 'goto',
-        text: '（若HP <= 0）前往结局',
+        text: '你的伤势过于严重，已经回天乏术了【剧终】',
         goto: '92',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: false,
+        },
       },
     ],
   },
@@ -224,29 +249,24 @@ export const scenes_061_080: SceneData = {
   '76': {
     id: '76',
     story:
-      '这种粉末散发的独特气味，令你联想到以前你的一位老教授做过的关于危险草药的演示实验。虽然原料可能不只一种，但你相当肯定这种粉末含有莨菪，具有催眠和致幻的作用。\n你扑灭了这一小堆粉末，把它分散撒到壁炉的各处。\n你可以在自己「科学(植物学)」技能左边的小方框里打勾。',
+      '这种粉末散发的独特气味，令你联想到以前你的一位老教授做过的关于危险草药的演示实验。虽然原料可能不只一种，但你相当肯定这种粉末含有莨菪，具有催眠和致幻的作用。\n你扑灭了这一小堆粉末，把它分散撒到壁炉的各处。',
+    info: '你可以在自己「科学(植物学)」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.SCIENCE_BOTANY,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '小睡一会',
         goto: '58',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.SCIENCE_BOTANY,
-          },
-        ],
       },
       {
         type: 'goto',
         text: '彻夜不眠',
         goto: '52',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.SCIENCE_BOTANY,
-          },
-        ],
       },
     ],
   },
@@ -275,7 +295,7 @@ export const scenes_061_080: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行困难难度的「聆听」检定',
+        text: '忽然你的耳朵似乎捕捉到了一些细微的声音',
         check: {
           details: {
             object: 'skill',
@@ -284,8 +304,8 @@ export const scenes_061_080: SceneData = {
           },
           onSuccessSceneId: '240',
           onFailureSceneId: '234',
-          successText: '进行困难难度的「聆听」检定（成功）',
-          failureText: '进行困难难度的「聆听」检定（失败）',
+          successText: '你刚刚的确实听到了什么。',
+          failureText: '你摇摇头，也许刚刚是你的错觉。',
         },
       },
     ],

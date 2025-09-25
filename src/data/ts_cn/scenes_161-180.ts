@@ -7,6 +7,7 @@ import {
   ConditionType,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_161_180: SceneData = {
   '161': {
@@ -114,9 +115,8 @@ export const scenes_161_180: SceneData = {
         goto: '175',
         effects: [
           {
-            type: EffectType.SET_FLAG,
-            gameFlag: GameFlag.LEARNED_ABOGASTR_CHANT,
-            flagValue: false,
+            type: EffectType.ADD_ITEM,
+            item: ItemBox.AbogastChant.cn,
           },
         ],
       },
@@ -132,7 +132,7 @@ export const scenes_161_180: SceneData = {
   '171': {
     id: '171',
     story:
-      '你花了一个星期才学懂德בי的诗作。他的诗作表述了宇宙核心的东西：振荡的、吞噬一切的质量，撕裂着宇宙的每一根纤维。它的信使，时而称作无面者，时而称作伏行的混沌，所触之处皆堕入混乱。他的文字风格独特：并非生动的联想，而是无望的揭示。\n学习诗集的时候，你还注意到诗篇之间潜藏的联系，令你开始心绪不宁。进行一次“理智”检定。如果你成功了，失去1点理智值。如果你失败了，失去1D4点理智值。你可以增加4点「克苏鲁神话」技能。你将再也难以轻松入眠。\n【剧终】',
+      '你花了一个星期才学懂德比的诗作。他的诗作表述了宇宙核心的东西：振荡的、吞噬一切的质量，撕裂着宇宙的每一根纤维。它的信使，时而称作无面者，时而称作伏行的混沌，所触之处皆堕入混乱。他的文字风格独特：并非生动的联想，而是无望的揭示。\n学习诗集的时候，你还注意到诗篇之间潜藏的联系，令你开始心绪不宁。进行一次“理智”检定。如果你成功了，失去1点理智值。如果你失败了，失去1D4点理智值。你可以增加4点「克苏鲁神话」技能。你将再也难以轻松入眠。\n【剧终】',
     effects: [
       {
         type: EffectType.CHANGE_SKILL,
@@ -180,24 +180,25 @@ export const scenes_161_180: SceneData = {
     story:
       '你听到的刺耳噪声当然可以表征引擎的故障，但这也可能和选错档位或者离合器故障有关。即使已经连续驾驶了一天，有经验的公交车司机也几乎不可能突然搞错这种事情。\n如果这是个诡计，为了让你花钱花时间在路上的商店买东西的话，西拉斯会因为你空荡的钱包而非常失望的。',
     info: '在你的调查员角色卡上「汽车驾驶」左边的小方框里打勾。如果你成功完成了本次冒险，你有机会通过这次和西拉斯的经历，学到一些东西。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.DRIVE_AUTO,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '194',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.DRIVE_AUTO,
-          },
-        ],
       },
     ],
   },
   '175': {
     id: '175',
     story:
-      '天色已晚，你坐在学校后面的悬崖顶上，跟着一个疯子学他背下来的咒语，颇有脱离现实之感。阿博加斯特小心翼翼地一段一段教你。\n他望了一眼天空。“现在没有用。云挡住了星星.”但他仍然特别留心，不会一次说出整句咒语。\n它的开头很有韵律，还有各种精巧的设计，但最核心的是重复三次的段落：\nPh’nglui mglw’nafh Cthugha Fomalhaut \nn’ghaghaa naf ’l thagn! Iä! Cthugha!\n最后，阿博加斯特听了你的背诵，点点头。“每个字都要记住。但只要你在这地上还有活路，就千万不要念出它.”\n你发现了一个秘密。如果有朝一日你的状况绝望到需要用到阿博加斯特的仪式，这段文字可以提供你施法的机会。到那时，如果你想尝试这个仪式，在你所在的条目号上加10，前往对应的条目。\n阿博加斯特侧回身。“它会让你变成和活——”',
+      '天色已晚，你坐在学校后面的悬崖顶上，跟着一个疯子学他背下来的咒语，颇有脱离现实之感。阿博加斯特小心翼翼地一段一段教你。\n他望了一眼天空。“现在没有用。云挡住了星星.”但他仍然特别留心，不会一次说出整句咒语。\n它的开头很有韵律，还有各种精巧的设计，但最核心的是重复三次的段落：\nPh’nglui mglw’nafh Cthugha Fomalhaut \nn’ghaghaa naf ’l thagn! Iä! Cthugha!\n最后，阿博加斯特听了你的背诵，点点头。“每个字都要记住。但只要你在这地上还有活路，就千万不要念出它.”\n你发现了一个秘密。如果有朝一日你的状况绝望到需要用到阿博加斯特的仪式，这段文字可以提供你施法的机会。\n阿博加斯特侧回身。“它会让你变成和活——”',
+    info: '到那时，如果你想尝试这个仪式，在你所在的条目号上加10，前往对应的条目。',
     options: [
       {
         type: 'goto',
@@ -205,9 +206,8 @@ export const scenes_161_180: SceneData = {
         goto: '188',
         effects: [
           {
-            type: EffectType.SET_FLAG,
-            gameFlag: GameFlag.LEARNED_ABOGASTR_CHANT,
-            flagValue: true,
+            type: EffectType.ADD_ITEM,
+            item: ItemBox.AbogastChant.cn,
           },
         ],
       },
@@ -238,40 +238,29 @@ export const scenes_161_180: SceneData = {
   '177': {
     id: '177',
     story:
-      '绝大多数的书对你来说都太过晦涩，除非能在好的图书馆驻留多日，否则你根本读不懂。一个厚重的书套吸引了你，书套上压印着一个暗红色的三角形。它的内文字形细长，但版面很洁净，你可以勉强读懂。\n它好像来自一套讨论基本元素的书：全书共有七卷，分别讨论地、水、风、火、盐、硫、汞。这本书讨论的是火。你翻开书页，书里有各种天文学图表、炼金符号、引用自但丁的诗句，还有对天罚原理的猜测。\n书的末尾讨论火焰祭祀，还转录了两篇关键仪式：“召唤天之火”和“号令天之火”。你能够记住其中一篇，但是需要时间。这些到底是无稽之谈，还是值得冒险一记呢？\n你可以在「图书馆使用」技能左边的小方框里打勾。',
+      '绝大多数的书对你来说都太过晦涩，除非能在好的图书馆驻留多日，否则你根本读不懂。一个厚重的书套吸引了你，书套上压印着一个暗红色的三角形。它的内文字形细长，但版面很洁净，你可以勉强读懂。\n它好像来自一套讨论基本元素的书：全书共有七卷，分别讨论地、水、风、火、盐、硫、汞。这本书讨论的是火。你翻开书页，书里有各种天文学图表、炼金符号、引用自但丁的诗句，还有对天罚原理的猜测。\n书的末尾讨论火焰祭祀，还转录了两篇关键仪式：“召唤天之火”和“号令天之火”。你能够记住其中一篇，但是需要时间。这些到底是无稽之谈，还是值得冒险一记呢？',
+    info: '你可以在「图书馆使用」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.LIBRARY_USE,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '记住“召唤天之火”',
         goto: '197',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.LIBRARY_USE,
-          },
-        ],
       },
       {
         type: 'goto',
         text: '记住“号令天之火”',
         goto: '202',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.LIBRARY_USE,
-          },
-        ],
       },
       {
         type: 'goto',
         text: '把书放回去然后离开',
         goto: '120',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.LIBRARY_USE,
-          },
-        ],
       },
     ],
   },

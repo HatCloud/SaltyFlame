@@ -4,13 +4,14 @@ import {
   SkillEnum, // Added
   EffectType,
   CheckDifficulty,
+  ConditionType,
   // ConditionType, // Add if needed
   // CheckObjectKey, // No longer needed directly for subObject if using specific enums
 } from '../../constant/enums'
+import { GameFlag } from '../../constant/GameFlags'
 
 export const scenes_261_270: SceneData = {
   '261': {
-    // This scene was already present
     id: '261',
     story:
       '你被一阵绝望的叫喊惊醒了。司机猛打方向盘，长途车跌出了路沿，你感觉自己从座位上往下滑。你紧紧抓住前面的座位，不及时的话，肯定会摔得生疼。长途车发出一声闷响，停了下来。\n现在你才看到发生了什么事。一辆福特森拖拉机停在了路中央，你的司机刚才必须紧急转弯躲避这只铁皮拦路虎。他从座位上跳下马路，对开拖拉机的农民吐出一连串咒骂。\n你花了一会儿工夫才喘过气来。也许你可以帮帮忙？但是司机已经回来了。他往后倒了倒车，绕开了拖拉机，对农民怒目而视。',
@@ -20,8 +21,6 @@ export const scenes_261_270: SceneData = {
     id: '262',
     story:
       '你和这个巨汉开始争斗。他的拳头如铁锤一般从暗处砸来。\n处理近身战斗时，使用快速开始规则的第14～16页（规则书第102～111页）。你需要先阅读第8页（规则书第33页）来查询自己的伤害加值。\n参战者中“敏捷”最高的最先行动。你和工匠每个战斗轮各可进行一个动作。工匠每向你攻击一次，你都可以选择反击（投掷「格斗(斗殴)」）或者闪避（投掷「闪避」）。战斗技能检定是对抗检定：谁的成功度高，谁得手。\n工匠的“敏捷”为41，格斗(斗殴)技能值为35%（半值17%/五分之一值7%），耐久值为12。他每轮会攻击你一次，每次攻击成功会造成1D3+1D4点伤害。\n如果你带着小刀或类似的武器，你每次攻击成功都会造成1D4点加上伤害加值点数的伤害。如果你赤手空拳，伤害是1D3点加上伤害加值点数。\n在第三轮结束后，你可以尝试绕过这个人逃跑。这需要进行一次困难难度的「闪避」检定，如果你没有检定成功，他会再攻击一次。\n如果你将他的耐久值减少到6点或更低，前往268。\n如果你的耐久值归零，前往2。\n如果你成功逃跑，前往12。',
-    // Combat scene
-    // TODO: Implement combat logic.
     options: [
       { type: 'goto', text: '（战斗后，假设工匠HP <= 6）', goto: '268' },
       { type: 'goto', text: '（战斗后，假设你HP <= 0）', goto: '2' },
@@ -29,7 +28,6 @@ export const scenes_261_270: SceneData = {
     ],
   },
   '263': {
-    // This scene was already present
     id: '263',
     story:
       '两个面有愠色的年轻男人走下了长途车。一个人从头到脚打量了你一遍，才转头离去。司机也下了车，瞟了你一眼，穿过马路进了烟草店。等他回来的时候，他正用泛黄的手指搓着烟卷。他卷完了最后一下，一边伸手寻找火柴盒，一边仔细地观察你。他身材瘦削，约莫五十多岁，身上穿的衬衫有公共汽车公司的徽标，沾着不少污渍。但他的眼神仍然锐利地从深陷的眼眶里透出来。\n“去哪儿？”\n你把你去奥西皮(Ossipee)的票拿给他看。从那里你可以前往罗切斯特、朴次茅斯，再沿海岸线到达纽伯里波特，最后抵达阿卡姆。你也许买得起至少一部分旅程的火车票，否则这将是很多段长途汽车旅程的第一站。\n“嗯——哼.”司机擦着火柴，点燃了他的香烟。他吸了一口，烟头开始闪光。然后他又吐了一口烟，用手指了指车尾。\n“行李架在上边.”',
@@ -81,6 +79,17 @@ export const scenes_261_270: SceneData = {
       {
         type: 'check',
         text: '进行困难「科学(植物学)」检定',
+        effects: [
+          {
+            type: EffectType.SET_FLAG,
+            gameFlag: GameFlag.HAS_TRY_SCIENCE_BOTANY_AT_266,
+            flagValue: true,
+          },
+        ],
+        condition: {
+          type: ConditionType.FLAG_NOT_SET,
+          gameFlag: GameFlag.HAS_TRY_SCIENCE_BOTANY_AT_266,
+        },
         check: {
           details: {
             object: 'skill',
@@ -88,7 +97,6 @@ export const scenes_261_270: SceneData = {
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '76',
-          onFailureSceneId: '266_POST_BOTANY_FAIL', // Go to a scene that re-presents options without the check
           successText: '科学(植物学)检定成功',
           failureText: '科学(植物学)检定失败',
         },
@@ -117,29 +125,24 @@ export const scenes_261_270: SceneData = {
   '268': {
     id: '268',
     story:
-      '激烈的交锋过后，你终于打出致胜一击。他下盘不稳，砰的一声摔到地板上，血从围裙上滴下来。他的眼皮颤抖着。\n你可以在「格斗(斗殴)」技能左边的小方框里打勾。',
+      '激烈的交锋过后，你终于打出致胜一击。他下盘不稳，砰的一声摔到地板上，血从围裙上滴下来。他的眼皮颤抖着。',
+    info: '你可以在「格斗(斗殴)」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.FIGHTING_BRAWL,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '向他盘问防腐尸体的事',
         goto: '20',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.FIGHTING_BRAWL,
-          },
-        ],
       },
       {
         type: 'goto',
         text: '丢下他前往其他地方调查',
         goto: '120',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.FIGHTING_BRAWL,
-          },
-        ],
       },
     ],
   },
@@ -147,12 +150,12 @@ export const scenes_261_270: SceneData = {
     id: '269',
     story:
       '虽然这些野兽成扇形面对你排开阵势，你的胸中升起黑暗的绝望，但你仍感觉有不对劲的地方。兽群的动作急躁而怪异，不像你想象的捕食者那样耐心地接近。它们越靠越近，绕着你转圈。\n你听到它们喉咙里发出刺耳的嚓嚓声，闻着它们带着麝香气的浓重气味——\n它们身忽然猛烈燃烧起来。\n你瞠目结舌，烟雾灌进了你的口鼻。这些生物燃烧着，瞪着眼睛，毛皮闪耀着火光，流着涎的下颌里滴落的也是泛红的火浪。它们的嗥叫糅合成嘈杂刺耳的悲鸣，甚至有一只直扑向你，眼睛里满是疯狂的火焰。你想后退一步，却倒呛了一大口令人窒息的烟雾，身体直直倒下——\n失去1点理智值。',
+    effects: [{ type: EffectType.CHANGE_SANITY, value: '-1' }],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '13',
-        effects: [{ type: EffectType.CHANGE_SANITY, value: '-1' }],
       },
     ],
   },

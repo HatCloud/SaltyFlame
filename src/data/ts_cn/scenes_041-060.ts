@@ -4,6 +4,7 @@ import {
   CoreCharacteristicEnum,
   SkillEnum,
   CheckDifficulty,
+  ConditionType,
 } from '../../constant/enums'
 import { GameFlag } from '../../constant/GameFlags'
 
@@ -39,7 +40,7 @@ export const scenes_041_060: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行困难“力量”检定', // Text for the option itself
+        text: '你试图利用这个弱点。进行困难“力量”检定',
         check: {
           details: {
             object: 'characteristic',
@@ -48,8 +49,8 @@ export const scenes_041_060: SceneData = {
           },
           onSuccessSceneId: '53',
           onFailureSceneId: '40',
-          successText: '进行困难“力量”检定（成功）',
-          failureText: '进行困难“力量”检定（失败）',
+          successText: '你靠着自己的力量挣脱了束缚',
+          failureText: '你的尝试失败了，铁链依然牢牢地束缚着你',
         },
       },
     ],
@@ -75,15 +76,14 @@ export const scenes_041_060: SceneData = {
   '48': {
     id: '48',
     story:
-      '你挥动手臂，手指紧紧地握住了屋墙上的一处凸起。你依靠它支撑全身的重量，直到脚再次触碰到坚固的地面才松开手。\n你向下张望，断崖大概有二十英尺深。你差点就没命了。\n你可以在「攀爬」技能左边的小方框里打勾。然后前往 61。',
+      '你挥动手臂，手指紧紧地握住了屋墙上的一处凸起。你依靠它支撑全身的重量，直到脚再次触碰到坚固的地面才松开手。\n你向下张望，断崖大概有二十英尺深。你差点就没命了',
+    info: '你可以在「攀爬」技能左边的小方框里打勾。然后前往 61。',
+    effects: [{ type: EffectType.MARK_SKILL_SUCCESS, target: SkillEnum.CLIMB }],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '61',
-        effects: [
-          { type: EffectType.MARK_SKILL_SUCCESS, target: SkillEnum.CLIMB },
-        ],
       },
     ],
   },
@@ -108,7 +108,8 @@ export const scenes_041_060: SceneData = {
   '52': {
     id: '52',
     story:
-      '你瞪着窗外，看太阳从地平线升起，给村子笼罩上病态的橙色。这一夜格外漫长，你身体僵硬、心烦意乱，不停地搓着眼睛。\n几分钟以后，你听到梅在厨房忙碌，还有前门打开又关上的声音。\n进行一次“体质”检定。如果你失败了，今天你的技能检定受到一颗惩罚骰。额外投一颗十位骰，分别计算结果后取最高值。这不影响幸运、理智和伤害检定。',
+      '你瞪着窗外，看太阳从地平线升起，给村子笼罩上病态的橙色。这一夜格外漫长，你身体僵硬、心烦意乱，不停地搓着眼睛。\n几分钟以后，你听到梅在厨房忙碌，还有前门打开又关上的声音。',
+    info: '进行一次“体质”检定。如果你失败了，今天你的技能检定受到一颗惩罚骰。额外投一颗十位骰，分别计算结果后取最高值。这不影响幸运、理智和伤害检定。',
     options: [
       {
         type: 'check',
@@ -121,8 +122,8 @@ export const scenes_041_060: SceneData = {
           },
           onSuccessSceneId: '64',
           onFailureSceneId: '64', // Goes to 64 in both cases, but failure applies an effect
-          successText: '体质检定成功',
-          failureText: '体质检定失败 (有惩罚骰)',
+          successText: '昨天的休息看来让你身体好了不少',
+          failureText: '你感觉身体疲惫不堪，看来今天的状态不会太好。',
           onFailureEffects: [
             {
               type: EffectType.SET_FLAG,
@@ -150,8 +151,8 @@ export const scenes_041_060: SceneData = {
           },
           onSuccessSceneId: '109',
           onFailureSceneId: '123',
-          successText: '进行困难“闪避”检定（成功）',
-          failureText: '进行困难“闪避”检定（失败）',
+          successText: '你避开了年轻人的扑击',
+          failureText: '你没有避开年轻人的扑击',
         },
       },
     ],
@@ -169,32 +170,33 @@ export const scenes_041_060: SceneData = {
   '55': {
     id: '55',
     story:
-      '你弓身向上扑，寻找支撑点，手指在墙壁上乱抓。还没有一秒种的工夫，你再次下坠，结结实实地摔到了岩石地面上——\n你撞上地面时受到 2D6 点伤害。如果这次伤害的数值大于等于你最大耐久值的一半，前往 67。否则，前往 73。',
-    // entryEffects removed. The damage effect should be part of the option leading to this state,
-    // or if it's an unavoidable consequence of failing the climb check in scene 36,
-    // it should be part of onFailureEffects of that check.
-    // For now, assuming the text implies the player makes a choice AFTER damage is assessed.
-    // This might require a special "conditional goto" based on HP, or a new scene to handle the HP check.
-    // Simplified: options will just be gotos, damage is assumed to be applied by prior action.
+      '你弓身向上扑，寻找支撑点，手指在墙壁上乱抓。还没有一秒种的工夫，你再次下坠，结结实实地摔到了岩石地面上——',
+    info: '你撞上地面时受到 2D6 点伤害。如果这次伤害的数值大于等于你最大耐久值的一半，前往 67。否则，前往 73。',
+    effects: [
+      {
+        type: EffectType.CHANGE_HP,
+        value: '-2D6',
+      },
+    ],
     options: [
       {
         type: 'goto',
-        text: '（若伤害 >= 最大HP一半）继续',
+        text: '你的下落姿势非常不妙',
         goto: '67',
-        // Condition for this option would be: HP <= MaxHP/2 after damage.
-        // This needs a way to check current HP vs MaxHP/2.
-        // For now, this will be a player-interpreted choice.
-        // Effects: [{type: EffectType.CHANGE_HP, value: '-2D6'}] // Apply damage here if not before
+        condition: {
+          type: ConditionType.IS_MAJOR_WOUND,
+          expectedValue: true,
+        },
       },
       {
         type: 'goto',
-        text: '（若伤害 < 最大HP一半）继续',
+        text: '不幸中万幸，掉落的你避开了要害',
         goto: '73',
-        // Effects: [{type: EffectType.CHANGE_HP, value: '-2D6'}] // Apply damage here if not before
+        condition: {
+          type: ConditionType.IS_MAJOR_WOUND,
+          expectedValue: false,
+        },
       },
-      // The -2D6 damage should ideally be an effect on the *failure* of the climb check in scene 36.
-      // If scene 36's climb check's onFailureSceneId was this scene (55), then
-      // onFailureEffects of that check in scene 36 should include this -2D6 damage.
     ],
   },
   '56': {
@@ -213,7 +215,7 @@ export const scenes_041_060: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行「侦查」检定',
+        text: '也许你还能发现什么。进行「侦查」检定',
         check: {
           details: {
             object: 'skill',
@@ -222,8 +224,8 @@ export const scenes_041_060: SceneData = {
           },
           onSuccessSceneId: '69',
           onFailureSceneId: '25',
-          successText: '进行「侦查」检定（成功）',
-          failureText: '进行「侦查」检定（失败）',
+          successText: '这个地方确实有些奇怪',
+          failureText: '你没有发现任何线索。并准备离开',
         },
       },
     ],
@@ -231,13 +233,14 @@ export const scenes_041_060: SceneData = {
   '58': {
     id: '58',
     story:
-      '你被房外街道上的脚步声吵醒了。一晚上的休息为你带来了新的目标。今天，你要凭借自己的努力面对烬头村。\n如果你受过伤，你可以回复 1 点耐久值。',
+      '你被房外街道上的脚步声吵醒了。一晚上的休息为你带来了新的目标。今天，你要凭借自己的努力面对烬头村。',
+    info: '如果你受过伤，你可以回复 1 点耐久值。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '+1' }],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '64',
-        effects: [{ type: EffectType.CHANGE_HP, value: '+1' }], // TODO: Conditional logic for "if injured" needs to be handled by the reducer or a condition on the effect
       },
     ],
   },
@@ -261,7 +264,7 @@ export const scenes_041_060: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行「考古学」检定',
+        text: '这个场景似曾相识。进行「考古学」检定',
         check: {
           details: {
             object: 'skill',
@@ -270,8 +273,8 @@ export const scenes_041_060: SceneData = {
           },
           onSuccessSceneId: '66',
           onFailureSceneId: '72',
-          successText: '进行「考古学」检定（成功）',
-          failureText: '进行「考古学」检定（失败）',
+          successText: '你成功地回忆起了某些东西',
+          failureText: '你没有回忆起任何东西。也许是因为你太累了。',
         },
       },
     ],

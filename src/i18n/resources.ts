@@ -39,9 +39,11 @@ export const translations = {
       // Added condition section
       hasItem: '需要物品：{{item}}',
       hasNotItem: '不能拥有物品：{{item}}',
-      flagSet: '需要标记：{{flag}}',
-      flagNotSet: '不能有标记：{{flag}}',
+      flagSet: '需要满足：{{flag}}',
+      flagNotSet: '不能：{{flag}}',
       hasGoneSomeScene: '至少调查过 {{count}} 个场景后',
+      alive: '如果 HP 大于 0',
+      notAlive: '如果 HP 归零',
     },
     roles: {
       privateInvestigator: '私家侦探',
@@ -156,6 +158,8 @@ export const translations = {
       flagSet: 'Requires flag: {{flag}}',
       flagNotSet: 'Must not have flag: {{flag}}',
       hasGoneSomeScene: 'Investigated at least {{count}} scenes',
+      alive: 'If HP greater than 0',
+      notAlive: 'If HP is 0',
     },
     roles: {
       privateInvestigator: 'Private Investigator',

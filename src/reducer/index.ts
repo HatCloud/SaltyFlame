@@ -162,7 +162,7 @@ export const appReducer = (
       } = newState.currentCheckAttempt
 
       let effectsToApply: Effect[] | undefined
-      let nextSceneId: string
+      let nextSceneId: string | undefined
 
       const wasSuccess =
         resultType === CheckOutcome.SUCCESS ||
@@ -181,7 +181,9 @@ export const appReducer = (
       if (newState.currentSceneKey !== nextSceneId) {
         newState.history = [...newState.history, newState.currentSceneKey]
       }
-      newState.currentSceneKey = nextSceneId
+      if (nextSceneId) {
+        newState.currentSceneKey = nextSceneId
+      }
       newState.currentCheckAttempt = null
       saveStateToStorage(newState)
       return newState

@@ -6,6 +6,7 @@ import {
   CheckDifficulty,
   ConditionType,
 } from '../../constant/enums'
+import { ItemBox } from '../../constant/items'
 
 export const scenes_001_020: SceneData = {
   '1': {
@@ -38,8 +39,8 @@ export const scenes_001_020: SceneData = {
     story:
       '一上午的辛劳让你饥肠轆轆。你漫步在烬头村的街道上寻找食物。这里根本没有你家乡常见的那种忙碌咖啡厅，也没有任何能称作饭馆的地方。\n当你开始觉得你必须要去杂货店买补给的时候，梅·莱德贝特从马路另一头走来，身后跟着个小女孩。这一定是露丝了。她一注意到你，就小跑起来，超过她妈妈，一边向你跑来一边朝你微笑。现在的露丝和昨天晚上那个害羞的小孩可完全不同。\n她跑到你身边就停下来，伸开胳膊，做了一个庆祝的手势。她仰视着你的眼睛。突然，她脸上的微笑不见了，好像一瞬间长大了几岁一样。\n“节日开始之前就走吧，”她小声嘘道。“走吧！”她用力眨眨眼，然后逃回妈妈身边去了。\n梅走过来搂住她女儿的肩膀，微笑道：“你的进展怎么样？找到交通方式了吗？”\n你吃了一惊，向她解释了现在的糟糕情形。\n“我去村会堂找过了文特斯先生。他一直是下午才在。你现在饿了吧？到我家里随便吃点东西吧。房门没有锁。”\n你瞟了露丝一眼，她现在像松鼠一样躲在她妈妈身后。她的眼神恳求你保持沉默。',
     options: [
-      { type: 'goto', text: '问露丝她说的是什么意思', goto: '9' },
-      { type: 'goto', text: '问梅露丝说的是什么意思', goto: '15' },
+      { type: 'goto', text: '蹲下来问露丝她说的是什么意思', goto: '9' },
+      { type: 'goto', text: '转头向梅，询问露丝说的是什么意思', goto: '15' },
       { type: 'goto', text: '一言不发', goto: '22' },
     ],
   },
@@ -97,18 +98,18 @@ export const scenes_001_020: SceneData = {
         type: 'goto',
         goto: '23',
         condition: {
-          type: ConditionType.CHARACTERISTIC_COMPARE,
+          type: ConditionType.COMPARE,
           targetObject: CoreCharacteristicEnum.SIZ,
           comparisonObject: 50,
           comparisonOperator: 'lte',
         },
       },
       {
-        text: '你觉得这事难不倒你',
+        text: '这事完全难不倒你',
         type: 'goto',
         goto: '38',
         condition: {
-          type: ConditionType.CHARACTERISTIC_COMPARE,
+          type: ConditionType.COMPARE,
           targetObject: CoreCharacteristicEnum.SIZ,
           comparisonObject: 50,
           comparisonOperator: 'gt',
@@ -160,12 +161,12 @@ export const scenes_001_020: SceneData = {
     id: '13',
     story:
       '你的脸上感受到暖意，身下还多出了床垫。你对着阳光眨眨眼睛，眼前飘进一个模糊的人影。\n“你醒啦。我是梅。梅·莱德贝特。”\n你动动身体，剧痛传遍全身。你感觉自己遍体鳞伤，脑袋也一阵阵地疼痛。你终于看清了梅。\n“你还活着真是走运。后半夜有个农夫发现你躺在路上。他给你处理了一下，用马车把你拉了回来。听说你当时在什么树林的中间？今天你就放轻松点儿吧。过一会儿我再来照看你。”\n农夫和马车当然早就不见踪影了。你又小睡了一会儿。\n你在失去意识的时候接受了急救，可以回复1点耐久值。',
+    effects: [{ type: EffectType.CHANGE_HP, value: '+1' }],
     options: [
       {
         type: 'goto',
         text: '继续',
         goto: '64',
-        effects: [{ type: EffectType.CHANGE_HP, value: '+1' }],
       },
     ],
   },
@@ -195,6 +196,12 @@ export const scenes_001_020: SceneData = {
         type: 'goto',
         text: '购买日常用品（可能包括狩猎小刀）后继续',
         goto: '25',
+        effects: [
+          {
+            type: EffectType.ADD_ITEM,
+            item: ItemBox.Knife.cn,
+          },
+        ],
       },
     ],
   },
@@ -231,28 +238,22 @@ export const scenes_001_020: SceneData = {
     story:
       '你堵住梅的去路，坚持要知道她到底在做什么。你看见她的眼中流露出深深的恐惧。\n她说：“这什么都不是，只是些帮助你睡眠的东西。我是为了你好。你看，明天对于你是多么重要的一天......”\n你乘胜追击，要求她做出完整的解释。\n她说：“行行好，理解我一下吧。我还要照顾我女儿，我都已经没有丈夫了。”\n她扭身离开你，逃回她的房间去了。',
     info: '你可以在「恐吓」技能左边的小方框里打勾。',
+    effects: [
+      {
+        type: EffectType.MARK_SKILL_SUCCESS,
+        target: SkillEnum.INTIMIDATE,
+      },
+    ],
     options: [
       {
         type: 'goto',
         text: '用椅子堵住门再小睡一会',
         goto: '58',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.INTIMIDATE,
-          },
-        ],
       },
       {
         type: 'goto',
         text: '彻夜不眠',
         goto: '52',
-        effects: [
-          {
-            type: EffectType.MARK_SKILL_SUCCESS,
-            target: SkillEnum.INTIMIDATE,
-          },
-        ],
       },
     ],
   },
