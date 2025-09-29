@@ -8,27 +8,16 @@ export const journalistTemplate: OccupationTemplate = {
     '致力于挖掘、调查和报道新闻事件的专业人士。他们通常好奇心强，善于交际，并敢于揭露真相。',
   description_en:
     'A professional dedicated to uncovering, investigating, and reporting on news events. They are typically curious, sociable, and courageous in exposing the truth.',
-  creditRatingRange: [9, 40], // 根据CoC核心规则书，记者信用评级通常不高
-
-  occupationalSkills: [
-    SkillEnum.FAST_TALK,
-    SkillEnum.PERSUADE,
-    SkillEnum.PSYCHOLOGY, // 理解采访对象
-    SkillEnum.HISTORY, // 提供报道背景
-    SkillEnum.LIBRARY_USE, // 查资料
-    SkillEnum.OWN_LANGUAGE, // 写作
-    SkillEnum.SPOT_HIDDEN, // 发现线索
-    SkillEnum.ART_CRAFT_PHOTOGRAPHY, // 摄影取证
-  ],
+  creditRating: 20, // 根据CoC核心规则书，记者信用评级通常不高
 
   occupationalSkillTargets: {
     [SkillEnum.FAST_TALK]: 70,
-    [SkillEnum.PERSUADE]: 60,
+    [SkillEnum.CHARM]: 40,
     [SkillEnum.PSYCHOLOGY]: 60,
     [SkillEnum.HISTORY]: 50,
     [SkillEnum.LIBRARY_USE]: 50,
     [SkillEnum.OWN_LANGUAGE]: 50,
-    [SkillEnum.SPOT_HIDDEN]: 40,
+    [SkillEnum.SPOT_HIDDEN]: 60,
     [SkillEnum.ART_CRAFT_PHOTOGRAPHY]: 40,
   },
 
@@ -44,12 +33,9 @@ export const journalistTemplate: OccupationTemplate = {
       '一位总是行色匆匆，外套口袋里塞满了笔记本和铅笔的记者。眼神锐利，似乎总在寻找下一个大新闻。可能戴着一顶软毡帽。',
     ideologyBeliefs:
       '“公众有权知道真相。” 对任何试图掩盖事实的行为都深恶痛绝，坚信文字的力量可以改变世界。',
-    significantPeople:
-      '报社里一位经验丰富的老编辑，脾气暴躁但总能在关键时刻给出指点；或是一位神秘的线人，只通过加密的信件联系。',
-    meaningfulLocations:
-      '烟雾缭绕的报社办公室，打字机声此起彼伏；或是某个刚刚发生过大事件的现场，拉着警戒线。',
-    treasuredPossessions:
-      '一台小巧但坚固的便携式打字机，陪伴多年；或是一张在某个重大事件现场拍摄的、意义非凡的底片。',
+    significantPeople: '一位神秘的线人，只通过加密的信件联系。',
+    meaningfulLocations: '烟雾缭绕的报社办公室，打字机声此起彼伏',
+    treasuredPossessions: '一张在某个重大事件现场拍摄的、意义非凡的底片。',
     traits:
       '好奇心极强，行动迅速，有时为了新闻不惜冒一些风险。社交能力强，但也容易得罪人。',
     keyConnection: '重要之人',
@@ -64,11 +50,10 @@ export const journalistTemplate: OccupationTemplate = {
     ideologyBeliefs:
       "'The public has a right to know the truth.' Abhors any attempt to cover up facts, firmly believing in the power of words to change the world.",
     significantPeople:
-      'An experienced old editor at the newspaper, short-tempered but always gives guidance at critical moments; or a mysterious informant who only communicates through encrypted letters.',
+      'A mysterious informant who only communicates through encrypted letters.',
     meaningfulLocations:
-      'The smoke-filled newspaper office, with typewriters clattering; or the scene of a major event, cordoned off.',
-    treasuredPossessions:
-      'A small but sturdy portable typewriter, a companion for many years; or a significant negative from a major event scene.',
+      'The smoke-filled newspaper office, with typewriters clattering.',
+    treasuredPossessions: 'A significant negative from a major event scene.',
     traits:
       'Extremely curious, acts quickly, sometimes takes risks for a story. Strong social skills, but also easily offends people.',
     keyConnection: 'Significant People',

@@ -8,27 +8,16 @@ export const antiquarianTemplate: OccupationTemplate = {
     '专注于研究、收集和鉴定古物、手稿和历史遗迹的学者。他们通常对历史的隐秘角落和被遗忘的知识充满热情。',
   description_en:
     'A scholar dedicated to the study, collection, and authentication of antiquities, manuscripts, and historical sites. They are often passionate about the hidden corners of history and forgotten lore.',
-  creditRatingRange: [30, 70], // 根据CoC核心规则书，文物学家信用评级范围
-
-  occupationalSkills: [
-    SkillEnum.APPRAISE,
-    SkillEnum.ARCHAEOLOGY,
-    SkillEnum.HISTORY,
-    SkillEnum.LIBRARY_USE,
-    SkillEnum.OTHER_LANGUAGE_LATIN, // 假设拉丁文是常见的学术语言
-    SkillEnum.SPOT_HIDDEN,
-    SkillEnum.PERSUADE,
-    SkillEnum.OWN_LANGUAGE, // 母语技能值通常基于EDU，但这里按预设分配
-  ],
+  creditRating: 20,
 
   occupationalSkillTargets: {
-    [SkillEnum.APPRAISE]: 70,
+    [SkillEnum.APPRAISE]: 40,
     [SkillEnum.ARCHAEOLOGY]: 60,
-    [SkillEnum.HISTORY]: 60,
-    [SkillEnum.LIBRARY_USE]: 50,
+    [SkillEnum.HISTORY]: 50,
+    [SkillEnum.LIBRARY_USE]: 60,
     [SkillEnum.OTHER_LANGUAGE_LATIN]: 50,
     [SkillEnum.SPOT_HIDDEN]: 50,
-    [SkillEnum.PERSUADE]: 40,
+    [SkillEnum.PERSUADE]: 70,
     [SkillEnum.OWN_LANGUAGE]: 40, // 如果EDU%更高，此预设值会覆盖，但上限75%
   },
 

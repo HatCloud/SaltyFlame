@@ -58,7 +58,8 @@ export enum SkillEnum {
   PSYCHOLOGY = 'PSYCHOLOGY', // 心理学
   RIDE = 'RIDE', // 骑术
   SCIENCE = 'SCIENCE', // 科学 (通用)
-  SCIENCE_BOTANY = 'SCIENCE_BOTANY', // 科学(植物学)
+  SCIENCE_MEDICINE = 'SCIENCE_MEDICINE', // 科学(药学)
+  SCIENCE_BIOLOGY = 'SCIENCE_BIOLOGY',
   SLEIGHT_OF_HAND = 'SLEIGHT_OF_HAND', // 妙手
   SPOT_HIDDEN = 'SPOT_HIDDEN', // 侦查
   STEALTH = 'STEALTH', // 潜行
@@ -154,9 +155,13 @@ export const CheckObjectNames: Record<
   [SkillEnum.PSYCHOLOGY]: { en: 'Psychology', cn: '心理学' },
   [SkillEnum.RIDE]: { en: 'Ride', cn: '骑术' },
   [SkillEnum.SCIENCE]: { en: 'Science', cn: '科学' },
-  [SkillEnum.SCIENCE_BOTANY]: {
-    en: 'Science (Botany)',
-    cn: '科学(植物学)',
+  [SkillEnum.SCIENCE_MEDICINE]: {
+    en: 'Science (Medicine)',
+    cn: '科学(药学)',
+  },
+  [SkillEnum.SCIENCE_BIOLOGY]: {
+    en: 'Science (Biology)',
+    cn: '科学(生物学)',
   },
   [SkillEnum.SLEIGHT_OF_HAND]: { en: 'Sleight of Hand', cn: '妙手' },
   [SkillEnum.SPOT_HIDDEN]: { en: 'Spot Hidden', cn: '侦查' },

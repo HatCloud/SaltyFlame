@@ -250,11 +250,11 @@ export const scenes_061_080: SceneData = {
     id: '76',
     story:
       '这种粉末散发的独特气味，令你联想到以前你的一位老教授做过的关于危险草药的演示实验。虽然原料可能不只一种，但你相当肯定这种粉末含有莨菪，具有催眠和致幻的作用。\n你扑灭了这一小堆粉末，把它分散撒到壁炉的各处。',
-    info: '你可以在自己「科学(植物学)」技能左边的小方框里打勾。',
+    info: '你可以在自己「科学(药学)」技能左边的小方框里打勾。',
     effects: [
       {
         type: EffectType.MARK_SKILL_SUCCESS,
-        target: SkillEnum.SCIENCE_BOTANY,
+        target: SkillEnum.SCIENCE_MEDICINE,
       },
     ],
     options: [

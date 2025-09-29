@@ -49,7 +49,7 @@ export const skillToCategoryMap: Record<string, SkillCategory> = {
   [SkillEnum.PERSUADE]: SkillCategory.Communication,
   [SkillEnum.PSYCHOLOGY]: SkillCategory.Communication,
   [SkillEnum.RIDE]: SkillCategory.Manipulation,
-  [SkillEnum.SCIENCE_BOTANY]: SkillCategory.Knowledge,
+  [SkillEnum.SCIENCE_MEDICINE]: SkillCategory.Knowledge,
   [SkillEnum.SPOT_HIDDEN]: SkillCategory.Perception,
   [SkillEnum.STEALTH]: SkillCategory.Manipulation,
   [SkillEnum.TRACK]: SkillCategory.Perception,
@@ -65,13 +65,6 @@ export const skillToCategoryMap: Record<string, SkillCategory> = {
   [SkillEnum.ACCOUNTING]: SkillCategory.Knowledge,
   [SkillEnum.ANTHROPOLOGY]: SkillCategory.Knowledge,
   [SkillEnum.LAW]: SkillCategory.Knowledge,
-  // [SkillEnum.PHARMACY]: SkillCategory.Knowledge, // PHARMACY is not in SkillEnum yet
-  // [SkillEnum.SCIENCE_ASTRONOMY]: SkillCategory.Knowledge, // Not in SkillEnum
-  // [SkillEnum.SCIENCE_CHEMISTRY]: SkillCategory.Knowledge, // Not in SkillEnum
-  // [SkillEnum.SCIENCE_GEOLOGY]: SkillCategory.Knowledge, // Not in SkillEnum
-  // [SkillEnum.SCIENCE_PHYSICS]: SkillCategory.Knowledge, // Not in SkillEnum
-  // [SkillEnum.ART_CRAFT_ACTING]: SkillCategory.ArtCraft, // Not in SkillEnum
-  // [SkillEnum.ART_CRAFT_PAINTING]: SkillCategory.ArtCraft, // Not in SkillEnum
   [SkillEnum.JUMP]: SkillCategory.Manipulation,
   [SkillEnum.APPEASE]: SkillCategory.Communication,
   [SkillEnum.ART_CRAFT]: SkillCategory.ArtCraft,
@@ -85,9 +78,6 @@ export const skillToCategoryMap: Record<string, SkillCategory> = {
   [SkillEnum.SURVIVAL]: SkillCategory.Perception,
 }
 
-// Helper function to group skills by category.
-// Skills in the input `skills` object are expected to have keys that match
-// those in `skillToCategoryMap` (i.e., CheckObjectKey string values).
 export const groupSkills = (
   skills: Partial<Record<SkillKey, number>>, // Updated to use SkillKey
 ): Partial<Record<SkillCategory, Record<string, number>>> => {

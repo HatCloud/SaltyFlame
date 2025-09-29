@@ -10,10 +10,7 @@ export interface OccupationTemplate {
   name_en: string // 职业英文名
   description_cn: string // 职业中文描述
   description_en: string // 职业英文描述
-  creditRatingRange: [number, number] // 信用评级范围, e.g., [30, 70]
-
-  // The 8 skills designated as core occupational skills for this profession.
-  occupationalSkills: CheckObjectKey[]
+  creditRating: number
 
   // Defines the target final percentages for the 8 occupational skills.
   // These values (e.g., 70, 60, 60, 50, 50, 50, 40, 40) will be assigned directly,

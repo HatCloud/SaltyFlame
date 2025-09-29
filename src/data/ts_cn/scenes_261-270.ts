@@ -78,7 +78,7 @@ export const scenes_261_270: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行困难「科学(植物学)」检定',
+        text: '进行困难「科学(药学)」检定',
         effects: [
           {
             type: EffectType.SET_FLAG,
@@ -93,12 +93,12 @@ export const scenes_261_270: SceneData = {
         check: {
           details: {
             object: 'skill',
-            subObject: SkillEnum.SCIENCE_BOTANY,
+            subObject: SkillEnum.SCIENCE_MEDICINE,
             difficulty: CheckDifficulty.HARD,
           },
           onSuccessSceneId: '76',
-          successText: '科学(植物学)检定成功',
-          failureText: '科学(植物学)检定失败',
+          successText: '科学(药学)检定成功',
+          failureText: '科学(药学)检定失败',
         },
       },
       { type: 'goto', text: '扑灭炉火再睡觉', goto: '58' },

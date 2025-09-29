@@ -36,11 +36,6 @@ export interface Character {
   personalData: {
     damageBonus: number // 伤害加值 (Calculated from STR + SIZ)
     build: number // 体格 (Calculated from STR + SIZ)
-    // Dodge is a skill, its base value is DEX/2, should be in skills.
-    // If this 'dodge' is meant to be the final calculated value after points are spent,
-    // it might be redundant if skills object holds the final skill values.
-    // For now, keeping it as is, but flagging for review.
-    // dodge: number // 闪避
     movementRate: number // MOV, calculated or set
   }
   // Final skill values after points allocation

@@ -8,18 +8,7 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
     '接受私人委托，进行各种调查取证工作的专业人士。他们通常机警、善于观察，并能灵活应对各种复杂情况。',
   description_en:
     'A professional who undertakes various investigative and evidence-gathering tasks on private commission. They are typically alert, observant, and adept at handling complex situations flexibly.',
-  creditRatingRange: [9, 40], // 根据CoC核心规则书，私家侦探信用评级与记者类似
-
-  occupationalSkills: [
-    SkillEnum.FAST_TALK,
-    SkillEnum.PERSUADE,
-    SkillEnum.INTIMIDATE,
-    SkillEnum.SPOT_HIDDEN,
-    SkillEnum.LISTEN,
-    SkillEnum.LIBRARY_USE, // 调查背景资料
-    SkillEnum.PSYCHOLOGY, //洞察人心
-    SkillEnum.STEALTH, // 跟踪与潜入
-  ],
+  creditRating: 20,
 
   occupationalSkillTargets: {
     [SkillEnum.FAST_TALK]: 70,
@@ -27,9 +16,9 @@ export const privateInvestigatorTemplate: OccupationTemplate = {
     [SkillEnum.PERSUADE]: 60,
     [SkillEnum.PSYCHOLOGY]: 50,
     [SkillEnum.LISTEN]: 50,
-    [SkillEnum.INTIMIDATE]: 50,
+    [SkillEnum.LAW]: 50,
     [SkillEnum.LIBRARY_USE]: 40,
-    [SkillEnum.STEALTH]: 40,
+    [SkillEnum.DISGUISE]: 40,
   },
 
   interestSkills: [

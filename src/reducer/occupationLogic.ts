@@ -29,6 +29,18 @@ export function applyOccupationToCharacter(
   // Prepare the updated skills
   const newSkills = { ...(characterToUpdate.skills || {}) }
 
+  // 遍历 newSkills 中的技能，如果这个值存在于 template 的 occupationalSkillTargets 中，
+  Object.keys(newSkills).forEach(skillKey => {
+    if (skillKey in template.occupationalSkillTargets) {
+      const targetValue =
+        template.occupationalSkillTargets[skillKey as SkillKey]
+      if (typeof targetValue === 'number') {
+        // 直接设置为目标值，且不超过 75
+        newSkills[skillKey as SkillKey] = Math.min(targetValue, 75)
+      }
+    }
+  })
+
   // Apply +20 to interest skills, capped at 75
   if (template.interestSkills) {
     ;(template.interestSkills as SkillKey[]).forEach((skillKey: SkillKey) => {
@@ -69,11 +81,7 @@ export function applyOccupationToCharacter(
     })
   }
 
-  // Generate random credit rating
-  const [minCr, maxCr] = template.creditRatingRange
-  const randomCreditRating =
-    Math.floor(Math.random() * (maxCr - minCr + 1)) + minCr
-  newSkills[SkillEnum.CREDIT_RATING] = randomCreditRating
+  newSkills[SkillEnum.CREDIT_RATING] = template.creditRating
 
   // Update characterData with example prefill data and other occupation data
   const updatedCharacterData: Character = {
