@@ -49,7 +49,7 @@
 - 主体架构：React Native
 - 最终输出：Android 和 iOS 的手机 App
 - 使用 yarn 管理 node 包
-- 使用 Cline Memory Bank 来提升 AI 辅助工具的代码交付可靠性
+- 使用 [Cline Memory Bank](https://docs.cline.bot/prompting/cline-memory-bank) 来提升 AI 辅助工具的代码交付可靠性
 
 ## 核心库
 
@@ -67,6 +67,7 @@
 
 - `android` 安卓原生代码
 - `ios` iOS 原生代码
+- memory-bank 基于 [Cline Memory Bank](https://docs.cline.bot/prompting/cline-memory-bank)  原则创建的描述性文档
 - `src` JS 源代码
   - `App.tsx` 应用主界面
   - `hook.ts` 通用的 react-hook
