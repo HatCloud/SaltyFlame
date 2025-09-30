@@ -148,13 +148,50 @@
   - **补充**: 修改了 `src/reducer/index.ts` 中的 `GO_BACK` action 处理逻辑。当通过返回操作到达场景 '1' 时，同样会自动重置 `history`、`characterData` 和 `gameFlags`。
 - **属性分配界面 (AttributeAllocationScreen.tsx) UI优化与本地化**:
   - 使用 `SafeAreaView` 包裹屏幕内容，确保顶部标题不会与状态栏重叠。
-  - 调整了布局，将“待分配数值”区域移到了“属性”区域的下方。
-  - “确认分配”按钮的样式已更新，使其视觉风格与 `OptionButton.tsx` 组件类似（例如，使用了相似的背景色、圆角、阴影和文字样式）。
+  - 调整了布局，将"待分配数值"区域移到了"属性"区域的下方。
+  - "确认分配"按钮的样式已更新，使其视觉风格与 `OptionButton.tsx` 组件类似（例如，使用了相似的背景色、圆角、阴影和文字样式）。
   - 修正了因错误使用 `padding.Tiny` (实际应为 `padding.Mini`) 导致的 TypeScript 类型错误。
   - **本地化**: `AttributeAllocationScreen.tsx` 中的所有硬编码中文字符串（如标题、说明、提示信息、按钮文本等）已替换为使用 `useI18n` hook 的本地化版本。
   - **i18n资源更新**:
     - 在 `src/i18n/interface.ts` 中添加并导出了 `LanguageResources` 和 `SingleLanguageResources` 类型定义。
     - 在 `src/i18n/resources.ts` 中为属性分配界面的相关文本添加了中英文翻译键。
+- **职业选择确认模态框实现**:
+  - **新增组件 `src/ui/components/OccupationInfoModal.tsx`**:
+    - 创建了专门的职业信息展示模态框组件，用于在用户选择职业前显示完整的职业详细信息。
+    - 组件支持显示以下内容（根据语言自动切换中英文）：
+      - 职业名称和描述
+      - 信用评级
+      - 职业技能列表及其目标值
+      - 兴趣技能列表（附带说明）
+      - 示例角色信息（姓名、性别、年龄、出生地、住所）
+      - 完整的背景信息（形象描述、思想信念、重要之人、意义非凡之地、宝贵之物、特质等）
+    - 使用 `ScrollView` 支持长内容滚动。
+    - 提供"确认选择"和"取消"两个操作按钮。
+    - 样式设计与项目整体风格保持一致（深色主题、黄色高亮、灰色背景）。
+  - **修改 `src/ui/components/StoryCard.tsx`**:
+    - 添加了三个新的状态变量来管理模态框：
+      - `showOccupationModal`: 控制模态框的显示/隐藏
+      - `selectedOccupation`: 存储当前选中的职业模板
+      - `pendingOccupationOption`: 存储待处理的场景选项
+    - 重构了 `handleInteractOptionPress` 方法：
+      - 当检测到 `goto` 类型选项包含 `applyOccupation` 字段时，不再直接应用职业，而是先打开模态框展示职业信息。
+      - 从 `occupationTemplates` 中获取对应的职业模板数据。
+    - 新增 `handleOccupationConfirm` 回调函数：
+      - 用户点击"确认选择"后执行职业应用逻辑。
+      - 依次执行：应用职业、应用其他效果、跳转场景。
+      - 清除模态框相关状态。
+    - 新增 `handleOccupationCancel` 回调函数：
+      - 用户点击"取消"后仅关闭模态框，不执行任何职业应用操作。
+    - 在组件渲染中集成了 `OccupationInfoModal` 组件。
+  - **i18n 翻译更新**:
+    - 在 `src/i18n/resources.ts` 中添加了新的 `occupationModal` 翻译键组：
+      - 中文：信用评级、职业技能、兴趣技能、兴趣技能说明、示例角色、姓名、性别、年龄、出生地、住所、背景信息、确认选择、取消
+      - 英文：对应的完整英文翻译
+    - 复用了现有的 `charModal.background.*` 翻译键来显示背景信息的各个字段标签。
+  - **实现效果**:
+    - 用户体验优化：在应用职业前可以完整查看职业的所有信息，包括技能、背景、示例角色等。
+    - 支持用户确认或取消选择，增强交互的可控性。
+    - 信息展示完整且层次清晰，便于用户做出明智的选择。
 
 ## 后续步骤
 

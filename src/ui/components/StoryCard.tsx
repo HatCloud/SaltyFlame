@@ -15,11 +15,14 @@ import type { Scene, SceneInteractOption } from '../../interface/Scene'
 import OptionButton from './OptionButton'
 import CheckResult from './CheckResult'
 import CheckOption from './CheckOption'
+import OccupationInfoModal from './OccupationInfoModal'
 import { useI18n } from '../../i18n/useI18n'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../../interface/navigation'
 import { useCheckCondition } from '../../hooks/useCheckCondition'
+import { occupationTemplates } from '../../data/occupations'
+import type { OccupationTemplate } from '../../interface/OccupationTemplate'
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 const ANIMATION_DURATION = 800
@@ -43,6 +46,13 @@ const StoryCard: React.FC = React.memo(() => {
   const [currentScene, setCurrentScene] = useState<Scene | undefined>(
     state.sceneData?.[state.currentSceneKey],
   )
+
+  // Occupation modal state
+  const [showOccupationModal, setShowOccupationModal] = useState(false)
+  const [selectedOccupation, setSelectedOccupation] =
+    useState<OccupationTemplate | null>(null)
+  const [pendingOccupationOption, setPendingOccupationOption] =
+    useState<SceneInteractOption | null>(null)
 
   const screneChanged = useMemo(
     () => state.currentSceneKey && currentScene?.id !== state.currentSceneKey,
@@ -114,11 +124,6 @@ const StoryCard: React.FC = React.memo(() => {
     (option: SceneInteractOption, disabled?: boolean) => {
       if (disabled) return // Do nothing if the option is disabled
 
-      // Apply general effects first, if any, for all option types that support them
-      // This ensures effects run before specific action dispatches like checks or navigation.
-      // However, for 'goto' options, applyOccupation should ideally happen before scene change.
-      // Let's refine the order.
-
       if (option.type === 'check') {
         // For check options, effects are usually part of the checkPayload or applied pre-check.
         // The current PERFORM_INLINE_CHECK in reducer handles originalOption.effects.
@@ -126,19 +131,18 @@ const StoryCard: React.FC = React.memo(() => {
           type: 'PERFORM_INLINE_CHECK',
           payload: { checkPayload: option.check, originalOption: option },
         })
-      } else if (option.type === 'against_check') {
-        dispatch({
-          type: 'PERFORM_INLINE_CHECK',
-          payload: { checkPayload: option.check, originalOption: option },
-        })
       } else if (option.type === 'goto') {
-        // Handle applyOccupation first if present
+        // If this option has an occupation to apply, show the modal first
         if (option.applyOccupation) {
-          dispatch({
-            type: 'APPLY_CHOSEN_OCCUPATION',
-            payload: option.applyOccupation,
-          })
+          const occupationTemplate = occupationTemplates[option.applyOccupation]
+          if (occupationTemplate) {
+            setSelectedOccupation(occupationTemplate)
+            setPendingOccupationOption(option)
+            setShowOccupationModal(true)
+            return
+          }
         }
+
         // Then apply other effects
         if (option.effects && option.effects.length > 0) {
           option.effects.forEach(effect =>
@@ -174,6 +178,47 @@ const StoryCard: React.FC = React.memo(() => {
     },
     [dispatch, navigation],
   )
+
+  // Handle occupation modal confirm
+  const handleOccupationConfirm = useCallback(() => {
+    if (pendingOccupationOption && pendingOccupationOption.type === 'goto') {
+      // Apply the occupation
+      if (pendingOccupationOption.applyOccupation) {
+        dispatch({
+          type: 'APPLY_CHOSEN_OCCUPATION',
+          payload: pendingOccupationOption.applyOccupation,
+        })
+      }
+
+      // Then apply other effects
+      if (
+        pendingOccupationOption.effects &&
+        pendingOccupationOption.effects.length > 0
+      ) {
+        pendingOccupationOption.effects.forEach(effect =>
+          dispatch({ type: 'APPLY_EFFECT', payload: effect }),
+        )
+      }
+
+      // Finally, change scene
+      dispatch({
+        type: 'CHANGE_SCENE',
+        payload: pendingOccupationOption.goto,
+      })
+    }
+
+    // Clear modal state
+    setShowOccupationModal(false)
+    setSelectedOccupation(null)
+    setPendingOccupationOption(null)
+  }, [pendingOccupationOption, dispatch])
+
+  // Handle occupation modal cancel
+  const handleOccupationCancel = useCallback(() => {
+    setShowOccupationModal(false)
+    setSelectedOccupation(null)
+    setPendingOccupationOption(null)
+  }, [])
 
   const handleResolveCheckOutcome = useCallback(() => {
     dispatch({ type: 'RESOLVE_CHECK_OUTCOME' })
@@ -290,9 +335,17 @@ const StoryCard: React.FC = React.memo(() => {
   }
 
   return (
-    <View style={styles.storyCardContainer}>
-      {renderCardContent(currentScene, takeNumber)}
-    </View>
+    <>
+      <View style={styles.storyCardContainer}>
+        {renderCardContent(currentScene, takeNumber)}
+      </View>
+      <OccupationInfoModal
+        visible={showOccupationModal}
+        occupation={selectedOccupation}
+        onConfirm={handleOccupationConfirm}
+        onCancel={handleOccupationCancel}
+      />
+    </>
   )
 })
 

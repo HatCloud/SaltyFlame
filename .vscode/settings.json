@@ -14,5 +14,6 @@
   // 可选：让 ESLint 也在保存时修复（如果你有 ESLint 插件）
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
-  }
+  },
+  "java.compile.nullAnalysis.mode": "automatic"
 }

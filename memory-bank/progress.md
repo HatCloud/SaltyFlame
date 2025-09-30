@@ -201,6 +201,13 @@
   - 再次根据用户反馈，更新了 `reducer.ts` 中的 `APPLY_CHOSEN_OCCUPATION` 逻辑，以从模板的预设信息中填充角色姓名、性别、年龄、出生地、住所，并随机生成信用评级。
   - 再次根据用户反馈，调整了 `CharacterModal.tsx` 中背景信息的显示布局，并添加/更新了相应的i18n键。
   - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。
+- **2025-09-30**:
+  - **职业选择确认模态框实现**:
+    - 创建了新组件 `src/ui/components/OccupationInfoModal.tsx`，用于在用户选择职业前展示完整的职业信息，包括职业描述、信用评级、职业技能、兴趣技能、示例角色信息和详细的背景设定。
+    - 修改了 `src/ui/components/StoryCard.tsx`，添加了状态管理和处理逻辑，使得当用户点击带有 `applyOccupation` 的选项时，先显示职业信息模态框供用户确认，而不是直接应用职业。
+    - 在 `src/i18n/resources.ts` 中添加了 `occupationModal` 翻译键组，支持中英文显示。
+    - 提升了用户体验：用户现在可以在做出职业选择前完整浏览职业的所有细节信息，并可以取消选择。
+  - 更新了 Memory Bank (`activeContext.md`, `progress.md`)。
 - **2025-06-06**:
   - **检定逻辑正式化与大成功/大失败实现**:
     - `src/reducer.ts` 中的 `executeCheckLogic` 函数已更新，以包含基于《克苏鲁的呼唤》第七版规则的大成功和大失败判断逻辑，并返回 `resultType: CheckOutcome`。
