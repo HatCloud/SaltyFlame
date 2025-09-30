@@ -46,6 +46,11 @@ export interface MyAppState {
   isCharacterModalVisible?: boolean
   diceRollAnimation: DiceRollAnimationState // Added for dice roll animation
   pendingCheckResultData?: PendingCheckResultData | null // Added for deferring check attempt set
+  effectInfoToShow?: {
+    effect: Effect
+    character: Character
+    diceRollResult: number | null
+  } | null // Added for effect confirmation dialog
 }
 
 // State for dice roll animation
@@ -80,6 +85,7 @@ export const initialState: MyAppState = {
     [GameFlag.FOUGHT_LAST_NIGHT]: false,
     [GameFlag.IS_INJURED]: false,
     [GameFlag.APPOINTMENT_WITH_ABOGAIST_9PM_CEMETERY]: false,
+    [GameFlag.HAS_TRY_SCIENCE_BOTANY_AT_266]: false,
   },
   isCharacterModalVisible: false,
   diceRollAnimation: {
@@ -172,6 +178,11 @@ interface HideDiceRollAnimationAction {
   type: 'HIDE_DICE_ROLL_ANIMATION'
 }
 
+// Action for clearing the effect info to show
+interface ClearEffectInfoToShowAction {
+  type: 'CLEAR_EFFECT_INFO_TO_SHOW'
+}
+
 // AppAction is a union of all possible actions
 export type AppAction =
   | ChangeSceneAction
@@ -187,3 +198,4 @@ export type AppAction =
   | ApplyChosenOccupationAction
   | ShowDiceRollAnimationAction // Added
   | HideDiceRollAnimationAction // Added
+  | ClearEffectInfoToShowAction // Added

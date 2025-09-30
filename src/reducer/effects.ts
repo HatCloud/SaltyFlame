@@ -21,6 +21,8 @@ export function applySingleEffect(
   ) as Character
   const newGameFlags = { ...state.gameFlags }
 
+  let diceRollResult: number | null = null
+
   switch (effect.type) {
     case EffectType.CHANGE_HP: {
       let hpChange = 0
@@ -28,7 +30,9 @@ export function applySingleEffect(
         hpChange = effect.value
       } else if (typeof effect.value === 'string') {
         hpChange = parseDiceString(effect.value)
+        diceRollResult = hpChange
       }
+
       // Since hitPoints and hitPoints.current are mandatory in Character, direct assignment is fine.
       newCharacterData.hitPoints.current += hpChange
       newCharacterData.hitPoints.current = Math.min(
@@ -57,6 +61,7 @@ export function applySingleEffect(
         sanityChange = effect.value
       } else if (typeof effect.value === 'string') {
         sanityChange = parseDiceString(effect.value)
+        diceRollResult = sanityChange
       }
       // Since sanity and sanity.current are mandatory in Character, direct assignment is fine.
       newCharacterData.sanity.current += sanityChange
@@ -212,13 +217,18 @@ export function applySingleEffect(
       console.warn(`Unhandled effect type: ${effect.type}`)
       break
   }
-  effect.isActive = false // Mark effect as inactive after application
+  const processedEffect = { ...effect, isActive: false }
   // Ensure the returned characterData conforms to Character type.
   // If newCharacterData was correctly typed as Character from the spread, this should be fine.
   return {
     ...state,
     characterData: newCharacterData as Character,
     gameFlags: newGameFlags,
+    effectInfoToShow: {
+      effect: processedEffect,
+      character: newCharacterData as Character,
+      diceRollResult,
+    },
   }
 }
 

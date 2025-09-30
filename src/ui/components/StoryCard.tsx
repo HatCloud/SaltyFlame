@@ -265,6 +265,10 @@ const StoryCard: React.FC = React.memo(() => {
                   state.history,
                 )
               : { met: true, description: undefined }
+
+            if (!conditionResult.met) {
+              return null
+            }
             if (option.type === 'check') {
               return (
                 <CheckOption

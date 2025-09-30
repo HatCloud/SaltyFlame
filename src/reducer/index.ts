@@ -278,6 +278,12 @@ export const appReducer = (
       return finalState
     }
 
+    case 'CLEAR_EFFECT_INFO_TO_SHOW':
+      return {
+        ...newState,
+        effectInfoToShow: null,
+      }
+
     default:
       return newState
   }

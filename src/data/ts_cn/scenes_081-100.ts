@@ -168,6 +168,10 @@ export const scenes_081_100: SceneData = {
         type: 'goto',
         text: '你撑过了火焰的灼烧',
         goto: '137',
+        condition: {
+          type: ConditionType.ALIVE,
+          expectedValue: true,
+        },
       },
     ],
   },
