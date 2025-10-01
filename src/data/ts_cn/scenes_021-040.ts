@@ -362,11 +362,29 @@ export const scenes_021_040: SceneData = {
     options: [
       {
         type: 'goto',
-        text: '尝试奇怪的咒语',
+        text: '尝试阿博加斯特的咒语',
         goto: '50',
         condition: {
           type: ConditionType.HAS_ITEM,
           item: ItemBox.AbogastChant.cn.name,
+        },
+      },
+      {
+        type: 'goto',
+        text: '尝试咒语：号令天之火',
+        goto: '90',
+        condition: {
+          type: ConditionType.HAS_ITEM,
+          item: ItemBox.SpellCommandFireFromSky.cn.name,
+        },
+      },
+      {
+        type: 'goto',
+        text: '尝试咒语：召唤天之火',
+        goto: '80',
+        condition: {
+          type: ConditionType.HAS_ITEM,
+          item: ItemBox.SpellSummonFireFromSky.cn.name,
         },
       },
       { type: 'goto', text: '不尝试咒语/未学过咒语', goto: '65' },
