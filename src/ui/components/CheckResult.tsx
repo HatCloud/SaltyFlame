@@ -84,7 +84,10 @@ const CheckResult: React.FC<CheckResultProps> = ({
         {t('check.targetValue')}
         {checkAttempt.targetValue}
         {'\n'}
-        {t('check.rollValue')}: {checkAttempt.rollValue}, {t('check.result')}
+        {checkAttempt.rolls && checkAttempt.rolls.length > 1
+          ? `${t('check.rolls')}: ${checkAttempt.rolls.join(', ')} ${t('check.picked')} ${checkAttempt.rollValue}`
+          : `${t('check.rollValue')}: ${checkAttempt.rollValue}`}
+        , {t('check.result')}
         {resultStatusText}
       </Text>
 

@@ -34,6 +34,10 @@ export const translations = {
       fumble: '大失败', // Can be used as status for fumble
       continue: '继续',
       yourValueIs: '你的 {{skillName}} 为 {{value}}',
+      rolls: '掷骰结果',
+      picked: '选取',
+      bonus: '奖励骰',
+      penalty: '惩罚骰',
     },
     condition: {
       // Added condition section
@@ -156,6 +160,9 @@ export const translations = {
       eventHappened: '发生了某个事件',
       incompleteInfo: '信息不完整',
       ok: '确认',
+      penaltyDiceTodayTitle: '今日技能检定受惩罚骰',
+      penaltyDiceTodayDesc:
+        '额外投一颗十位骰，分别计算结果后取最高值。这不影响幸运、理智和伤害检定。',
     },
   },
   en: {
@@ -193,6 +200,10 @@ export const translations = {
       fumble: 'Fumble', // Can be used as status for fumble
       continue: 'CONTINUE',
       yourValueIs: 'Your {{skillName}} is {{value}}',
+      rolls: 'Rolls',
+      picked: 'Picked',
+      bonus: 'Bonus',
+      penalty: 'Penalty',
     },
     condition: {
       // Added condition section
@@ -317,6 +328,9 @@ export const translations = {
       eventHappened: 'An event has occurred',
       incompleteInfo: 'Incomplete information',
       ok: 'OK',
+      penaltyDiceTodayTitle: "Penalty Dice for Today's Skill Checks",
+      penaltyDiceTodayDesc:
+        'Roll an additional ten-sided die and take the higher result. This does not affect Luck, Sanity, or damage rolls.',
     },
   },
 } as const

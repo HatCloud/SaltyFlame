@@ -22,6 +22,7 @@ export interface CheckAttemptState {
   rollValue?: number // The D100 roll result
   resultType?: CheckOutcome // Detailed result of the check
   targetValue: number
+  rolls?: number[] // All dice rolls
   // isSuccess?: boolean // This can be derived from resultType if needed
 
   // Information to display and use post-check, derived from CheckPayload
@@ -70,6 +71,7 @@ export interface PendingCheckResultData {
   resultType: CheckOutcome
   diceFaces: number
   targetValue: number
+  rolls: number[]
 }
 
 export const initialState: MyAppState = {

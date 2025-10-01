@@ -13,8 +13,8 @@ export interface Check {
   object: 'skill' | 'characteristic' | 'luck'
   subObject: CheckObjectKey // 例如 CheckObjectKey.MEDICINE, CheckObjectKey.STRENGTH
   difficulty?: CheckDifficulty
-  // bonusDice?: number; // 未来可扩展奖励骰
-  // penaltyDice?: number; // 未来可扩展惩罚骰
+  bonusDice?: number // 奖励骰
+  penaltyDice?: number // 惩罚骰
 }
 
 export interface Against {
@@ -50,7 +50,7 @@ export interface Condition {
 // 通用的“检定核心负载”接口
 // 这个接口描述了“进行一次检定，并根据结果决定后续”的完整信息包
 export interface CheckPayload {
-  details: Check | Against // 具体检定什么
+  details: Check // 具体检定什么
   onSuccessSceneId: string // 成功后跳转到哪个场景
   onFailureSceneId?: string // 失败后跳转到哪个场景
   successText?: string // 检定成功后，在当前卡片上显示的提示文本 (可选)

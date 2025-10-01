@@ -273,13 +273,13 @@ export const scenes_021_040: SceneData = {
     options: [
       {
         type: 'check',
-        text: '进行「骑术」检定（奖励骰）',
+        text: '进行「骑术」检定',
         check: {
           details: {
             object: 'skill',
             subObject: SkillEnum.RIDE,
             difficulty: CheckDifficulty.NORMAL,
-            // bonusDice: true, // TODO: Implement bonus/penalty dice in executeCheckLogic
+            bonusDice: 1,
           },
           onSuccessSceneId: '46',
           onFailureSceneId: '25',

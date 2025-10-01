@@ -46,8 +46,18 @@ const CheckOption: React.FC<CheckOptionProps> = ({
     })
   }
 
-  const buttonText =
+  let buttonText =
     option.text || t('check.perform') + ' ' + t('check.skillCheck')
+
+  const isBonus = option.check.details?.bonusDice
+  const isPenalty =
+    option.check.details?.penaltyDice || state.gameFlags.PENALTY_DICE_TODAY
+
+  if (isBonus) {
+    buttonText += ` (${t('check.bonus')})`
+  } else if (isPenalty) {
+    buttonText += ` (${t('check.penalty')})`
+  }
 
   return (
     <OptionButton

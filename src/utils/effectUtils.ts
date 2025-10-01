@@ -1,6 +1,7 @@
 import { Effect } from '../interface/Scene'
 import { Character } from '../interface/Character'
 import { EffectType, CheckObjectNames, CheckObjectKey } from '../constant/enums'
+import { GameFlag } from '../constant/GameFlags'
 
 export interface EffectDescription {
   title: string
@@ -8,6 +9,7 @@ export interface EffectDescription {
 }
 
 // Translation function type
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TranslateFn = (key: string, params?: Record<string, any>) => string
 
 // Helper function to get skill display name
@@ -155,7 +157,18 @@ export function getEffectDescription(
       return { title, description }
     }
 
-    case EffectType.SET_FLAG:
+    case EffectType.SET_FLAG: {
+      switch (effect.gameFlag) {
+        case GameFlag.PENALTY_DICE_TODAY: {
+          return {
+            title: t('effect.penaltyDiceTodayTitle'),
+            description: t('effect.penaltyDiceTodayDesc'),
+          }
+        }
+        default:
+          return null
+      }
+    }
     case EffectType.CLEAR_FLAG: {
       return null
     }

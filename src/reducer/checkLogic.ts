@@ -1,8 +1,8 @@
 import { MyAppState } from '../interface/MyAppState'
 import { Check } from '../interface/Scene'
 import { CheckDifficulty, CheckOutcome } from '../constant/enums'
-import { rollDice } from '../utils/utils'
 import { getCheckValue } from '../utils/skillUtils'
+import { performCheck } from '../utils/checkUtils'
 
 export function executeCheckLogic(
   state: MyAppState,
@@ -12,10 +12,11 @@ export function executeCheckLogic(
   resultType: CheckOutcome
   diceFaces: number
   targetValue: number
+  rolls: number[]
 } {
   const characterValue = getCheckValue(state.characterData, check.subObject)
   const diceFaces = 100 // Standard D100 roll for CoC checks
-  const roll = rollDice(diceFaces)
+  const { result: roll, rolls } = performCheck(check, state.gameFlags)
   let targetValue = characterValue
 
   switch (check.difficulty) {
@@ -48,5 +49,5 @@ export function executeCheckLogic(
   } else {
     resultType = CheckOutcome.FAILURE
   }
-  return { rollValue: roll, resultType, diceFaces, targetValue }
+  return { rollValue: roll, resultType, diceFaces, targetValue, rolls }
 }

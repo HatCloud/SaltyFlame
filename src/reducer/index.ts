@@ -104,7 +104,7 @@ export const appReducer = (
         saveStateToStorage(tempState)
       }
 
-      const { rollValue, resultType, diceFaces, targetValue } =
+      const { rollValue, resultType, diceFaces, targetValue, rolls } =
         executeCheckLogic(
           // Added diceFaces here
           tempState,
@@ -131,19 +131,8 @@ export const appReducer = (
         rollValue: rollValue as number, // Assuming rollValue is always defined if diceFaces is
         resultType: resultType as CheckOutcome, // Assuming resultType is always defined
         diceFaces: diceFaces as number, // Assuming diceFaces is always defined
+        rolls,
       }
-      // tempState.currentCheckAttempt = { // This will be set after animation
-      //   checkDefinition: checkPayload.details,
-      //   rollValue,
-      //   resultType,
-      //   successMessage: checkPayload.successText,
-      //   failureMessage: checkPayload.failureText,
-      //   nextSceneIdOnSuccess: checkPayload.onSuccessSceneId,
-      //   nextSceneIdOnFailure: checkPayload.onFailureSceneId,
-      //   effectsToApplyOnSuccess: checkPayload.onSuccessEffects,
-      //   effectsToApplyOnFailure: checkPayload.onFailureEffects,
-      //   originalOption: originalOption,
-      // }
       return tempState
     }
 
@@ -255,6 +244,7 @@ export const appReducer = (
           rollValue,
           resultType,
           targetValue,
+          rolls,
           // diceFaces is in pendingCheckResultData but not directly used for currentCheckAttempt here
         } = finalState.pendingCheckResultData
 
@@ -263,6 +253,7 @@ export const appReducer = (
           rollValue,
           resultType,
           targetValue,
+          rolls,
           successMessage: checkPayload.successText,
           failureMessage: checkPayload.failureText,
           nextSceneIdOnSuccess: checkPayload.onSuccessSceneId,
