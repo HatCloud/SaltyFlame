@@ -86,6 +86,15 @@ export const scenes_001_020: SceneData = {
     options: [
       { type: 'goto', text: '尝试靠口才通过把守村口的人群', goto: '119' },
       { type: 'goto', text: '尝试化装通过', goto: '125' },
+      {
+        type: 'goto',
+        text: '你想起了之前找到的悬崖间的梯子',
+        goto: '107',
+        condition: {
+          type: ConditionType.HAS_ITEM,
+          item: ItemBox.SecretPaper.cn.name,
+        },
+      },
     ],
   },
   '8': {

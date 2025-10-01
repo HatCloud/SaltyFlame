@@ -266,7 +266,7 @@ const StoryCard: React.FC = React.memo(() => {
                 )
               : { met: true, description: undefined }
 
-            if (!conditionResult.met) {
+            if (!conditionResult.met && !__DEV__) {
               return null
             }
             if (option.type === 'check') {
