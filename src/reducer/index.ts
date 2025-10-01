@@ -146,21 +146,29 @@ export const appReducer = (
         resultType,
         nextSceneIdOnSuccess,
         nextSceneIdOnFailure,
+        nextSceneIdOnFumble, // Added fumble scene id
         effectsToApplyOnSuccess,
         effectsToApplyOnFailure,
+        effectsToApplyOnFumble,
       } = newState.currentCheckAttempt
 
       let effectsToApply: Effect[] | undefined
       let nextSceneId: string | undefined
 
-      const wasSuccess =
+      if (resultType === CheckOutcome.FUMBLE && nextSceneIdOnFumble) {
+        // Prioritize fumble outcome
+        effectsToApply = effectsToApplyOnFumble
+          ? effectsToApplyOnFumble
+          : effectsToApplyOnFailure // Fumble usually implies failure effects
+        nextSceneId = nextSceneIdOnFumble
+      } else if (
         resultType === CheckOutcome.SUCCESS ||
         resultType === CheckOutcome.CRITICAL_SUCCESS
-
-      if (wasSuccess) {
+      ) {
         effectsToApply = effectsToApplyOnSuccess
         nextSceneId = nextSceneIdOnSuccess
       } else {
+        // Handles FAILURE and FUMBLE (when onFumbleSceneId is not provided)
         effectsToApply = effectsToApplyOnFailure
         nextSceneId = nextSceneIdOnFailure
       }
@@ -256,10 +264,13 @@ export const appReducer = (
           rolls,
           successMessage: checkPayload.successText,
           failureMessage: checkPayload.failureText,
+          fumbleMessage: checkPayload.fumbleText, // Pass fumble text
           nextSceneIdOnSuccess: checkPayload.onSuccessSceneId,
           nextSceneIdOnFailure: checkPayload.onFailureSceneId,
+          nextSceneIdOnFumble: checkPayload.onFumbleSceneId, // Pass fumble scene id
           effectsToApplyOnSuccess: checkPayload.onSuccessEffects,
           effectsToApplyOnFailure: checkPayload.onFailureEffects,
+          effectsToApplyOnFumble: checkPayload.onFumbleEffects, // Pass fumble effects
           originalOption: originalOption,
         }
         finalState.pendingCheckResultData = null // Clear pending data

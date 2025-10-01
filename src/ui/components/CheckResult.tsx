@@ -61,7 +61,10 @@ const CheckResult: React.FC<CheckResultProps> = ({
         break
       case CheckOutcome.FUMBLE:
         resultStatusText = t('check.fumble')
-        mainMessageText = checkAttempt.failureMessage || t('check.fumble') // Fumble uses failure message or generic fumble
+        mainMessageText =
+          checkAttempt.fumbleMessage ||
+          checkAttempt.failureMessage ||
+          t('check.fumble') // Fumble uses failure message or generic fumble
         break
       default:
         resultStatusText = t('check.failure') // Should not happen

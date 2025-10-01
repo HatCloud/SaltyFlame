@@ -55,10 +55,13 @@ export interface CheckPayload {
   details: Check // 具体检定什么
   onSuccessSceneId: string // 成功后跳转到哪个场景
   onFailureSceneId?: string // 失败后跳转到哪个场景
+  onFumbleSceneId?: string // 大失败后跳转到哪个场景 (可选)
   successText?: string // 检定成功后，在当前卡片上显示的提示文本 (可选)
   failureText?: string // 检定失败后，在当前卡片上显示的提示文本 (可选)
+  fumbleText?: string // 检定大失败后，在当前卡片上显示的提示文本 (可选)
   onSuccessEffects?: Effect[] // 检定成功后应用的效果 (可选)
   onFailureEffects?: Effect[] // 检定失败后应用的效果 (可选)
+  onFumbleEffects?: Effect[] // 检定大失败后应用的效果 (可选)
 }
 
 // 选项：点击后执行检定

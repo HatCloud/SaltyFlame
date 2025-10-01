@@ -23,16 +23,15 @@ export interface CheckAttemptState {
   resultType?: CheckOutcome // Detailed result of the check
   targetValue: number
   rolls?: number[] // All dice rolls
-  // isSuccess?: boolean // This can be derived from resultType if needed
-
-  // Information to display and use post-check, derived from CheckPayload
   successMessage?: string
   failureMessage?: string
+  fumbleMessage?: string // Added for fumble outcome
   nextSceneIdOnSuccess: string
   nextSceneIdOnFailure?: string
+  nextSceneIdOnFumble?: string // Added for fumble outcome
   effectsToApplyOnSuccess?: Effect[]
   effectsToApplyOnFailure?: Effect[]
-
+  effectsToApplyOnFumble?: Effect[] // Added for fumble outcome
   originalOption?: SceneInteractOption // If the check was triggered by an option
 }
 
