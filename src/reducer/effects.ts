@@ -15,6 +15,26 @@ export function applySingleEffect(
     )
     return state
   }
+  if (effect.condition) {
+    switch (effect.condition) {
+      case 'IF_LOST_SANITY':
+        if (
+          !state.characterData?.sanity ||
+          state.characterData.sanity.current >=
+            state.characterData.sanity.starting
+        ) {
+          console.log(
+            'Effect condition not met (IF_LOST_SANITY). Effect skipped:',
+            effect,
+          )
+          return state // Condition not met, return state unchanged
+        }
+        break
+      default:
+        console.warn('Unknown effect condition:', effect.condition)
+        break
+    }
+  }
   // Now we know state.characterData is not null, so it must be a Character object.
   const newCharacterData = JSON.parse(
     JSON.stringify(state.characterData),
@@ -63,8 +83,10 @@ export function applySingleEffect(
         sanityChange = parseDiceString(effect.value)
         diceRollResult = sanityChange
       }
-      // Since sanity and sanity.current are mandatory in Character, direct assignment is fine.
-      newCharacterData.sanity.current += sanityChange
+      newCharacterData.sanity.current = Math.min(
+        newCharacterData.sanity.starting,
+        newCharacterData.sanity.current + sanityChange,
+      )
       console.log(
         `Applied Sanity Change: ${sanityChange} (from ${effect.value}), New Sanity: ${newCharacterData.sanity.current}`,
       )

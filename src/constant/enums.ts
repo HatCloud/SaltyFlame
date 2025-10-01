@@ -187,6 +187,10 @@ export enum EffectType {
   MARK_SKILL_SUCCESS = 'MARK_SKILL_SUCCESS',
 }
 
+export enum EffectConditionType {
+  IF_LOST_SANITY = 'IF_LOST_SANITY',
+}
+
 export enum ConditionType {
   HAS_ITEM = 'HAS_ITEM',
   HAS_NOT_ITEM = 'HAS_NOT_ITEM',

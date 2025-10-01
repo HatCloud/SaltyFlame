@@ -5,6 +5,7 @@ import {
   EffectType,
   CheckDifficulty,
   ConditionType,
+  EffectConditionType,
 } from '../../constant/enums'
 
 export const scenes_081_100: SceneData = {
@@ -184,6 +185,7 @@ export const scenes_081_100: SceneData = {
       {
         type: EffectType.CHANGE_SANITY,
         value: '+1',
+        condition: EffectConditionType.IF_LOST_SANITY,
       },
     ],
     options: [

@@ -3,6 +3,7 @@ import {
   CheckDifficulty,
   ConditionType,
   EffectType,
+  EffectConditionType,
 } from '../constant/enums'
 import { Item, Weapon } from '../interface/Character' // Import Weapon type
 import { OccupationKey } from '../data/occupations' // Import OccupationKey
@@ -32,6 +33,7 @@ export interface Effect {
   flagValue?: boolean // 游戏标记的值
   item?: Item | Weapon // For ADD_ITEM, REMOVE_ITEM: the item name or Weapon object
   isActive?: boolean
+  condition?: EffectConditionType // 条件效果
 }
 
 // 条件定义 (根据项目实际情况可能更复杂)
