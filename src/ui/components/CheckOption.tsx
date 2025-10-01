@@ -2,7 +2,7 @@ import React from 'react'
 import type { SceneInteractOption, CheckPayload } from '../../interface/Scene' // Import CheckPayload
 import OptionButton from './OptionButton'
 import { useI18n } from '../../i18n/useI18n'
-import { useAppReducer } from '../../hook'
+import { useAppReducer } from '../../context/AppContext'
 import { getCheckValue } from '../../utils/skillUtils'
 import { CheckObjectNames, CheckObjectKey } from '../../constant/enums' // Import CheckObjectKey
 

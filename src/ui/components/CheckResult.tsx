@@ -10,7 +10,7 @@ import {
 } from '../../constant/enums' // Import CheckObjectKey and CheckOutcome
 import { useI18n } from '../../i18n/useI18n'
 import OptionButton from './OptionButton'
-import { useAppReducer } from '../../hook' // Import useAppReducer
+import { useAppReducer } from '../../context/AppContext' // Import useAppReducer
 import { getCheckValue } from '../../utils/skillUtils' // Import getCheckValue
 import palette from '../../theme/palette'
 

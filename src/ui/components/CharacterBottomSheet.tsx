@@ -4,13 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import palette from '../../theme/palette'
 import { padding } from '../../theme/padding'
 import { typeface } from '../../theme/typeface'
-import { useAppReducer } from '../../hook'
+import { useGameState } from '../../hooks/useGameState'
 import { useI18n } from '../../i18n/useI18n'
 import CharacterModal from './CharacterModal'
 
 const CharacterBottomSheet: React.FC = React.memo(() => {
-  const [state, dispatch] = useAppReducer() // Added dispatch
-  const { characterData } = state
+  const { characterData, actions } = useGameState()
   const insets = useSafeAreaInsets()
   const { t } = useI18n()
   // setShowCharacteristics was unused, showCharacteristics is used to toggle display
@@ -20,7 +19,7 @@ const CharacterBottomSheet: React.FC = React.memo(() => {
     if (!characterData || characterData.occupation === 'Unknown') {
       return
     }
-    dispatch({ type: 'TOGGLE_CHARACTER_MODAL' })
+    actions.toggleCharacterModal()
   }
 
   if (!characterData) {

@@ -1,4 +1,4 @@
-import { useAppReducer } from '../hook'
+import { useAppReducer } from '../context/AppContext'
 import { translations } from './resources'
 import { I18nContextType, LanguageCode } from './interface'
 

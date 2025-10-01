@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native'
-import { useAppReducer } from '../../hook'
+import { useGameState } from '../../hooks/useGameState'
 import { useI18n } from '../../i18n/useI18n'
 import { Item, Weapon } from '../../interface/Character'
 import {
@@ -40,16 +40,15 @@ const InfoRow: React.FC<{
 )
 
 const CharacterModal: React.FC = () => {
-  const [state, dispatch] = useAppReducer()
+  const { characterData, isCharacterModalVisible, actions } = useGameState()
   const { t, lang } = useI18n()
-  const { characterData, isCharacterModalVisible } = state
 
   if (!characterData) {
     return null
   }
 
   const closeModal = () => {
-    dispatch({ type: 'TOGGLE_CHARACTER_MODAL' })
+    actions.toggleCharacterModal()
   }
 
   const getSkillDisplayName = (skillKey: string): string => {

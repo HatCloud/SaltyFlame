@@ -10,7 +10,9 @@ import Animated, {
 import { padding } from '../../theme/padding'
 import palette from '../../theme/palette'
 import { typeface } from '../../theme/typeface'
-import { useAppReducer } from '../../hook'
+import { useAppReducer } from '../../context/AppContext'
+import { useGameState } from '../../hooks/useGameState'
+import { useCheckSystem } from '../../hooks/useCheckSystem'
 import type { Scene, SceneInteractOption } from '../../interface/Scene'
 import OptionButton from './OptionButton'
 import CheckResult from './CheckResult'
@@ -34,6 +36,14 @@ type StoryCardNavigationProp = StackNavigationProp<
 
 const StoryCard: React.FC = React.memo(() => {
   const [state, dispatch] = useAppReducer()
+  const {
+    currentScene: currentSceneKey,
+    history,
+    gameFlags,
+    characterData,
+    actions: gameActions,
+  } = useGameState()
+  const { actions: checkActions } = useCheckSystem()
   const navigation = useNavigation<StoryCardNavigationProp>()
   const { t } = useI18n()
   const { checkCondition } = useCheckCondition()
@@ -41,10 +51,10 @@ const StoryCard: React.FC = React.memo(() => {
   const translateX = useSharedValue(SCREEN_WIDTH)
   const prevTranslateX = useSharedValue(0)
 
-  const [takeNumber, setTakeNumber] = useState(() => state.history.length + 1)
+  const [takeNumber, setTakeNumber] = useState(() => history.length + 1)
 
   const [currentScene, setCurrentScene] = useState<Scene | undefined>(
-    state.sceneData?.[state.currentSceneKey],
+    state.sceneData?.[currentSceneKey],
   )
 
   // Occupation modal state
@@ -72,7 +82,7 @@ const StoryCard: React.FC = React.memo(() => {
     if (!isBack && nextScene?.effects && nextScene.effects.length > 0) {
       nextScene.effects.forEach(effect => {
         if (effect.isActive === false) return // Skip inactive effects
-        dispatch({ type: 'APPLY_EFFECT', payload: effect })
+        checkActions.applyEffect(effect)
       })
     }
     prevTranslateX.value = 0
@@ -103,7 +113,7 @@ const StoryCard: React.FC = React.memo(() => {
     takeNumber,
     translateX,
     currentScene?.effects,
-    dispatch,
+    checkActions,
   ])
 
   // 动画样式
@@ -127,10 +137,7 @@ const StoryCard: React.FC = React.memo(() => {
       if (option.type === 'check') {
         // For check options, effects are usually part of the checkPayload or applied pre-check.
         // The current PERFORM_INLINE_CHECK in reducer handles originalOption.effects.
-        dispatch({
-          type: 'PERFORM_INLINE_CHECK',
-          payload: { checkPayload: option.check, originalOption: option },
-        })
+        checkActions.performCheck(option.check, option)
       } else if (option.type === 'goto') {
         // If this option has an occupation to apply, show the modal first
         if (option.applyOccupation) {
@@ -145,21 +152,14 @@ const StoryCard: React.FC = React.memo(() => {
 
         // Then apply other effects
         if (option.effects && option.effects.length > 0) {
-          option.effects.forEach(effect =>
-            dispatch({ type: 'APPLY_EFFECT', payload: effect }),
-          )
+          option.effects.forEach(effect => checkActions.applyEffect(effect))
         }
         // Finally, change scene
-        dispatch({
-          type: 'CHANGE_SCENE',
-          payload: option.goto,
-        })
+        gameActions.changeScene(option.goto)
       } else if (option.type === 'custom_navigation') {
         // Apply pre-navigation effects if any
         if (option.effects && option.effects.length > 0) {
-          option.effects.forEach(effect =>
-            dispatch({ type: 'APPLY_EFFECT', payload: effect }),
-          )
+          option.effects.forEach(effect => checkActions.applyEffect(effect))
         }
         // Navigate to the target screen with parameters
         if (option.navigationTarget === 'AttributeAllocationScreen') {
@@ -176,7 +176,7 @@ const StoryCard: React.FC = React.memo(() => {
         }
       }
     },
-    [dispatch, navigation],
+    [checkActions, gameActions, navigation],
   )
 
   // Handle occupation modal confirm
@@ -196,22 +196,19 @@ const StoryCard: React.FC = React.memo(() => {
         pendingOccupationOption.effects.length > 0
       ) {
         pendingOccupationOption.effects.forEach(effect =>
-          dispatch({ type: 'APPLY_EFFECT', payload: effect }),
+          checkActions.applyEffect(effect),
         )
       }
 
       // Finally, change scene
-      dispatch({
-        type: 'CHANGE_SCENE',
-        payload: pendingOccupationOption.goto,
-      })
+      gameActions.changeScene(pendingOccupationOption.goto)
     }
 
     // Clear modal state
     setShowOccupationModal(false)
     setSelectedOccupation(null)
     setPendingOccupationOption(null)
-  }, [pendingOccupationOption, dispatch])
+  }, [pendingOccupationOption, dispatch, checkActions, gameActions])
 
   // Handle occupation modal cancel
   const handleOccupationCancel = useCallback(() => {
@@ -221,12 +218,12 @@ const StoryCard: React.FC = React.memo(() => {
   }, [])
 
   const handleResolveCheckOutcome = useCallback(() => {
-    dispatch({ type: 'RESOLVE_CHECK_OUTCOME' })
-  }, [dispatch])
+    checkActions.resolveCheck()
+  }, [checkActions])
 
   const goBack = useCallback(() => {
-    dispatch({ type: 'GO_BACK' })
-  }, [dispatch])
+    gameActions.goBack()
+  }, [gameActions])
 
   if (!currentScene) {
     return (
@@ -260,9 +257,9 @@ const StoryCard: React.FC = React.memo(() => {
             const conditionResult = option.condition
               ? checkCondition(
                   option.condition,
-                  state.characterData,
-                  state.gameFlags,
-                  state.history,
+                  characterData,
+                  gameFlags,
+                  history,
                 )
               : { met: true, description: undefined }
 

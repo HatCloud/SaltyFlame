@@ -17,7 +17,7 @@ import {
   useFocusEffect,
 } from '@react-navigation/native'
 import { RootStackParamList } from '../../interface/navigation' // Added import
-import { useAppReducer } from '../../hook'
+import { useAppReducer } from '../../context/AppContext'
 import generateCharacter from '../../utils/generateCharacter'
 import { Character } from '../../interface/Character'
 import {

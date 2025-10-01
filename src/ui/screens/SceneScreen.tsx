@@ -4,7 +4,7 @@ import palette from '../../theme/palette'
 import StoryCard from '../components/StoryCard'
 import CharacterBottomSheet from '../components/CharacterBottomSheet'
 import EffectModal from '../components/EffectModal'
-import { useAppReducer } from '../../hook'
+import { useAppReducer } from '../../context/AppContext'
 import { getEffectDescription } from '../../utils/effectUtils'
 import { useI18n } from '../../i18n/useI18n'
 
